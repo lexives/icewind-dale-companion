@@ -18,6 +18,50 @@ fun NunavutDate.isValid() : Boolean {
     )
 }
 
+@Throws(InvalidDateException::class)
+fun NunavutDate.priorSeason() : NunavutSeason {
+    if (!this.isValid()) {
+        throw InvalidDateException(this)
+    }
+    return this.season?.priorSeason() ?: this.holiday!!.priorSeason
+}
+
+@Throws(InvalidDateException::class)
+fun NunavutDate.nextSeason() : NunavutSeason {
+    if (!this.isValid()) {
+        throw InvalidDateException(this)
+    }
+    return this.season?.nextSeason() ?: this.holiday!!.nextSeason
+}
+
+/**
+ * The last holiday that occurred, including today if it's a holiday
+ */
+@Throws(InvalidDateException::class)
+fun NunavutDate.lastHoliday() : NunavutHoliday {
+    if (!this.isValid()) {
+        throw InvalidDateException(this)
+    }
+    return this.season?.lastHoliday(this.year) ?: this.holiday!!
+}
+
+/**
+ * The next holiday that will occur, not including today if it's a holiday
+ */
+@Throws(InvalidDateException::class)
+fun NunavutDate.nextHoliday() : NunavutHoliday {
+    if (!this.isValid()) {
+        throw InvalidDateException(this)
+    }
+    return this.season?.nextHoliday(this.year) ?: this.holiday!!.nextSeason.let { nextSeason ->
+        if (nextSeason == NunavutSeason.DENNING_POLAR_BEAR) {
+            nextSeason.nextHoliday(this.year + 1)
+        } else {
+            nextSeason.nextHoliday(this.year)
+        }
+    }
+}
+
 /**
  * The number of holidays that have occurred so far, including the current day if it's a holiday.
  */

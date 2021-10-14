@@ -202,6 +202,26 @@ class HarposDateExtTests {
         assertEquals(MOON_FEAST, HarposDate(day = 1, month = MARPENOTH, year = 1001).nextHoliday())
         assertEquals(MOON_FEAST, HarposDate(day = 1, month = UKTAR, year = 1001).nextHoliday())
         assertEquals(SHIELDMEET, HarposDate(day = 1, month = NIGHTAL, year = 1001).nextHoliday())
+        assertEquals(
+            GREENGRASS,
+            HarposDate(day = 1, month = null, year = 1001, holiday = SHIELDMEET).nextHoliday()
+        )
+        assertEquals(
+            MIDSUMMER,
+            HarposDate(day = 1, month = null, year = 1001, holiday = GREENGRASS).nextHoliday()
+        )
+        assertEquals(
+            HIGHHARVESTTIDE,
+            HarposDate(day = 1, month = null, year = 1001, holiday = MIDSUMMER).nextHoliday()
+        )
+        assertEquals(
+            MOON_FEAST,
+            HarposDate(day = 1, month = null, year = 1001, holiday = HIGHHARVESTTIDE).nextHoliday()
+        )
+        assertEquals(
+            SHIELDMEET,
+            HarposDate(day = 1, month = null, year = 1001, holiday = MOON_FEAST).nextHoliday()
+        )
     }
 
     @Test
@@ -218,6 +238,26 @@ class HarposDateExtTests {
         assertEquals(MOON_FEAST, HarposDate(day = 1, month = MARPENOTH, year = 1003).nextHoliday())
         assertEquals(MOON_FEAST, HarposDate(day = 1, month = UKTAR, year = 1003).nextHoliday())
         assertEquals(MIDWINTER, HarposDate(day = 1, month = NIGHTAL, year = 1003).nextHoliday())
+        assertEquals(
+            GREENGRASS,
+            HarposDate(day = 1, month = null, year = 1003, holiday = SHIELDMEET).nextHoliday()
+        )
+        assertEquals(
+            MIDSUMMER,
+            HarposDate(day = 1, month = null, year = 1003, holiday = GREENGRASS).nextHoliday()
+        )
+        assertEquals(
+            HIGHHARVESTTIDE,
+            HarposDate(day = 1, month = null, year = 1003, holiday = MIDSUMMER).nextHoliday()
+        )
+        assertEquals(
+            MOON_FEAST,
+            HarposDate(day = 1, month = null, year = 1003, holiday = HIGHHARVESTTIDE).nextHoliday()
+        )
+        assertEquals(
+            MIDWINTER,
+            HarposDate(day = 1, month = null, year = 1003, holiday = MOON_FEAST).nextHoliday()
+        )
     }
 
     @Test
@@ -234,6 +274,30 @@ class HarposDateExtTests {
         assertEquals(MOON_FEAST, HarposDate(day = 1, month = MARPENOTH, year = 1004).nextHoliday())
         assertEquals(MOON_FEAST, HarposDate(day = 1, month = UKTAR, year = 1004).nextHoliday())
         assertEquals(SHIELDMEET, HarposDate(day = 1, month = NIGHTAL, year = 1004).nextHoliday())
+        assertEquals(
+            SHIELDMEET,
+            HarposDate(day = 1, month = null, year = 1004, holiday = MIDWINTER).nextHoliday()
+        )
+        assertEquals(
+            GREENGRASS,
+            HarposDate(day = 1, month = null, year = 1004, holiday = SHIELDMEET).nextHoliday()
+        )
+        assertEquals(
+            MIDSUMMER,
+            HarposDate(day = 1, month = null, year = 1004, holiday = GREENGRASS).nextHoliday()
+        )
+        assertEquals(
+            HIGHHARVESTTIDE,
+            HarposDate(day = 1, month = null, year = 1004, holiday = MIDSUMMER).nextHoliday()
+        )
+        assertEquals(
+            MOON_FEAST,
+            HarposDate(day = 1, month = null, year = 1004, holiday = HIGHHARVESTTIDE).nextHoliday()
+        )
+        assertEquals(
+            SHIELDMEET,
+            HarposDate(day = 1, month = null, year = 1004, holiday = MOON_FEAST).nextHoliday()
+        )
     }
 
     @Test

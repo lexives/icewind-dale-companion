@@ -2,8 +2,7 @@ package com.delarax.icewindDale.companion.models.harpos
 
 import com.delarax.icewindDale.companion.data.isLeapYear
 import com.delarax.icewindDale.companion.models.InvalidDateException
-import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.MIDWINTER
-import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.MOON_FEAST
+import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.*
 
 fun HarposDate.isLeapYear() : Boolean = this.year.isLeapYear()
 
@@ -53,8 +52,19 @@ fun HarposDate.nextHoliday() : HarposHoliday {
     if (!this.isValid()) {
         throw InvalidDateException(this)
     }
-    return this.month?.nextHoliday(this.year)
-        ?: this.holiday!!.nextMonth.nextHoliday(this.year)
+    return this.month?.nextHoliday(this.year) ?: this.holiday!!.let { currentHoliday ->
+        if (currentHoliday == MIDWINTER) {
+            SHIELDMEET // Have to hard code this one because there's no in-between month
+        } else {
+            currentHoliday.nextMonth.let { nextMonth ->
+                if (nextMonth == HarposMonth.HAMMER) {
+                    nextMonth.nextHoliday(this.year + 1)
+                } else {
+                    nextMonth.nextHoliday(this.year)
+                }
+            }
+        }
+    }
 }
 
 /**
