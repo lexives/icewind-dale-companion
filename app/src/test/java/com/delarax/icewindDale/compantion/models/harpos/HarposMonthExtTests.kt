@@ -11,7 +11,7 @@ import org.junit.Test
 
 class HarposMonthExtTests {
 
-     @Test
+    @Test
     fun `priorMonth returns correct month in all cases`() {
         assertEquals(UKTAR, NIGHTAL.priorMonth())
         assertEquals(MARPENOTH, UKTAR.priorMonth())

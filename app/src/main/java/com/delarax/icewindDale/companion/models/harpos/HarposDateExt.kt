@@ -18,6 +18,45 @@ fun HarposDate.isValid() : Boolean {
     )
 }
 
+@Throws(InvalidDateException::class)
+fun HarposDate.priorMonth() : HarposMonth {
+    if (!this.isValid()) {
+        throw InvalidDateException(this)
+    }
+    return this.month?.priorMonth() ?: this.holiday!!.priorMonth
+}
+
+@Throws(InvalidDateException::class)
+fun HarposDate.nextMonth() : HarposMonth {
+    if (!this.isValid()) {
+        throw InvalidDateException(this)
+    }
+    return this.month?.nextMonth() ?: this.holiday!!.nextMonth
+}
+
+/**
+ * The last holiday that occurred, including today if it's a holiday
+ */
+@Throws(InvalidDateException::class)
+fun HarposDate.lastHoliday() : HarposHoliday {
+    if (!this.isValid()) {
+        throw InvalidDateException(this)
+    }
+    return this.month?.lastHoliday() ?: this.holiday!!
+}
+
+/**
+ * The next holiday that will occur, not including today if it's a holiday
+ */
+@Throws(InvalidDateException::class)
+fun HarposDate.nextHoliday() : HarposHoliday {
+    if (!this.isValid()) {
+        throw InvalidDateException(this)
+    }
+    return this.month?.nextHoliday(this.year)
+        ?: this.holiday!!.nextMonth.nextHoliday(this.year)
+}
+
 /**
  * The number of holidays that have occurred so far, including the current day if it's a holiday.
  */
