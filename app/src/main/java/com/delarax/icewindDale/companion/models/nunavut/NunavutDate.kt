@@ -1,7 +1,7 @@
-package com.delarax.icewindDale.companion.models
+package com.delarax.icewindDale.companion.models.nunavut
 
-import com.delarax.icewindDale.companion.models.NunavutAbbreviation.*
-import com.delarax.icewindDale.companion.models.NunavutSeason.*
+import com.delarax.icewindDale.companion.models.nunavut.NunavutAbbreviation.*
+import com.delarax.icewindDale.companion.models.nunavut.NunavutSeason.*
 
 data class NunavutDate(
     val day: Int,

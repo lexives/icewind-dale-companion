@@ -1,6 +1,7 @@
 package com.delarax.icewindDale.companion.models
 
-import java.lang.Exception
+import com.delarax.icewindDale.companion.models.harpos.HarposDate
+import com.delarax.icewindDale.companion.models.nunavut.NunavutDate
 
 class InvalidDateException(message: String) : Exception(message) {
     constructor(harposDate: HarposDate) : this(

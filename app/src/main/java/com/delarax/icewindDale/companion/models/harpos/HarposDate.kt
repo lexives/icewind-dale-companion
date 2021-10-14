@@ -1,6 +1,6 @@
-package com.delarax.icewindDale.companion.models
+package com.delarax.icewindDale.companion.models.harpos
 
-import com.delarax.icewindDale.companion.models.HarposMonth.*
+import com.delarax.icewindDale.companion.models.harpos.HarposMonth.*
 
 data class HarposDate(
     val day: Int,
