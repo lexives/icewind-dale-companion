@@ -11,7 +11,8 @@ fun HarposDate.isValid() : Boolean {
         (this.month != null && this.holiday != null) ||
         (this.year < 1) ||
         (this.day !in (1..30)) ||
-        (this.holiday != null && this.day != 1)
+        (this.holiday != null && this.day != 1) ||
+        (this.holiday == MIDWINTER && !this.isLeapYear())
     )
 }
 
@@ -51,5 +52,29 @@ fun HarposMonth.nextHoliday(year: Int) : HarposHoliday = when (this) {
                 it.nextHoliday(year)
             }
         }
+    }
+}
+
+/**
+ * The number of holidays that have occurred so far, including the current day if it's a holiday.
+ */
+@Throws(InvalidDateException::class)
+fun HarposDate.numHolidaysPassed() : Int {
+    if (!this.isValid()) {
+        throw InvalidDateException(this)
+    }
+
+    val lastHoliday = this.month?.lastHoliday() ?: this.holiday!!
+    val numYearlyHolidaysPassed =
+        if (lastHoliday == MOON_FEAST && this.month == HarposMonth.HAMMER) {
+            0
+        } else {
+            lastHoliday.ordinal
+        }
+
+    return if (this.isLeapYear() && this.month != HarposMonth.HAMMER) {
+        numYearlyHolidaysPassed + 1
+    } else {
+        numYearlyHolidaysPassed
     }
 }
