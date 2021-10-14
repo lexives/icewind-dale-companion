@@ -10,7 +10,137 @@ import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
 class NunavutDateExtTests {
+    
+    @Test
+    fun `date with no season or holiday is not valid`() {
+        Assert.assertFalse(
+            NunavutDate(day = 20, season = null, year = 1234, holiday = null).isValid()
+        )
+    }
 
+    @Test
+    fun `date with both a season and a holiday is not valid`() {
+        Assert.assertFalse(
+            NunavutDate(day = 20, season = IGLOO, year = 1234, holiday = ALIANAT).isValid()
+        )
+    }
+
+    @Test
+    fun `date with a year less than 1 is not valid`() {
+        Assert.assertFalse(
+            NunavutDate(day = 20, season = IGLOO, year = 0).isValid()
+        )
+
+        Assert.assertFalse(
+            NunavutDate(day = 20, season = IGLOO, year = -1).isValid()
+        )
+    }
+
+    @Test
+    fun `date with day less than 1 is not valid`() {
+        Assert.assertFalse(
+            NunavutDate(day = 0, season = IGLOO, year = 1234).isValid()
+        )
+
+        Assert.assertFalse(
+            NunavutDate(day = -1, season = IGLOO, year = 1234).isValid()
+        )
+    }
+
+    @Test
+    fun `date with day greater than the max for that season is not valid`() {
+        Assert.assertFalse(
+            NunavutDate(day = 21, season = DENNING_POLAR_BEAR, year = 1234).isValid()
+        )
+        Assert.assertFalse(
+            NunavutDate(day = 31, season = FALLING_STARS, year = 1234).isValid()
+        )
+        Assert.assertFalse(
+            NunavutDate(day = 41, season = IGLOO, year = 1234).isValid()
+        )
+        Assert.assertFalse(
+            NunavutDate(day = 41, season = SEAL_PUPS, year = 1234).isValid()
+        )
+        Assert.assertFalse(
+            NunavutDate(day = 21, season = BEATING_ICE, year = 1234).isValid()
+        )
+        Assert.assertFalse(
+            NunavutDate(day = 31, season = NESTING_GEESE, year = 1234).isValid()
+        )
+        Assert.assertFalse(
+            NunavutDate(day = 41, season = SKIN_TENTS, year = 1234).isValid()
+        )
+        Assert.assertFalse(
+            NunavutDate(day = 31, season = RUNNING_CHAR, year = 1234).isValid()
+        )
+        Assert.assertFalse(
+            NunavutDate(day = 21, season = BERRIES, year = 1234).isValid()
+        )
+        Assert.assertFalse(
+            NunavutDate(day = 41, season = BARE_MOUNTAIN, year = 1234).isValid()
+        )
+        Assert.assertFalse(
+            NunavutDate(day = 21, season = JARLMOOT, year = 1234).isValid()
+        )
+        Assert.assertFalse(
+            NunavutDate(day = 31, season = ELK_HUNT, year = 1234).isValid()
+        )
+    }
+
+    @Test
+    fun `date with day other than 1 on a holiday is not valid`() {
+        Assert.assertFalse(
+            NunavutDate(day = 20, season = null, year = 1234, holiday = ALIANAT).isValid()
+        )
+    }
+
+    @Test
+    fun `valid date within each season`() {
+        Assert.assertTrue(
+            NunavutDate(day = 20, season = DENNING_POLAR_BEAR, year = 1234).isValid()
+        )
+        Assert.assertTrue(
+            NunavutDate(day = 30, season = FALLING_STARS, year = 1234).isValid()
+        )
+        Assert.assertTrue(
+            NunavutDate(day = 40, season = IGLOO, year = 1234).isValid()
+        )
+        Assert.assertTrue(
+            NunavutDate(day = 40, season = SEAL_PUPS, year = 1234).isValid()
+        )
+        Assert.assertTrue(
+            NunavutDate(day = 20, season = BEATING_ICE, year = 1234).isValid()
+        )
+        Assert.assertTrue(
+            NunavutDate(day = 30, season = NESTING_GEESE, year = 1234).isValid()
+        )
+        Assert.assertTrue(
+            NunavutDate(day = 40, season = SKIN_TENTS, year = 1234).isValid()
+        )
+        Assert.assertTrue(
+            NunavutDate(day = 30, season = RUNNING_CHAR, year = 1234).isValid()
+        )
+        Assert.assertTrue(
+            NunavutDate(day = 20, season = BERRIES, year = 1234).isValid()
+        )
+        Assert.assertTrue(
+            NunavutDate(day = 40, season = BARE_MOUNTAIN, year = 1234).isValid()
+        )
+        Assert.assertTrue(
+            NunavutDate(day = 20, season = JARLMOOT, year = 1234).isValid()
+        )
+        Assert.assertTrue(
+            NunavutDate(day = 30, season = ELK_HUNT, year = 1234).isValid()
+        )
+    }
+
+    @Test
+    fun `valid date on a holiday`() {
+        Assert.assertTrue(
+            NunavutDate(day = 1, season = null, year = 1234, holiday = ALIANAT).isValid()
+        )
+    }
+    
     @Test
     fun `priorSeason returns correct season in all cases`() {
         Assert.assertEquals(JARLMOOT, ELK_HUNT.priorSeason())

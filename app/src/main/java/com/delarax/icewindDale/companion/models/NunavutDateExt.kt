@@ -3,6 +3,18 @@ package com.delarax.icewindDale.companion.models
 import com.delarax.icewindDale.companion.data.isLeapYear
 import com.delarax.icewindDale.companion.models.NunavutHoliday.*
 
+fun NunavutDate.isLeapYear() : Boolean = this.year.isLeapYear()
+
+fun NunavutDate.isValid() : Boolean {
+    return !(
+        (this.season == null && this.holiday == null) ||
+        (this.season != null && this.holiday != null) ||
+        (this.year < 1) ||
+        (this.season != null && this.day !in (1..this.season.numDays)) ||
+        (this.holiday != null && this.day != 1)
+    )
+}
+
 fun NunavutSeason.priorSeason() : NunavutSeason = NunavutSeason.values().let { seasons ->
     val priorSeasonIndex = (this.ordinal - 1).takeIf { it >= 0 } ?: seasons.size - 1
     seasons[priorSeasonIndex]
