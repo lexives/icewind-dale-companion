@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Icewind Dale Companion</string>
+    <string name="string_template">%s</string>
+</resources>
