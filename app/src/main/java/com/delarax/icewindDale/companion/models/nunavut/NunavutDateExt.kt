@@ -72,22 +72,50 @@ fun NunavutDate.numHolidaysPassed() : Int {
     }
 
     val lastHoliday = this.season?.lastHoliday(this.year) ?: this.holiday!!
-    val isSeasonBeforeAnyHolidays = when (this.season) {
+    val isSeasonBeforeMidwinter = when (this.season) {
         NunavutSeason.DENNING_POLAR_BEAR, NunavutSeason.FALLING_STARS -> true
         NunavutSeason.IGLOO -> !this.isLeapYear()
         else -> false
     }
     val numYearlyHolidaysPassed =
-        if (lastHoliday == MOON_FEAST && isSeasonBeforeAnyHolidays) {
+        if (lastHoliday == MOON_FEAST && isSeasonBeforeMidwinter) {
             0
         } else {
             lastHoliday.ordinal
         }
 
-    return if (this.isLeapYear() && !isSeasonBeforeAnyHolidays) {
+    return if (this.isLeapYear() && !isSeasonBeforeMidwinter) {
         numYearlyHolidaysPassed + 1
     } else {
         numYearlyHolidaysPassed
     }
 }
 
+@Throws(InvalidDateException::class)
+fun NunavutDate.absoluteDayNumber(): Int {
+    if (!this.isValid()) { throw InvalidDateException(this) }
+
+    return this.season?.let { season ->
+        if (season == NunavutSeason.values()[0]) {
+            this.day + this.numHolidaysPassed()
+        } else {
+            numDaysInSeasons(season.priorSeason()) + this.day + this.numHolidaysPassed()
+        }
+    } ?: numDaysInSeasons(this.holiday!!.priorSeason) + this.numHolidaysPassed()
+}
+
+/**
+ * Returns the sum of all the days in the seasons up to and including the given season.
+ * Does not include holidays.
+ *
+ * @sample
+ * DENNING_POLAR_BEAR has 20 days, FALLING_STARS has 30 days,
+ * so numDaysInSeasons(FALLING_STARS) == 50
+ */
+private fun numDaysInSeasons(season: NunavutSeason) : Int {
+    var numDays = 0
+    for (i in (0..season.ordinal)) {
+        numDays += NunavutSeason.values()[i].numDays
+    }
+    return numDays
+}

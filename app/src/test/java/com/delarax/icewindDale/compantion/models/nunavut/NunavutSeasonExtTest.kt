@@ -1,9 +1,11 @@
 package com.delarax.icewindDale.compantion.models.nunavut
 
-import com.delarax.icewindDale.companion.models.InvalidDateException
-import com.delarax.icewindDale.companion.models.nunavut.*
 import com.delarax.icewindDale.companion.models.nunavut.NunavutHoliday.*
 import com.delarax.icewindDale.companion.models.nunavut.NunavutSeason.*
+import com.delarax.icewindDale.companion.models.nunavut.lastHoliday
+import com.delarax.icewindDale.companion.models.nunavut.nextHoliday
+import com.delarax.icewindDale.companion.models.nunavut.nextSeason
+import com.delarax.icewindDale.companion.models.nunavut.priorSeason
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -55,7 +57,7 @@ class NunavutSeasonExtTest {
         assertEquals(SUN_FESTIVAL, BERRIES.lastHoliday(year))
         assertEquals(ALIANAT, BARE_MOUNTAIN.lastHoliday(year))
         assertEquals(ALIANAT, JARLMOOT.lastHoliday(year))
-        assertEquals(ALIANAT, ELK_HUNT.lastHoliday(year))
+        assertEquals(TUNNIQAIJUK, ELK_HUNT.lastHoliday(year))
     }
 
     @Test
@@ -72,7 +74,7 @@ class NunavutSeasonExtTest {
         assertEquals(SUN_FESTIVAL, BERRIES.lastHoliday(year))
         assertEquals(ALIANAT, BARE_MOUNTAIN.lastHoliday(year))
         assertEquals(ALIANAT, JARLMOOT.lastHoliday(year))
-        assertEquals(ALIANAT, ELK_HUNT.lastHoliday(year))
+        assertEquals(TUNNIQAIJUK, ELK_HUNT.lastHoliday(year))
     }
 
     @Test
@@ -87,8 +89,8 @@ class NunavutSeasonExtTest {
         assertEquals(ALIANAT, SKIN_TENTS.nextHoliday(year))
         assertEquals(ALIANAT, RUNNING_CHAR.nextHoliday(year))
         assertEquals(ALIANAT, BERRIES.nextHoliday(year))
-        assertEquals(MOON_FEAST, BARE_MOUNTAIN.nextHoliday(year))
-        assertEquals(MOON_FEAST, JARLMOOT.nextHoliday(year))
+        assertEquals(TUNNIQAIJUK, BARE_MOUNTAIN.nextHoliday(year))
+        assertEquals(TUNNIQAIJUK, JARLMOOT.nextHoliday(year))
         assertEquals(MOON_FEAST, ELK_HUNT.nextHoliday(year))
     }
 
@@ -104,13 +106,8 @@ class NunavutSeasonExtTest {
         assertEquals(ALIANAT, SKIN_TENTS.nextHoliday(year))
         assertEquals(ALIANAT, RUNNING_CHAR.nextHoliday(year))
         assertEquals(ALIANAT, BERRIES.nextHoliday(year))
-        assertEquals(MOON_FEAST, BARE_MOUNTAIN.nextHoliday(year))
-        assertEquals(MOON_FEAST, JARLMOOT.nextHoliday(year))
+        assertEquals(TUNNIQAIJUK, BARE_MOUNTAIN.nextHoliday(year))
+        assertEquals(TUNNIQAIJUK, JARLMOOT.nextHoliday(year))
         assertEquals(MOON_FEAST, ELK_HUNT.nextHoliday(year))
-    }
-
-    @Test(expected = InvalidDateException::class)
-    fun `numHolidaysPassed throws error if date is not valid`() {
-        NunavutDate(day = 1, season = null, year = 1001, holiday = MIDWINTER).numHolidaysPassed()
     }
 }

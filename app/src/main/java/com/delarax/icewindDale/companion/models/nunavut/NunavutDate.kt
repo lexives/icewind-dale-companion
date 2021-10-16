@@ -20,6 +20,8 @@ data class NunavutDate(
         @Throws(InvalidDateException::class)
         fun alianat(year: Int) : NunavutDate = getHoliday(NunavutHoliday.ALIANAT, year)
         @Throws(InvalidDateException::class)
+        fun tunniqaijuk(year: Int) : NunavutDate = getHoliday(NunavutHoliday.TUNNIQAIJUK, year)
+        @Throws(InvalidDateException::class)
         fun moonFeast(year: Int) : NunavutDate = getHoliday(NunavutHoliday.MOON_FEAST, year)
 
         @Throws(InvalidDateException::class)
@@ -64,10 +66,11 @@ enum class NunavutHoliday(
     OMINGMAK(IGLOO, SEAL_PUPS, "Omingmak", O, "Narwhal", false),
     SUN_FESTIVAL(NESTING_GEESE, SKIN_TENTS, "The Festival of the Sun", FS, "Griffon", false),
     ALIANAT(BERRIES, BARE_MOUNTAIN, "Alianat", A, "Tiger", false),
+    TUNNIQAIJUK(JARLMOOT, ELK_HUNT, "Tunniqaijuk", T, "Mammoth", false),
     MOON_FEAST(ELK_HUNT, DENNING_POLAR_BEAR, "Feast of the Moon", FM, "Hippogryf", false)
 }
 
 enum class NunavutAbbreviation {
     DP, FS, I, SP, BI, NG, ST, RC, B, BM, J, EH, // Seasons
-    M, O, A, FM // Holidays (FS is a duplicate)
+    M, O, A, T, FM // Holidays (FS is a duplicate)
 }

@@ -20,6 +20,7 @@ fun NunavutSeason.lastHoliday(year: Int) : NunavutHoliday = when (this) {
     NunavutHoliday.OMINGMAK.nextSeason -> NunavutHoliday.OMINGMAK
     NunavutHoliday.SUN_FESTIVAL.nextSeason -> NunavutHoliday.SUN_FESTIVAL
     NunavutHoliday.ALIANAT.nextSeason -> NunavutHoliday.ALIANAT
+    NunavutHoliday.TUNNIQAIJUK.nextSeason -> NunavutHoliday.TUNNIQAIJUK
     NunavutHoliday.MOON_FEAST.nextSeason -> NunavutHoliday.MOON_FEAST
     else -> this.priorSeason().lastHoliday(year)
 }
@@ -32,6 +33,7 @@ fun NunavutSeason.nextHoliday(year: Int): NunavutHoliday = when (this) {
     NunavutHoliday.OMINGMAK.priorSeason -> NunavutHoliday.OMINGMAK
     NunavutHoliday.SUN_FESTIVAL.priorSeason -> NunavutHoliday.SUN_FESTIVAL
     NunavutHoliday.ALIANAT.priorSeason -> NunavutHoliday.ALIANAT
+    NunavutHoliday.TUNNIQAIJUK.priorSeason -> NunavutHoliday.TUNNIQAIJUK
     NunavutHoliday.MOON_FEAST.priorSeason -> NunavutHoliday.MOON_FEAST
     else -> this.nextSeason().nextHoliday(year)
 }
