@@ -36,7 +36,6 @@ class NunavutDateExtTests {
 
     @Test
     fun `date with day greater than the max for that season is not valid`() {
-        assertFalse(NunavutDate(day = 21, season = DENNING_POLAR_BEAR, year = 1234).isValid())
         assertFalse(NunavutDate(day = 31, season = FALLING_STARS, year = 1234).isValid())
         assertFalse(NunavutDate(day = 41, season = IGLOO, year = 1234).isValid())
         assertFalse(NunavutDate(day = 41, season = SEAL_PUPS, year = 1234).isValid())
@@ -48,6 +47,7 @@ class NunavutDateExtTests {
         assertFalse(NunavutDate(day = 41, season = BARE_MOUNTAIN, year = 1234).isValid())
         assertFalse(NunavutDate(day = 21, season = JARLMOOT, year = 1234).isValid())
         assertFalse(NunavutDate(day = 31, season = ELK_HUNT, year = 1234).isValid())
+        assertFalse(NunavutDate(day = 21, season = DENNING_POLAR_BEAR, year = 1234).isValid())
     }
 
     @Test
@@ -62,7 +62,6 @@ class NunavutDateExtTests {
 
     @Test
     fun `valid date within each season`() {
-        assertTrue(NunavutDate(day = 20, season = DENNING_POLAR_BEAR, year = 1234).isValid())
         assertTrue(NunavutDate(day = 30, season = FALLING_STARS, year = 1234).isValid())
         assertTrue(NunavutDate(day = 40, season = IGLOO, year = 1234).isValid())
         assertTrue(NunavutDate(day = 40, season = SEAL_PUPS, year = 1234).isValid())
@@ -74,6 +73,7 @@ class NunavutDateExtTests {
         assertTrue(NunavutDate(day = 40, season = BARE_MOUNTAIN, year = 1234).isValid())
         assertTrue(NunavutDate(day = 20, season = JARLMOOT, year = 1234).isValid())
         assertTrue(NunavutDate(day = 30, season = ELK_HUNT, year = 1234).isValid())
+        assertTrue(NunavutDate(day = 20, season = DENNING_POLAR_BEAR, year = 1234).isValid())
     }
 
     @Test
@@ -88,11 +88,15 @@ class NunavutDateExtTests {
 
     @Test(expected = InvalidDateException::class)
     fun `priorSeason throws error if date is not valid`() {
-        NunavutDate.midwinter(1001).priorSeason()
+        NunavutDate(day = 1, season = null, year = 1001, holiday = MIDWINTER).priorSeason()
     }
 
     @Test
     fun `priorSeason returns correct season in all cases`() {
+        assertEquals(
+            ELK_HUNT,
+            NunavutDate(day = 1, season = DENNING_POLAR_BEAR, year = 1234).priorSeason()
+        )
         assertEquals(
             JARLMOOT,
             NunavutDate(day = 1, season = ELK_HUNT, year = 1234).priorSeason()
@@ -137,10 +141,6 @@ class NunavutDateExtTests {
             DENNING_POLAR_BEAR,
             NunavutDate(day = 1, season = FALLING_STARS, year = 1234).priorSeason()
         )
-        assertEquals(
-            ELK_HUNT,
-            NunavutDate(day = 1, season = DENNING_POLAR_BEAR, year = 1234).priorSeason()
-        )
         assertEquals(FALLING_STARS, NunavutDate.midwinter(1004).priorSeason())
         assertEquals(IGLOO, NunavutDate.omingmak(1234).priorSeason())
         assertEquals(NESTING_GEESE, NunavutDate.sunFestival(1234).priorSeason())
@@ -151,15 +151,11 @@ class NunavutDateExtTests {
 
     @Test(expected = InvalidDateException::class)
     fun `nextSeason throws error if date is not valid`() {
-        NunavutDate.midwinter(1001).nextSeason()
+        NunavutDate(day = 1, season = null, year = 1001, holiday = MIDWINTER).nextSeason()
     }
 
     @Test
     fun `nextSeason returns correct season in all cases`() {
-        assertEquals(
-            FALLING_STARS,
-            NunavutDate(day = 1, season = DENNING_POLAR_BEAR, year = 1234).nextSeason()
-        )
         assertEquals(
             IGLOO,
             NunavutDate(day = 1, season = FALLING_STARS, year = 1234).nextSeason()
@@ -204,6 +200,10 @@ class NunavutDateExtTests {
             DENNING_POLAR_BEAR,
             NunavutDate(day = 1, season = ELK_HUNT, year = 1234).nextSeason()
         )
+        assertEquals(
+            FALLING_STARS,
+            NunavutDate(day = 1, season = DENNING_POLAR_BEAR, year = 1234).nextSeason()
+        )
         assertEquals(IGLOO, NunavutDate.midwinter(1004).nextSeason())
         assertEquals(SEAL_PUPS, NunavutDate.omingmak(1234).nextSeason())
         assertEquals(SKIN_TENTS, NunavutDate.sunFestival(1234).nextSeason())
@@ -214,15 +214,11 @@ class NunavutDateExtTests {
 
     @Test(expected = InvalidDateException::class)
     fun `lastHoliday throws error if date is not valid`() {
-        NunavutDate.midwinter(1001).lastHoliday()
+        NunavutDate(day = 1, season = null, year = 1001, holiday = MIDWINTER).lastHoliday()
     }
 
     @Test
     fun `lastHoliday returns correct holiday for not leap year`() {
-        assertEquals(
-            MOON_FEAST,
-            NunavutDate(day = 1, season = DENNING_POLAR_BEAR, year = 1001).lastHoliday()
-        )
         assertEquals(
             MOON_FEAST,
             NunavutDate(day = 1, season = FALLING_STARS, year = 1001).lastHoliday()
@@ -267,6 +263,10 @@ class NunavutDateExtTests {
             TUNNIQAIJUK,
             NunavutDate(day = 1, season = ELK_HUNT, year = 1001).lastHoliday()
         )
+        assertEquals(
+            MOON_FEAST,
+            NunavutDate(day = 1, season = DENNING_POLAR_BEAR, year = 1001).lastHoliday()
+        )
         assertEquals(OMINGMAK, NunavutDate.omingmak(1001).lastHoliday())
         assertEquals(SUN_FESTIVAL, NunavutDate.sunFestival(1001).lastHoliday())
         assertEquals(ALIANAT, NunavutDate.alianat(1001).lastHoliday())
@@ -276,10 +276,6 @@ class NunavutDateExtTests {
 
     @Test
     fun `lastHoliday returns correct holiday for leap year`() {
-        assertEquals(
-            MOON_FEAST,
-            NunavutDate(day = 1, season = DENNING_POLAR_BEAR, year = 1004).lastHoliday()
-        )
         assertEquals(
             MOON_FEAST,
             NunavutDate(day = 1, season = FALLING_STARS, year = 1004).lastHoliday()
@@ -324,6 +320,10 @@ class NunavutDateExtTests {
             TUNNIQAIJUK,
             NunavutDate(day = 1, season = ELK_HUNT, year = 1004).lastHoliday()
         )
+        assertEquals(
+            MOON_FEAST,
+            NunavutDate(day = 1, season = DENNING_POLAR_BEAR, year = 1004).lastHoliday()
+        )
         assertEquals(MIDWINTER, NunavutDate.midwinter(1004).lastHoliday())
         assertEquals(OMINGMAK, NunavutDate.omingmak(1004).lastHoliday())
         assertEquals(SUN_FESTIVAL, NunavutDate.sunFestival(1004).lastHoliday())
@@ -334,15 +334,11 @@ class NunavutDateExtTests {
 
     @Test(expected = InvalidDateException::class)
     fun `nextHoliday throws error if date is not valid`() {
-        NunavutDate.midwinter(1001).nextHoliday()
+        NunavutDate(day = 1, season = null, year = 1001, holiday = MIDWINTER).nextHoliday()
     }
 
     @Test
     fun `nextHoliday returns correct holiday when not leap year and next year is not leap year`() {
-        assertEquals(
-            OMINGMAK,
-            NunavutDate(day = 1, season = DENNING_POLAR_BEAR, year = 1001).nextHoliday()
-        )
         assertEquals(
             OMINGMAK,
             NunavutDate(day = 1, season = FALLING_STARS, year = 1001).nextHoliday()
@@ -387,6 +383,10 @@ class NunavutDateExtTests {
             MOON_FEAST,
             NunavutDate(day = 1, season = ELK_HUNT, year = 1001).nextHoliday()
         )
+        assertEquals(
+            OMINGMAK,
+            NunavutDate(day = 1, season = DENNING_POLAR_BEAR, year = 1001).nextHoliday()
+        )
         assertEquals(SUN_FESTIVAL, NunavutDate.omingmak(1001).nextHoliday())
         assertEquals(ALIANAT, NunavutDate.sunFestival(1001).nextHoliday())
         assertEquals(TUNNIQAIJUK, NunavutDate.alianat(1001).nextHoliday())
@@ -396,10 +396,6 @@ class NunavutDateExtTests {
 
     @Test
     fun `nextHoliday returns correct holiday when not leap year and next year is leap year`() {
-        assertEquals(
-            OMINGMAK,
-            NunavutDate(day = 1, season = DENNING_POLAR_BEAR, year = 1003).nextHoliday()
-        )
         assertEquals(
             OMINGMAK,
             NunavutDate(day = 1, season = FALLING_STARS, year = 1003).nextHoliday()
@@ -444,6 +440,10 @@ class NunavutDateExtTests {
             MOON_FEAST,
             NunavutDate(day = 1, season = ELK_HUNT, year = 1003).nextHoliday()
         )
+        assertEquals(
+            MIDWINTER,
+            NunavutDate(day = 1, season = DENNING_POLAR_BEAR, year = 1003).nextHoliday()
+        )
         assertEquals(SUN_FESTIVAL, NunavutDate.omingmak(1003).nextHoliday())
         assertEquals(ALIANAT, NunavutDate.sunFestival(1003).nextHoliday())
         assertEquals(TUNNIQAIJUK, NunavutDate.alianat(1003).nextHoliday())
@@ -453,10 +453,6 @@ class NunavutDateExtTests {
 
     @Test
     fun `nextHoliday returns correct holiday for leap year`() {
-        assertEquals(
-            MIDWINTER,
-            NunavutDate(day = 1, season = DENNING_POLAR_BEAR, year = 1004).nextHoliday()
-        )
         assertEquals(
             MIDWINTER,
             NunavutDate(day = 1, season = FALLING_STARS, year = 1004).nextHoliday()
@@ -501,6 +497,10 @@ class NunavutDateExtTests {
             MOON_FEAST,
             NunavutDate(day = 1, season = ELK_HUNT, year = 1004).nextHoliday()
         )
+        assertEquals(
+            OMINGMAK,
+            NunavutDate(day = 1, season = DENNING_POLAR_BEAR, year = 1004).nextHoliday()
+        )
         assertEquals(OMINGMAK, NunavutDate.midwinter(1004).nextHoliday())
         assertEquals(SUN_FESTIVAL, NunavutDate.omingmak(1004).nextHoliday())
         assertEquals(ALIANAT, NunavutDate.sunFestival(1004).nextHoliday())
@@ -511,8 +511,6 @@ class NunavutDateExtTests {
 
     @Test
     fun `numHolidaysPassed returns correct number on non-holiday when not leap year`() {
-        assertEquals(0, NunavutDate(day = 1, season = DENNING_POLAR_BEAR, year = 1001)
-            .numHolidaysPassed())
         assertEquals(0, NunavutDate(day = 1, season = FALLING_STARS, year = 1001)
             .numHolidaysPassed())
         assertEquals(0, NunavutDate(day = 1, season = IGLOO, year = 1001)
@@ -535,12 +533,12 @@ class NunavutDateExtTests {
             .numHolidaysPassed())
         assertEquals(4, NunavutDate(day = 1, season = ELK_HUNT, year = 1001)
             .numHolidaysPassed())
+        assertEquals(5, NunavutDate(day = 1, season = DENNING_POLAR_BEAR, year = 1001)
+            .numHolidaysPassed())
     }
 
     @Test
     fun `numHolidaysPassed returns correct number on non-holiday when leap year`() {
-        assertEquals(0, NunavutDate(day = 1, season = DENNING_POLAR_BEAR, year = 1004)
-            .numHolidaysPassed())
         assertEquals(0, NunavutDate(day = 1, season = FALLING_STARS, year = 1004)
             .numHolidaysPassed())
         assertEquals(1, NunavutDate(day = 1, season = IGLOO, year = 1004)
@@ -562,6 +560,8 @@ class NunavutDateExtTests {
         assertEquals(4, NunavutDate(day = 1, season = JARLMOOT, year = 1004)
             .numHolidaysPassed())
         assertEquals(5, NunavutDate(day = 1, season = ELK_HUNT, year = 1004)
+            .numHolidaysPassed())
+        assertEquals(6, NunavutDate(day = 1, season = DENNING_POLAR_BEAR, year = 1004)
             .numHolidaysPassed())
     }
 
@@ -586,58 +586,58 @@ class NunavutDateExtTests {
 
     @Test(expected = InvalidDateException::class)
     fun `absoluteDayNumber throws error if date is not valid`() {
-        NunavutDate.midwinter(1001).absoluteDayNumber()
+        NunavutDate(day = 1, season = null, year = 1001, holiday = MIDWINTER).absoluteDayNumber()
     }
 
     @Test
     fun `absoluteDayNumber for first day of each month, non-leap year`() {
         assertEquals(
             1,
-            NunavutDate(day = 1, season = DENNING_POLAR_BEAR, year = 1001).absoluteDayNumber()
-        )
-        assertEquals(
-            21,
             NunavutDate(day = 1, season = FALLING_STARS, year = 1001).absoluteDayNumber()
         )
         assertEquals(
-            51,
+            31,
             NunavutDate(day = 1, season = IGLOO, year = 1001).absoluteDayNumber()
         )
         assertEquals(
-            92,
+            72,
             NunavutDate(day = 1, season = SEAL_PUPS, year = 1001).absoluteDayNumber()
         )
         assertEquals(
-            132,
+            112,
             NunavutDate(day = 1, season = BEATING_ICE, year = 1001).absoluteDayNumber()
         )
         assertEquals(
-            152,
+            132,
             NunavutDate(day = 1, season = NESTING_GEESE, year = 1001).absoluteDayNumber()
         )
         assertEquals(
-            183,
+            163,
             NunavutDate(day = 1, season = SKIN_TENTS, year = 1001).absoluteDayNumber()
         )
         assertEquals(
-            223,
+            203,
             NunavutDate(day = 1, season = RUNNING_CHAR, year = 1001).absoluteDayNumber()
         )
         assertEquals(
-            253,
+            233,
             NunavutDate(day = 1, season = BERRIES, year = 1001).absoluteDayNumber()
         )
         assertEquals(
-            274,
+            254,
             NunavutDate(day = 1, season = BARE_MOUNTAIN, year = 1001).absoluteDayNumber()
         )
         assertEquals(
-            314,
+            294,
             NunavutDate(day = 1, season = JARLMOOT, year = 1001).absoluteDayNumber()
         )
         assertEquals(
-            335,
+            315,
             NunavutDate(day = 1, season = ELK_HUNT, year = 1001).absoluteDayNumber()
+        )
+        assertEquals(
+            346,
+            NunavutDate(day = 1, season = DENNING_POLAR_BEAR, year = 1001).absoluteDayNumber()
         )
     }
 
@@ -645,198 +645,198 @@ class NunavutDateExtTests {
     fun `absoluteDayNumber for first day of each month, leap year`() {
         assertEquals(
             1,
-            NunavutDate(day = 1, season = DENNING_POLAR_BEAR, year = 1004).absoluteDayNumber()
-        )
-        assertEquals(
-            21,
             NunavutDate(day = 1, season = FALLING_STARS, year = 1004).absoluteDayNumber()
         )
         assertEquals(
-            52,
+            32,
             NunavutDate(day = 1, season = IGLOO, year = 1004).absoluteDayNumber()
         )
         assertEquals(
-            93,
+            73,
             NunavutDate(day = 1, season = SEAL_PUPS, year = 1004).absoluteDayNumber()
         )
         assertEquals(
-            133,
+            113,
             NunavutDate(day = 1, season = BEATING_ICE, year = 1004).absoluteDayNumber()
         )
         assertEquals(
-            153,
+            133,
             NunavutDate(day = 1, season = NESTING_GEESE, year = 1004).absoluteDayNumber()
         )
         assertEquals(
-            184,
+            164,
             NunavutDate(day = 1, season = SKIN_TENTS, year = 1004).absoluteDayNumber()
         )
         assertEquals(
-            224,
+            204,
             NunavutDate(day = 1, season = RUNNING_CHAR, year = 1004).absoluteDayNumber()
         )
         assertEquals(
-            254,
+            234,
             NunavutDate(day = 1, season = BERRIES, year = 1004).absoluteDayNumber()
         )
         assertEquals(
-            275,
+            255,
             NunavutDate(day = 1, season = BARE_MOUNTAIN, year = 1004).absoluteDayNumber()
         )
         assertEquals(
-            315,
+            295,
             NunavutDate(day = 1, season = JARLMOOT, year = 1004).absoluteDayNumber()
         )
         assertEquals(
-            336,
+            316,
             NunavutDate(day = 1, season = ELK_HUNT, year = 1004).absoluteDayNumber()
+        )
+        assertEquals(
+            347,
+            NunavutDate(day = 1, season = DENNING_POLAR_BEAR, year = 1004).absoluteDayNumber()
         )
     }
 
     @Test
     fun `absoluteDayNumber for last day of each month, non-leap year`() {
-        assertEquals(20, NunavutDate(
-            day = DENNING_POLAR_BEAR.numDays,
-            season = DENNING_POLAR_BEAR,
-            year = 1001).absoluteDayNumber()
-        )
-        assertEquals(50, NunavutDate(
+        assertEquals(30, NunavutDate(
             day = FALLING_STARS.numDays,
             season = FALLING_STARS,
             year = 1001).absoluteDayNumber()
         )
-        assertEquals(90, NunavutDate(
+        assertEquals(70, NunavutDate(
             day = IGLOO.numDays,
             season = IGLOO,
             year = 1001).absoluteDayNumber()
         )
-        assertEquals(131, NunavutDate(
+        assertEquals(111, NunavutDate(
             day = SEAL_PUPS.numDays,
             season = SEAL_PUPS,
             year = 1001).absoluteDayNumber()
         )
-        assertEquals(151, NunavutDate(
+        assertEquals(131, NunavutDate(
             day = BEATING_ICE.numDays,
             season = BEATING_ICE,
             year = 1001).absoluteDayNumber()
         )
-        assertEquals(181, NunavutDate(
+        assertEquals(161, NunavutDate(
             day = NESTING_GEESE.numDays,
             season = NESTING_GEESE,
             year = 1001).absoluteDayNumber()
         )
-        assertEquals(222, NunavutDate(
+        assertEquals(202, NunavutDate(
             day = SKIN_TENTS.numDays,
             season = SKIN_TENTS,
             year = 1001).absoluteDayNumber()
         )
-        assertEquals(252, NunavutDate(
+        assertEquals(232, NunavutDate(
             day = RUNNING_CHAR.numDays,
             season = RUNNING_CHAR,
             year = 1001).absoluteDayNumber()
         )
-        assertEquals(272, NunavutDate(
+        assertEquals(252, NunavutDate(
             day = BERRIES.numDays,
             season = BERRIES,
             year = 1001).absoluteDayNumber()
         )
-        assertEquals(313, NunavutDate(
+        assertEquals(293, NunavutDate(
             day = BARE_MOUNTAIN.numDays,
             season = BARE_MOUNTAIN,
             year = 1001).absoluteDayNumber()
         )
-        assertEquals(333, NunavutDate(
+        assertEquals(313, NunavutDate(
             day = JARLMOOT.numDays,
             season = JARLMOOT,
             year = 1001).absoluteDayNumber()
         )
-        assertEquals(364, NunavutDate(
+        assertEquals(344, NunavutDate(
             day = ELK_HUNT.numDays,
             season = ELK_HUNT,
+            year = 1001).absoluteDayNumber()
+        )
+        assertEquals(365, NunavutDate(
+            day = DENNING_POLAR_BEAR.numDays,
+            season = DENNING_POLAR_BEAR,
             year = 1001).absoluteDayNumber()
         )
     }
 
     @Test
     fun `absoluteDayNumber for last day of each month, leap year`() {
-        assertEquals(20, NunavutDate(
-            day = DENNING_POLAR_BEAR.numDays,
-            season = DENNING_POLAR_BEAR,
-            year = 1004).absoluteDayNumber()
-        )
-        assertEquals(50, NunavutDate(
+        assertEquals(30, NunavutDate(
             day = FALLING_STARS.numDays,
             season = FALLING_STARS,
             year = 1004).absoluteDayNumber()
         )
-        assertEquals(91, NunavutDate(
+        assertEquals(71, NunavutDate(
             day = IGLOO.numDays,
             season = IGLOO,
             year = 1004).absoluteDayNumber()
         )
-        assertEquals(132, NunavutDate(
+        assertEquals(112, NunavutDate(
             day = SEAL_PUPS.numDays,
             season = SEAL_PUPS,
             year = 1004).absoluteDayNumber()
         )
-        assertEquals(152, NunavutDate(
+        assertEquals(132, NunavutDate(
             day = BEATING_ICE.numDays,
             season = BEATING_ICE,
             year = 1004).absoluteDayNumber()
         )
-        assertEquals(182, NunavutDate(
+        assertEquals(162, NunavutDate(
             day = NESTING_GEESE.numDays,
             season = NESTING_GEESE,
             year = 1004).absoluteDayNumber()
         )
-        assertEquals(223, NunavutDate(
+        assertEquals(203, NunavutDate(
             day = SKIN_TENTS.numDays,
             season = SKIN_TENTS,
             year = 1004).absoluteDayNumber()
         )
-        assertEquals(253, NunavutDate(
+        assertEquals(233, NunavutDate(
             day = RUNNING_CHAR.numDays,
             season = RUNNING_CHAR,
             year = 1004).absoluteDayNumber()
         )
-        assertEquals(273, NunavutDate(
+        assertEquals(253, NunavutDate(
             day = BERRIES.numDays,
             season = BERRIES,
             year = 1004).absoluteDayNumber()
         )
-        assertEquals(314, NunavutDate(
+        assertEquals(294, NunavutDate(
             day = BARE_MOUNTAIN.numDays,
             season = BARE_MOUNTAIN,
             year = 1004).absoluteDayNumber()
         )
-        assertEquals(334, NunavutDate(
+        assertEquals(314, NunavutDate(
             day = JARLMOOT.numDays,
             season = JARLMOOT,
             year = 1004).absoluteDayNumber()
         )
-        assertEquals(365, NunavutDate(
+        assertEquals(345, NunavutDate(
             day = ELK_HUNT.numDays,
             season = ELK_HUNT,
+            year = 1004).absoluteDayNumber()
+        )
+        assertEquals(366, NunavutDate(
+            day = DENNING_POLAR_BEAR.numDays,
+            season = DENNING_POLAR_BEAR,
             year = 1004).absoluteDayNumber()
         )
     }
 
     @Test
     fun `absoluteDayNumber for each holiday, non-leap year`() {
-        assertEquals(91, NunavutDate.omingmak(1001).absoluteDayNumber())
-        assertEquals(182, NunavutDate.sunFestival(1001).absoluteDayNumber())
-        assertEquals(273, NunavutDate.alianat(1001).absoluteDayNumber())
-        assertEquals(334, NunavutDate.tunniqaijuk(1001).absoluteDayNumber())
-        assertEquals(365, NunavutDate.moonFeast(1001).absoluteDayNumber())
+        assertEquals(71, NunavutDate.omingmak(1001).absoluteDayNumber())
+        assertEquals(162, NunavutDate.sunFestival(1001).absoluteDayNumber())
+        assertEquals(253, NunavutDate.alianat(1001).absoluteDayNumber())
+        assertEquals(314, NunavutDate.tunniqaijuk(1001).absoluteDayNumber())
+        assertEquals(345, NunavutDate.moonFeast(1001).absoluteDayNumber())
     }
 
     @Test
     fun `absoluteDayNumber for each holiday, leap year`() {
-        assertEquals(51, NunavutDate.midwinter(1004).absoluteDayNumber())
-        assertEquals(92, NunavutDate.omingmak(1004).absoluteDayNumber())
-        assertEquals(183, NunavutDate.sunFestival(1004).absoluteDayNumber())
-        assertEquals(274, NunavutDate.alianat(1004).absoluteDayNumber())
-        assertEquals(335, NunavutDate.tunniqaijuk(1004).absoluteDayNumber())
-        assertEquals(366, NunavutDate.moonFeast(1004).absoluteDayNumber())
+        assertEquals(31, NunavutDate.midwinter(1004).absoluteDayNumber())
+        assertEquals(72, NunavutDate.omingmak(1004).absoluteDayNumber())
+        assertEquals(163, NunavutDate.sunFestival(1004).absoluteDayNumber())
+        assertEquals(254, NunavutDate.alianat(1004).absoluteDayNumber())
+        assertEquals(315, NunavutDate.tunniqaijuk(1004).absoluteDayNumber())
+        assertEquals(346, NunavutDate.moonFeast(1004).absoluteDayNumber())
     }
 }

@@ -34,40 +34,39 @@ data class NunavutDate(
 }
 
 enum class NunavutSeason(
-    val num: Int,
-    val fullName: String,
+    val numDays: Int,
     val abbreviation: NunavutAbbreviation,
-    val animal: String,
-    val numDays: Int
+    val fullName: String,
+    val animal: String
 ) {
-    DENNING_POLAR_BEAR(1, "Season of the Denning Polar Bear", DP, "Polar Bear", 20),
-    FALLING_STARS(2, "Season of the Falling Stars", FS, "Owl", 30),
-    IGLOO(3, "Season of the Igloo", I, "Yeti", 40),
-    SEAL_PUPS(4, "Season of the Seal Pups", SP, "Seal", 40),
-    BEATING_ICE(5, "Season of the Beating Ice", BI, "Knucklehead Trout", 20),
-    NESTING_GEESE(6, "Season of the Nesting Geese", NG, "Fox", 30),
-    SKIN_TENTS(7, "Season of the Skin Tents", ST, "Eagle", 40),
-    RUNNING_CHAR(8, "Season of the Running Char", RC, "Whale", 30),
-    BERRIES(9, "Season of the Berries", B, "Hare", 20),
-    BARE_MOUNTAIN(10, "Season of the Bare Mountain", BM, "Goat", 40),
-    JARLMOOT(11, "Season of the Jarlmoot", J, "Wolf", 20),
-    ELK_HUNT(12, "Season of the Elk Hunt", EH, "Elk", 30),
+    FALLING_STARS(30, FS, "Season of the Falling Stars", "Owl"),
+    IGLOO(40, I, "Season of the Igloo", "Yeti"),
+    SEAL_PUPS(40, SP, "Season of the Seal Pups", "Seal"),
+    BEATING_ICE(20, BI, "Season of the Beating Ice", "Knucklehead Trout"),
+    NESTING_GEESE(30, NG, "Season of the Nesting Geese", "Fox"),
+    SKIN_TENTS(40, ST, "Season of the Skin Tents", "Eagle"),
+    RUNNING_CHAR(30, RC, "Season of the Running Char", "Whale"),
+    BERRIES(20, B, "Season of the Berries", "Hare"),
+    BARE_MOUNTAIN(40, BM, "Season of the Bare Mountain", "Goat"),
+    JARLMOOT(20, J, "Season of the Jarlmoot", "Wolf"),
+    ELK_HUNT(30, EH, "Season of the Elk Hunt", "Elk"),
+    DENNING_POLAR_BEAR(20, DP, "Season of the Denning Polar Bear", "Polar Bear")
 }
 
 enum class NunavutHoliday(
     val priorSeason: NunavutSeason,
     val nextSeason: NunavutSeason,
-    val fullName: String,
+    val isQuadrennial: Boolean,
     val abbreviation: NunavutAbbreviation,
-    val animal: String,
-    val isQuadrennial: Boolean
+    val fullName: String,
+    val animal: String
 ) {
-    MIDWINTER(FALLING_STARS, IGLOO, "Midwinter", M, "Auril", true),
-    OMINGMAK(IGLOO, SEAL_PUPS, "Omingmak", O, "Narwhal", false),
-    SUN_FESTIVAL(NESTING_GEESE, SKIN_TENTS, "The Festival of the Sun", FS, "Griffon", false),
-    ALIANAT(BERRIES, BARE_MOUNTAIN, "Alianat", A, "Tiger", false),
-    TUNNIQAIJUK(JARLMOOT, ELK_HUNT, "Tunniqaijuk", T, "Mammoth", false),
-    MOON_FEAST(ELK_HUNT, DENNING_POLAR_BEAR, "Feast of the Moon", FM, "Hippogryf", false)
+    MIDWINTER(FALLING_STARS, IGLOO, true, M, "Midwinter", "Auril"),
+    OMINGMAK(IGLOO, SEAL_PUPS, false, O, "Omingmak", "Narwhal"),
+    SUN_FESTIVAL(NESTING_GEESE, SKIN_TENTS, false, FS, "The Festival of the Sun", "Griffon"),
+    ALIANAT(BERRIES, BARE_MOUNTAIN, false,  A, "Alianat","Tiger"),
+    TUNNIQAIJUK(JARLMOOT, ELK_HUNT, false, T, "Tunniqaijuk", "Mammoth"),
+    MOON_FEAST(ELK_HUNT, DENNING_POLAR_BEAR, false, FM, "Feast of the Moon", "Hippogryf")
 }
 
 enum class NunavutAbbreviation {
