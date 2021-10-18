@@ -1,7 +1,7 @@
 package com.delarax.icewindDale.compantion.models.harpos
 
 import com.delarax.icewindDale.companion.models.InvalidDateException
-import com.delarax.icewindDale.companion.models.harpos.*
+import com.delarax.icewindDale.companion.models.harpos.HarposDate
 import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.*
 import com.delarax.icewindDale.companion.models.harpos.HarposMonth.*
 import org.junit.Assert.*
@@ -10,66 +10,77 @@ import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
-class HarposDateExtTests {
+class HarposDateTests {
 
     @Test
-    fun `date with no month or holiday is not valid`() {
-        assertFalse(HarposDate(day = 20, month = null, year = 1234, holiday = null).isValid())
+    fun `isLeapYear is true every fourth year`() {
+        assertFalse(HarposDate(day = 1, month = HAMMER, year = 1).isLeapYear)
+        assertFalse(HarposDate(day = 1, month = HAMMER, year = 2).isLeapYear)
+        assertFalse(HarposDate(day = 1, month = HAMMER, year = 3).isLeapYear)
+        assertTrue(HarposDate(day = 1, month = HAMMER, year = 4).isLeapYear)
+        assertFalse(HarposDate(day = 1, month = HAMMER, year = 5).isLeapYear)
+        assertFalse(HarposDate(day = 1, month = HAMMER, year = 6).isLeapYear)
+        assertFalse(HarposDate(day = 1, month = HAMMER, year = 7).isLeapYear)
+        assertTrue(HarposDate(day = 1, month = HAMMER, year = 8).isLeapYear)
+        assertFalse(HarposDate(day = 1, month = HAMMER, year = 9).isLeapYear)
+        assertFalse(HarposDate(day = 1, month = HAMMER, year = 10).isLeapYear)
+        assertFalse(HarposDate(day = 1, month = HAMMER, year = 11).isLeapYear)
+        assertTrue(HarposDate(day = 1, month = HAMMER, year = 12).isLeapYear)
     }
 
     @Test
-    fun `date with both a month and a holiday is not valid`() {
+    fun `isValid for date with no month or holiday is not valid`() {
+        assertFalse(HarposDate(day = 20, month = null, year = 1234, holiday = null).isValid)
+    }
+
+    @Test
+    fun `isValid for date with both a month and a holiday is not valid`() {
         assertFalse(
-            HarposDate(day = 20, month = MIRTUL, year = 1234, holiday = MIDSUMMER).isValid()
+            HarposDate(day = 20, month = MIRTUL, year = 1234, holiday = MIDSUMMER).isValid
         )
     }
 
     @Test
-    fun `date with a year less than 1 is not valid`() {
-        assertFalse(HarposDate(day = 20, month = MIRTUL, year = 0).isValid())
-        assertFalse(HarposDate(day = 20, month = MIRTUL, year = -1).isValid())
+    fun `isValid for date with a year less than 1 is not valid`() {
+        assertFalse(HarposDate(day = 20, month = MIRTUL, year = 0).isValid)
+        assertFalse(HarposDate(day = 20, month = MIRTUL, year = -1).isValid)
     }
 
     @Test
-    fun `date with day less than 1 is not valid`() {
-        assertFalse(HarposDate(day = 0, month = MIRTUL, year = 1234).isValid())
-        assertFalse(HarposDate(day = -1, month = MIRTUL, year = 1234).isValid())
+    fun `isValid for date with day less than 1 is not valid`() {
+        assertFalse(HarposDate(day = 0, month = MIRTUL, year = 1234).isValid)
+        assertFalse(HarposDate(day = -1, month = MIRTUL, year = 1234).isValid)
     }
 
     @Test
-    fun `date with day greater than 30 is not valid`() {
-        assertFalse(HarposDate(day = 31, month = MIRTUL, year = 1234).isValid())
+    fun `isValid for date with day greater than 30 is not valid`() {
+        assertFalse(HarposDate(day = 31, month = MIRTUL, year = 1234).isValid)
     }
 
     @Test
-    fun `date with day other than 1 on a holiday is not valid`() {
-        assertFalse(HarposDate(day = 20, month = null, year = 1234, holiday = MIDSUMMER).isValid())
+    fun `isValid for date with day other than 1 on a holiday is not valid`() {
+        assertFalse(HarposDate(day = 20, month = null, year = 1234, holiday = MIDSUMMER).isValid)
     }
 
     @Test
-    fun `midwinter on a non-leap year is not valid`() {
-        assertFalse(HarposDate(day = 1, month = null, year = 1001, holiday = MIDWINTER).isValid())
+    fun `isValid for midwinter on a non-leap year is not valid`() {
+        assertFalse(HarposDate(day = 1, month = null, year = 1001, holiday = MIDWINTER).isValid)
     }
 
     @Test
-    fun `valid date within a month`() {
-        assertTrue(HarposDate(day = 20, month = MIRTUL, year = 1234).isValid())
-        assertTrue(HarposDate(day = 30, month = MIRTUL, year = 1234).isValid())
+    fun `isValid for valid date within a month`() {
+        assertTrue(HarposDate(day = 20, month = MIRTUL, year = 1234).isValid)
+        assertTrue(HarposDate(day = 30, month = MIRTUL, year = 1234).isValid)
     }
 
     @Test
-    fun `valid date on a holiday`() {
-        assertTrue(HarposDate(day = 1, month = null, year = 1234, holiday = MIDSUMMER).isValid())
+    fun `isValid for valid date on a holiday`() {
+        assertTrue(HarposDate(day = 1, month = null, year = 1234, holiday = MIDSUMMER).isValid)
     }
 
     @Test
-    fun `valid midwinter`() {
-        assertTrue(HarposDate(day = 1, month = null, year = 1004, holiday = MIDWINTER).isValid())
-    }
-
-    @Test(expected = InvalidDateException::class)
-    fun `numHolidaysPassed throws error if date is not valid`() {
-        HarposDate(day = 1, month = null, year = 1001, holiday = MIDWINTER).numHolidaysPassed()
+    fun `isValid for valid midwinter`() {
+        assertTrue(HarposDate(day = 1, month = null, year = 1004, holiday = MIDWINTER).isValid)
     }
 
     @Test(expected = InvalidDateException::class)
@@ -222,6 +233,11 @@ class HarposDateExtTests {
         assertEquals(SHIELDMEET, HarposDate.moonFeast(1004).nextHoliday())
     }
 
+    @Test(expected = InvalidDateException::class)
+    fun `numHolidaysPassed throws error if date is not valid`() {
+        HarposDate(day = 1, month = null, year = 1001, holiday = MIDWINTER).numHolidaysPassed()
+    }
+
     @Test
     fun `numHolidaysPassed returns correct number on non-holiday when not leap year`() {
         assertEquals(0, HarposDate(day = 1, month = HAMMER, year = 1001).numHolidaysPassed())
@@ -359,5 +375,63 @@ class HarposDateExtTests {
         assertEquals(214, HarposDate.midsummer(year = 1004).absoluteDayNumber())
         assertEquals(275, HarposDate.highharvesttide(year = 1004).absoluteDayNumber())
         assertEquals(336, HarposDate.moonFeast(year = 1004).absoluteDayNumber())
+    }
+
+    @Test
+    fun `maxDaysInYear returns correct number of days`() {
+        assertEquals(366, HarposDate.maxDaysInYear)
+    }
+
+    @Test(expected = InvalidDateException::class)
+    fun `midwinter throws error if year is not a leap year`() {
+        HarposDate.midwinter(1001)
+    }
+
+    @Test
+    fun `midwinter returns HarposDate for midwinter holiday when year is a leap year`() {
+        assertEquals(
+            HarposDate(day = 1, month = null, year = 1004, holiday = MIDWINTER),
+            HarposDate.midwinter(1004)
+        )
+    }
+
+    @Test
+    fun `shieldmeet returns HarposDate for shieldmeet holiday with the given year`() {
+        assertEquals(
+            HarposDate(day = 1, month = null, year = 1004, holiday = SHIELDMEET),
+            HarposDate.shieldmeet(1004)
+        )
+    }
+
+    @Test
+    fun `greengrass returns HarposDate for greengrass holiday with the given year`() {
+        assertEquals(
+            HarposDate(day = 1, month = null, year = 1004, holiday = GREENGRASS),
+            HarposDate.greengrass(1004)
+        )
+    }
+
+    @Test
+    fun `midsummer returns HarposDate for midsummer holiday with the given year`() {
+        assertEquals(
+            HarposDate(day = 1, month = null, year = 1004, holiday = MIDSUMMER),
+            HarposDate.midsummer(1004)
+        )
+    }
+
+    @Test
+    fun `highharvesttide returns HarposDate for highharvesttide holiday with the given year`() {
+        assertEquals(
+            HarposDate(day = 1, month = null, year = 1004, holiday = HIGHHARVESTTIDE),
+            HarposDate.highharvesttide(1004)
+        )
+    }
+
+    @Test
+    fun `moonFeast returns HarposDate for moonFeast holiday with the given year`() {
+        assertEquals(
+            HarposDate(day = 1, month = null, year = 1004, holiday = MOON_FEAST),
+            HarposDate.moonFeast(1004)
+        )
     }
 }

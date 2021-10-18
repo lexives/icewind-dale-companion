@@ -1,5 +1,6 @@
 package com.delarax.icewindDale.companion.models.harpos
 
+import com.delarax.icewindDale.companion.data.isLeapYear
 import com.delarax.icewindDale.companion.models.InvalidDateException
 
 data class HarposDate(
@@ -8,7 +9,81 @@ data class HarposDate(
     val year: Int,
     val holiday: HarposHoliday? = null
 ) {
+    val isLeapYear: Boolean = year.isLeapYear()
+    val isValid: Boolean = !(
+        (month == null && holiday == null) ||
+        (month != null && holiday != null) ||
+        (year < 1) ||
+        (day !in (1..30)) ||
+        (holiday != null && day != 1) ||
+        (holiday?.isQuadrennial == true && !isLeapYear)
+    )
+
+    @Throws(InvalidDateException::class)
+    fun priorMonth() : HarposMonth {
+        if (!isValid) { throw InvalidDateException(this) }
+        return month?.priorMonth() ?: holiday!!.priorMonth
+    }
+
+    @Throws(InvalidDateException::class)
+    fun nextMonth() : HarposMonth {
+        if (!isValid) { throw InvalidDateException(this) }
+        return month?.nextMonth() ?: holiday!!.nextMonth
+    }
+
+    /**
+     * The last holiday that occurred, including today if it's a holiday
+     */
+    @Throws(InvalidDateException::class)
+    fun lastHoliday() : HarposHoliday {
+        if (!isValid) { throw InvalidDateException(this) }
+        return month?.lastHoliday(year) ?: holiday!!
+    }
+
+    /**
+     * The next holiday that will occur, not including today if it's a holiday
+     */
+    @Throws(InvalidDateException::class)
+    fun nextHoliday() : HarposHoliday {
+        if (!isValid) { throw InvalidDateException(this) }
+        return month?.nextHoliday(year) ?: holiday!!.nextHoliday(year)
+    }
+
+    /**
+     * The number of holidays that have occurred so far, including the current day if it's a holiday.
+     */
+    @Throws(InvalidDateException::class)
+    fun numHolidaysPassed() : Int {
+        if (!isValid) { throw InvalidDateException(this) }
+
+        // find the last holiday that occurred within the SAME year (null if there are none)
+        val lastHoliday = holiday ?: month!!.lastHoliday(year).takeIf { lastHoliday ->
+            val finalHolidayOfTheYear = HarposHoliday.values().last()
+            lastHoliday.ordinal != finalHolidayOfTheYear.ordinal ||
+                    month.ordinal >= finalHolidayOfTheYear.nextMonth.ordinal
+        }
+
+        return lastHoliday?.let {
+            HarposHoliday.values()
+                .slice(0..it.ordinal)
+                .filter { holiday -> isLeapYear || !holiday.isQuadrennial }
+                .count()
+        } ?: 0
+    }
+
+    @Throws(InvalidDateException::class)
+    fun absoluteDayNumber(): Int {
+        if (!isValid) { throw InvalidDateException(this) }
+
+        // every month has 30 days in the Harpos calendar
+        return month?.let { month ->
+            month.ordinal * 30 + day + numHolidaysPassed()
+        } ?: holiday!!.priorMonth.num() * 30 + numHolidaysPassed()
+    }
+
     companion object {
+        val maxDaysInYear: Int = HarposMonth.values().size * 30 + HarposHoliday.values().size
+
         @Throws(InvalidDateException::class)
         fun midwinter(year: Int) : HarposDate = getHoliday(HarposHoliday.MIDWINTER, year)
         @Throws(InvalidDateException::class)
@@ -25,7 +100,7 @@ data class HarposDate(
         @Throws(InvalidDateException::class)
         private fun getHoliday(holiday: HarposHoliday, year: Int) : HarposDate {
             val date = HarposDate(day = 1, month = null, year = year, holiday = holiday)
-            if (!date.isValid()) { throw(InvalidDateException(date)) }
+            if (!date.isValid) { throw(InvalidDateException(date)) }
             return date
         }
     }
