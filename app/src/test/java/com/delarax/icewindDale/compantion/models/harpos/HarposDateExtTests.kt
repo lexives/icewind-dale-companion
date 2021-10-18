@@ -69,12 +69,12 @@ class HarposDateExtTests {
 
     @Test(expected = InvalidDateException::class)
     fun `numHolidaysPassed throws error if date is not valid`() {
-        HarposDate.midwinter(1001).numHolidaysPassed()
+        HarposDate(day = 1, month = null, year = 1001, holiday = MIDWINTER).numHolidaysPassed()
     }
 
     @Test(expected = InvalidDateException::class)
     fun `priorMonth throws error if date is not valid`() {
-        HarposDate.midwinter(1001).priorMonth()
+        HarposDate(day = 1, month = null, year = 1001, holiday = MIDWINTER).priorMonth()
     }
 
     @Test
@@ -101,7 +101,7 @@ class HarposDateExtTests {
 
     @Test(expected = InvalidDateException::class)
     fun `nextMonth throws error if date is not valid`() {
-        HarposDate.midwinter(1001).nextMonth()
+        HarposDate(day = 1, month = null, year = 1001, holiday = MIDWINTER).nextMonth()
     }
 
     @Test
@@ -128,7 +128,7 @@ class HarposDateExtTests {
 
     @Test(expected = InvalidDateException::class)
     fun `lastHoliday throws error if date is not valid`() {
-        HarposDate.midwinter(1001).lastHoliday()
+        HarposDate(day = 1, month = null, year = 1001, holiday = MIDWINTER).lastHoliday()
     }
 
     @Test
@@ -155,7 +155,7 @@ class HarposDateExtTests {
 
     @Test(expected = InvalidDateException::class)
     fun `nextHoliday throws error if date is not valid`() {
-        HarposDate.midwinter(1001).nextHoliday()
+        HarposDate(day = 1, month = null, year = 1001, holiday = MIDWINTER).nextHoliday()
     }
 
     @Test
@@ -275,7 +275,7 @@ class HarposDateExtTests {
 
     @Test(expected = InvalidDateException::class)
     fun `absoluteDayNumber throws error if date is not valid`() {
-        HarposDate.midwinter(1001).absoluteDayNumber()
+        HarposDate(day = 1, month = null, year = 1001, holiday = MIDWINTER).absoluteDayNumber()
     }
 
     @Test

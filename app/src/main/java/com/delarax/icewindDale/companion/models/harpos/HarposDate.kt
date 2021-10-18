@@ -32,32 +32,32 @@ data class HarposDate(
     }
 }
 
-enum class HarposMonth(val num: Int, val commonName: String) {
-    HAMMER(1, "Deepwinter"),
-    ALTURIAK(2, "The Claw of Winter"),
-    CHES(3, "The Claw of Sunsets"),
-    TARSAKH(4, "The Claw of Storms"),
-    MIRTUL(5, "The Melting"),
-    KYTHORN(6, "The Time of Flowers"),
-    FLAMERULE(7, "Summertide"),
-    ELEASIAS(8, "Highsun"),
-    ELEINT(9, "The Fading"),
-    MARPENOTH(10, "Leaffall"),
-    UKTAR(11, "The Rotting"),
-    NIGHTAL(12, "The Drawing Down"),
+enum class HarposMonth(val commonName: String) {
+    HAMMER("Deepwinter"),
+    ALTURIAK("The Claw of Winter"),
+    CHES("The Claw of Sunsets"),
+    TARSAKH("The Claw of Storms"),
+    MIRTUL("The Melting"),
+    KYTHORN("The Time of Flowers"),
+    FLAMERULE("Summertide"),
+    ELEASIAS("Highsun"),
+    ELEINT("The Fading"),
+    MARPENOTH("Leaffall"),
+    UKTAR("The Rotting"),
+    NIGHTAL("The Drawing Down")
 }
 
 enum class HarposHoliday(
     val priorMonth: HarposMonth,
     val nextMonth: HarposMonth,
-    val fullName: String,
-    val isQuadrennial: Boolean
+    val isQuadrennial: Boolean,
+    val fullName: String
 ) {
-    MIDWINTER(HAMMER, ALTURIAK, "Midwinter", true),
-    SHIELDMEET(HAMMER, ALTURIAK, "Shieldmeet", false),
-    GREENGRASS(TARSAKH, MIRTUL, "Greengrass", false),
-    MIDSUMMER(FLAMERULE, ELEASIAS, "Midsummer", false),
-    HIGHHARVESTTIDE(ELEINT, MARPENOTH, "Highharvesttide", false),
-    MOON_FEAST(UKTAR, NIGHTAL, "The Feast of the Moon", false)
+    MIDWINTER(HAMMER, ALTURIAK, true, "Midwinter"),
+    SHIELDMEET(HAMMER, ALTURIAK, false, "Shieldmeet"),
+    GREENGRASS(TARSAKH, MIRTUL, false, "Greengrass"),
+    MIDSUMMER(FLAMERULE, ELEASIAS, false, "Midsummer"),
+    HIGHHARVESTTIDE(ELEINT, MARPENOTH, false, "Highharvesttide"),
+    MOON_FEAST(UKTAR, NIGHTAL, false, "The Feast of the Moon")
 }
 

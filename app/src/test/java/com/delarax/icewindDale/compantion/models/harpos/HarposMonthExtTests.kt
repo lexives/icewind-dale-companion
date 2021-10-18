@@ -44,19 +44,37 @@ class HarposMonthExtTests {
     }
 
     @Test
-    fun `lastHoliday returns correct holiday in all cases`() {
-        assertEquals(MOON_FEAST, HAMMER.lastHoliday())
-        assertEquals(SHIELDMEET, ALTURIAK.lastHoliday())
-        assertEquals(SHIELDMEET, CHES.lastHoliday())
-        assertEquals(SHIELDMEET, TARSAKH.lastHoliday())
-        assertEquals(GREENGRASS, MIRTUL.lastHoliday())
-        assertEquals(GREENGRASS, KYTHORN.lastHoliday())
-        assertEquals(GREENGRASS, FLAMERULE.lastHoliday())
-        assertEquals(MIDSUMMER, ELEASIAS.lastHoliday())
-        assertEquals(MIDSUMMER, ELEINT.lastHoliday())
-        assertEquals(HIGHHARVESTTIDE, MARPENOTH.lastHoliday())
-        assertEquals(HIGHHARVESTTIDE, UKTAR.lastHoliday())
-        assertEquals(MOON_FEAST, NIGHTAL.lastHoliday())
+    fun `lastHoliday returns correct holiday for not leap year`() {
+        val year = 1001
+        assertEquals(MOON_FEAST, HAMMER.lastHoliday(year))
+        assertEquals(SHIELDMEET, ALTURIAK.lastHoliday(year))
+        assertEquals(SHIELDMEET, CHES.lastHoliday(year))
+        assertEquals(SHIELDMEET, TARSAKH.lastHoliday(year))
+        assertEquals(GREENGRASS, MIRTUL.lastHoliday(year))
+        assertEquals(GREENGRASS, KYTHORN.lastHoliday(year))
+        assertEquals(GREENGRASS, FLAMERULE.lastHoliday(year))
+        assertEquals(MIDSUMMER, ELEASIAS.lastHoliday(year))
+        assertEquals(MIDSUMMER, ELEINT.lastHoliday(year))
+        assertEquals(HIGHHARVESTTIDE, MARPENOTH.lastHoliday(year))
+        assertEquals(HIGHHARVESTTIDE, UKTAR.lastHoliday(year))
+        assertEquals(MOON_FEAST, NIGHTAL.lastHoliday(year))
+    }
+
+    @Test
+    fun `lastHoliday returns correct holiday for leap year`() {
+        val year = 1004
+        assertEquals(MOON_FEAST, HAMMER.lastHoliday(year))
+        assertEquals(SHIELDMEET, ALTURIAK.lastHoliday(year))
+        assertEquals(SHIELDMEET, CHES.lastHoliday(year))
+        assertEquals(SHIELDMEET, TARSAKH.lastHoliday(year))
+        assertEquals(GREENGRASS, MIRTUL.lastHoliday(year))
+        assertEquals(GREENGRASS, KYTHORN.lastHoliday(year))
+        assertEquals(GREENGRASS, FLAMERULE.lastHoliday(year))
+        assertEquals(MIDSUMMER, ELEASIAS.lastHoliday(year))
+        assertEquals(MIDSUMMER, ELEINT.lastHoliday(year))
+        assertEquals(HIGHHARVESTTIDE, MARPENOTH.lastHoliday(year))
+        assertEquals(HIGHHARVESTTIDE, UKTAR.lastHoliday(year))
+        assertEquals(MOON_FEAST, NIGHTAL.lastHoliday(year))
     }
 
     @Test
