@@ -954,7 +954,12 @@ class NunavutDateTests {
     }
 
     @Test
-    fun `maxDaysInYear returns correct number of days`() {
-        assertEquals(366, NunavutDate.maxDaysInYear)
+    fun `daysInLeapYear returns correct number of days`() {
+        assertEquals(366, NunavutDate.daysInLeapYear)
+    }
+
+    @Test
+    fun `daysInNonLeapYear returns correct number of days`() {
+        assertEquals(365, NunavutDate.daysInNonLeapYear)
     }
 }

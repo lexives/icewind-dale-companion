@@ -63,8 +63,7 @@ fun HarposHoliday.numHolidaysPassed(year: Int) : Int {
     }
     return HarposHoliday.values()
         .slice(0..this.ordinal)
-        .filter { holiday -> year.isLeapYear() || !holiday.isQuadrennial }
-        .count()
+        .count { holiday -> year.isLeapYear() || !holiday.isQuadrennial }
 }
 
 @Throws(InvalidDateException::class)

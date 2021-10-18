@@ -51,7 +51,6 @@ fun HarposMonth.numHolidaysPassed(year: Int) : Int {
     return lastHoliday?.let {
         HarposHoliday.values()
             .slice(0..it.ordinal)
-            .filter { holiday -> year.isLeapYear() || !holiday.isQuadrennial }
-            .count()
+            .count { holiday -> year.isLeapYear() || !holiday.isQuadrennial }
     } ?: 0
 }

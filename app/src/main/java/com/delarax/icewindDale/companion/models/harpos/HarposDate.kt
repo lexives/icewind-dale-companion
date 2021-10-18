@@ -2,7 +2,6 @@ package com.delarax.icewindDale.companion.models.harpos
 
 import com.delarax.icewindDale.companion.data.isLeapYear
 import com.delarax.icewindDale.companion.models.InvalidDateException
-import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.values
 
 data class HarposDate(
     val day: Int,
@@ -71,7 +70,12 @@ data class HarposDate(
     }
 
     companion object {
-        val maxDaysInYear: Int = HarposMonth.values().size * 30 + values().size
+        val daysInLeapYear: Int = HarposMonth.values().size * 30 +
+                HarposHoliday.values().size
+
+        val daysInNonLeapYear: Int = daysInLeapYear - HarposHoliday.values().count {
+            it.isQuadrennial
+        }
     }
 }
 

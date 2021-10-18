@@ -65,8 +65,7 @@ fun NunavutHoliday.numHolidaysPassed(year: Int) : Int {
     }
     return NunavutHoliday.values()
         .slice(0..this.ordinal)
-        .filter { holiday -> year.isLeapYear() || !holiday.isQuadrennial }
-        .count()
+        .count { holiday -> year.isLeapYear() || !holiday.isQuadrennial }
 }
 
 @Throws(InvalidDateException::class)

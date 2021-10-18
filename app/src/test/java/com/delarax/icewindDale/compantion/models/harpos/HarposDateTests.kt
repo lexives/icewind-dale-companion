@@ -379,7 +379,12 @@ class HarposDateTests {
     }
 
     @Test
-    fun `maxDaysInYear returns correct number of days`() {
-        assertEquals(366, HarposDate.maxDaysInYear)
+    fun `daysInLeapYear returns correct number of days`() {
+        assertEquals(366, HarposDate.daysInLeapYear)
+    }
+
+    @Test
+    fun `daysInNonLeapYear returns correct number of days`() {
+        assertEquals(365, HarposDate.daysInNonLeapYear)
     }
 }

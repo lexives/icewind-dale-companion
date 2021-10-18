@@ -73,7 +73,11 @@ data class NunavutDate(
     }
     
     companion object {
-        val maxDaysInYear: Int = NunavutSeason.values().last().numDaysInSeasons() +
+        val daysInLeapYear: Int = NunavutSeason.values().last().numDaysInSeasons() +
                 NunavutHoliday.values().size
+
+        val daysInNonLeapYear: Int = daysInLeapYear - NunavutHoliday.values().count {
+            it.isQuadrennial
+        }
     }
 }
