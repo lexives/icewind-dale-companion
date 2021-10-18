@@ -56,6 +56,7 @@ fun HarposHoliday.nextHoliday(year: Int) : HarposHoliday = HarposHoliday.values(
 /**
  * The number of holidays that have occurred in the year so far, including this holiday
  */
+@Throws(InvalidDateException::class)
 fun HarposHoliday.numHolidaysPassed(year: Int) : Int {
     if (this.isQuadrennial && !year.isLeapYear()) {
         throw InvalidDateException("$year was not a leap year but $this is quadrennial.")
@@ -66,9 +67,17 @@ fun HarposHoliday.numHolidaysPassed(year: Int) : Int {
         .count()
 }
 
+@Throws(InvalidDateException::class)
 fun HarposHoliday.absoluteDayNumber(year: Int) : Int {
     if (this.isQuadrennial && !year.isLeapYear()) {
         throw InvalidDateException("$year was not a leap year but $this is quadrennial.")
     }
     return this.priorMonth.num() * 30 + numHolidaysPassed(year)
+}
+
+@Throws(InvalidDateException::class)
+fun HarposHoliday.toDate(year: Int) : HarposDate {
+    val date = HarposDate(day = 1, month = null, year = year, holiday = this)
+    if (!date.isValid) { throw InvalidDateException(date) }
+    return date
 }

@@ -4,6 +4,7 @@ import com.delarax.icewindDale.companion.models.InvalidDateException
 import com.delarax.icewindDale.companion.models.harpos.HarposDate
 import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.*
 import com.delarax.icewindDale.companion.models.harpos.HarposMonth.*
+import com.delarax.icewindDale.companion.models.harpos.toDate
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -102,12 +103,12 @@ class HarposDateTests {
         assertEquals(ALTURIAK, HarposDate(day = 1, month = CHES, year = 1234).priorMonth())
         assertEquals(HAMMER, HarposDate(day = 1, month = ALTURIAK, year = 1234).priorMonth())
         assertEquals(NIGHTAL, HarposDate(day = 1, month = HAMMER, year = 1234).priorMonth())
-        assertEquals(HAMMER, HarposDate.midwinter(1004).priorMonth())
-        assertEquals(HAMMER, HarposDate.shieldmeet(1234).priorMonth())
-        assertEquals(TARSAKH, HarposDate.greengrass(1234).priorMonth())
-        assertEquals(FLAMERULE, HarposDate.midsummer(1234).priorMonth())
-        assertEquals(ELEINT, HarposDate.highharvesttide(1234).priorMonth())
-        assertEquals(UKTAR, HarposDate.moonFeast(1234).priorMonth())
+        assertEquals(HAMMER, MIDWINTER.toDate(1004).priorMonth())
+        assertEquals(HAMMER, SHIELDMEET.toDate(1234).priorMonth())
+        assertEquals(TARSAKH, GREENGRASS.toDate(1234).priorMonth())
+        assertEquals(FLAMERULE, MIDSUMMER.toDate(1234).priorMonth())
+        assertEquals(ELEINT, HIGHHARVESTTIDE.toDate(1234).priorMonth())
+        assertEquals(UKTAR, MOON_FEAST.toDate(1234).priorMonth())
     }
 
     @Test(expected = InvalidDateException::class)
@@ -129,12 +130,12 @@ class HarposDateTests {
         assertEquals(UKTAR, HarposDate(day = 1, month = MARPENOTH, year = 1234).nextMonth())
         assertEquals(NIGHTAL, HarposDate(day = 1, month = UKTAR, year = 1234).nextMonth())
         assertEquals(HAMMER, HarposDate(day = 1, month = NIGHTAL, year = 1234).nextMonth())
-        assertEquals(ALTURIAK, HarposDate.midwinter(1004).nextMonth())
-        assertEquals(ALTURIAK, HarposDate.shieldmeet(1234).nextMonth())
-        assertEquals(MIRTUL, HarposDate.greengrass(1234).nextMonth())
-        assertEquals(ELEASIAS, HarposDate.midsummer(1234).nextMonth())
-        assertEquals(MARPENOTH, HarposDate.highharvesttide(1234).nextMonth())
-        assertEquals(NIGHTAL, HarposDate.moonFeast(1234).nextMonth())
+        assertEquals(ALTURIAK, MIDWINTER.toDate(1004).nextMonth())
+        assertEquals(ALTURIAK, SHIELDMEET.toDate(1234).nextMonth())
+        assertEquals(MIRTUL, GREENGRASS.toDate(1234).nextMonth())
+        assertEquals(ELEASIAS, MIDSUMMER.toDate(1234).nextMonth())
+        assertEquals(MARPENOTH, HIGHHARVESTTIDE.toDate(1234).nextMonth())
+        assertEquals(NIGHTAL, MOON_FEAST.toDate(1234).nextMonth())
     }
 
     @Test(expected = InvalidDateException::class)
@@ -156,12 +157,12 @@ class HarposDateTests {
         assertEquals(HIGHHARVESTTIDE, HarposDate(day = 1, month = MARPENOTH, year = 1234).lastHoliday())
         assertEquals(HIGHHARVESTTIDE, HarposDate(day = 1, month = UKTAR, year = 1234).lastHoliday())
         assertEquals(MOON_FEAST, HarposDate(day = 1, month = NIGHTAL, year = 1234).lastHoliday())
-        assertEquals(MIDWINTER, HarposDate.midwinter(1004).lastHoliday())
-        assertEquals(SHIELDMEET, HarposDate.shieldmeet(1234).lastHoliday())
-        assertEquals(GREENGRASS, HarposDate.greengrass(1234).lastHoliday())
-        assertEquals(MIDSUMMER, HarposDate.midsummer(1234).lastHoliday())
-        assertEquals(HIGHHARVESTTIDE, HarposDate.highharvesttide(1234).lastHoliday())
-        assertEquals(MOON_FEAST, HarposDate.moonFeast(1234).lastHoliday())
+        assertEquals(MIDWINTER, MIDWINTER.toDate(1004).lastHoliday())
+        assertEquals(SHIELDMEET, SHIELDMEET.toDate(1234).lastHoliday())
+        assertEquals(GREENGRASS, GREENGRASS.toDate(1234).lastHoliday())
+        assertEquals(MIDSUMMER, MIDSUMMER.toDate(1234).lastHoliday())
+        assertEquals(HIGHHARVESTTIDE, HIGHHARVESTTIDE.toDate(1234).lastHoliday())
+        assertEquals(MOON_FEAST, MOON_FEAST.toDate(1234).lastHoliday())
     }
 
     @Test(expected = InvalidDateException::class)
@@ -183,11 +184,11 @@ class HarposDateTests {
         assertEquals(MOON_FEAST, HarposDate(day = 1, month = MARPENOTH, year = 1001).nextHoliday())
         assertEquals(MOON_FEAST, HarposDate(day = 1, month = UKTAR, year = 1001).nextHoliday())
         assertEquals(SHIELDMEET, HarposDate(day = 1, month = NIGHTAL, year = 1001).nextHoliday())
-        assertEquals(GREENGRASS, HarposDate.shieldmeet(1001).nextHoliday())
-        assertEquals(MIDSUMMER, HarposDate.greengrass(1001).nextHoliday())
-        assertEquals(HIGHHARVESTTIDE, HarposDate.midsummer(1001).nextHoliday())
-        assertEquals(MOON_FEAST, HarposDate.highharvesttide(1001).nextHoliday())
-        assertEquals(SHIELDMEET, HarposDate.moonFeast(1001).nextHoliday())
+        assertEquals(GREENGRASS, SHIELDMEET.toDate(1001).nextHoliday())
+        assertEquals(MIDSUMMER, GREENGRASS.toDate(1001).nextHoliday())
+        assertEquals(HIGHHARVESTTIDE, MIDSUMMER.toDate(1001).nextHoliday())
+        assertEquals(MOON_FEAST, HIGHHARVESTTIDE.toDate(1001).nextHoliday())
+        assertEquals(SHIELDMEET, MOON_FEAST.toDate(1001).nextHoliday())
     }
 
     @Test
@@ -204,11 +205,11 @@ class HarposDateTests {
         assertEquals(MOON_FEAST, HarposDate(day = 1, month = MARPENOTH, year = 1003).nextHoliday())
         assertEquals(MOON_FEAST, HarposDate(day = 1, month = UKTAR, year = 1003).nextHoliday())
         assertEquals(MIDWINTER, HarposDate(day = 1, month = NIGHTAL, year = 1003).nextHoliday())
-        assertEquals(GREENGRASS, HarposDate.shieldmeet(1003).nextHoliday())
-        assertEquals(MIDSUMMER, HarposDate.greengrass(1003).nextHoliday())
-        assertEquals(HIGHHARVESTTIDE, HarposDate.midsummer(1003).nextHoliday())
-        assertEquals(MOON_FEAST, HarposDate.highharvesttide(1003).nextHoliday())
-        assertEquals(MIDWINTER, HarposDate.moonFeast(1003).nextHoliday())
+        assertEquals(GREENGRASS, SHIELDMEET.toDate(1003).nextHoliday())
+        assertEquals(MIDSUMMER, GREENGRASS.toDate(1003).nextHoliday())
+        assertEquals(HIGHHARVESTTIDE, MIDSUMMER.toDate(1003).nextHoliday())
+        assertEquals(MOON_FEAST, HIGHHARVESTTIDE.toDate(1003).nextHoliday())
+        assertEquals(MIDWINTER, MOON_FEAST.toDate(1003).nextHoliday())
     }
 
     @Test
@@ -225,12 +226,12 @@ class HarposDateTests {
         assertEquals(MOON_FEAST, HarposDate(day = 1, month = MARPENOTH, year = 1004).nextHoliday())
         assertEquals(MOON_FEAST, HarposDate(day = 1, month = UKTAR, year = 1004).nextHoliday())
         assertEquals(SHIELDMEET, HarposDate(day = 1, month = NIGHTAL, year = 1004).nextHoliday())
-        assertEquals(SHIELDMEET, HarposDate.midwinter(1004).nextHoliday())
-        assertEquals(GREENGRASS, HarposDate.shieldmeet(1004).nextHoliday())
-        assertEquals(MIDSUMMER, HarposDate.greengrass(1004).nextHoliday())
-        assertEquals(HIGHHARVESTTIDE, HarposDate.midsummer(1004).nextHoliday())
-        assertEquals(MOON_FEAST, HarposDate.highharvesttide(1004).nextHoliday())
-        assertEquals(SHIELDMEET, HarposDate.moonFeast(1004).nextHoliday())
+        assertEquals(SHIELDMEET, MIDWINTER.toDate(1004).nextHoliday())
+        assertEquals(GREENGRASS, SHIELDMEET.toDate(1004).nextHoliday())
+        assertEquals(MIDSUMMER, GREENGRASS.toDate(1004).nextHoliday())
+        assertEquals(HIGHHARVESTTIDE, MIDSUMMER.toDate(1004).nextHoliday())
+        assertEquals(MOON_FEAST, HIGHHARVESTTIDE.toDate(1004).nextHoliday())
+        assertEquals(SHIELDMEET, MOON_FEAST.toDate(1004).nextHoliday())
     }
 
     @Test(expected = InvalidDateException::class)
@@ -272,21 +273,21 @@ class HarposDateTests {
 
     @Test
     fun `numHolidaysPassed returns correct number on holiday when not leap year`() {
-        assertEquals(1, HarposDate.shieldmeet(1001).numHolidaysPassed())
-        assertEquals(2, HarposDate.greengrass(1001).numHolidaysPassed())
-        assertEquals(3, HarposDate.midsummer(1001).numHolidaysPassed())
-        assertEquals(4, HarposDate.highharvesttide(1001).numHolidaysPassed())
-        assertEquals(5, HarposDate.moonFeast(1001).numHolidaysPassed())
+        assertEquals(1, SHIELDMEET.toDate(1001).numHolidaysPassed())
+        assertEquals(2, GREENGRASS.toDate(1001).numHolidaysPassed())
+        assertEquals(3, MIDSUMMER.toDate(1001).numHolidaysPassed())
+        assertEquals(4, HIGHHARVESTTIDE.toDate(1001).numHolidaysPassed())
+        assertEquals(5, MOON_FEAST.toDate(1001).numHolidaysPassed())
     }
 
     @Test
     fun `numHolidaysPassed returns correct number on holiday when leap year`() {
-        assertEquals(1, HarposDate.midwinter(1004).numHolidaysPassed())
-        assertEquals(2, HarposDate.shieldmeet(1004).numHolidaysPassed())
-        assertEquals(3, HarposDate.greengrass(1004).numHolidaysPassed())
-        assertEquals(4, HarposDate.midsummer(1004).numHolidaysPassed())
-        assertEquals(5, HarposDate.highharvesttide(1004).numHolidaysPassed())
-        assertEquals(6, HarposDate.moonFeast(1004).numHolidaysPassed())
+        assertEquals(1, MIDWINTER.toDate(1004).numHolidaysPassed())
+        assertEquals(2, SHIELDMEET.toDate(1004).numHolidaysPassed())
+        assertEquals(3, GREENGRASS.toDate(1004).numHolidaysPassed())
+        assertEquals(4, MIDSUMMER.toDate(1004).numHolidaysPassed())
+        assertEquals(5, HIGHHARVESTTIDE.toDate(1004).numHolidaysPassed())
+        assertEquals(6, MOON_FEAST.toDate(1004).numHolidaysPassed())
     }
 
     @Test(expected = InvalidDateException::class)
@@ -360,78 +361,25 @@ class HarposDateTests {
 
     @Test
     fun `absoluteDayNumber for each holiday, non-leap year`() {
-        assertEquals(31, HarposDate.shieldmeet(year = 1001).absoluteDayNumber())
-        assertEquals(122, HarposDate.greengrass(year = 1001).absoluteDayNumber())
-        assertEquals(213, HarposDate.midsummer(year = 1001).absoluteDayNumber())
-        assertEquals(274, HarposDate.highharvesttide(year = 1001).absoluteDayNumber())
-        assertEquals(335, HarposDate.moonFeast(year = 1001).absoluteDayNumber())
+        assertEquals(31, SHIELDMEET.toDate(year = 1001).absoluteDayNumber())
+        assertEquals(122, GREENGRASS.toDate(year = 1001).absoluteDayNumber())
+        assertEquals(213, MIDSUMMER.toDate(year = 1001).absoluteDayNumber())
+        assertEquals(274, HIGHHARVESTTIDE.toDate(year = 1001).absoluteDayNumber())
+        assertEquals(335, MOON_FEAST.toDate(year = 1001).absoluteDayNumber())
     }
 
     @Test
     fun `absoluteDayNumber for each holiday, leap year`() {
-        assertEquals(31, HarposDate.midwinter(year = 1004).absoluteDayNumber())
-        assertEquals(32, HarposDate.shieldmeet(year = 1004).absoluteDayNumber())
-        assertEquals(123, HarposDate.greengrass(year = 1004).absoluteDayNumber())
-        assertEquals(214, HarposDate.midsummer(year = 1004).absoluteDayNumber())
-        assertEquals(275, HarposDate.highharvesttide(year = 1004).absoluteDayNumber())
-        assertEquals(336, HarposDate.moonFeast(year = 1004).absoluteDayNumber())
+        assertEquals(31, MIDWINTER.toDate(year = 1004).absoluteDayNumber())
+        assertEquals(32, SHIELDMEET.toDate(year = 1004).absoluteDayNumber())
+        assertEquals(123, GREENGRASS.toDate(year = 1004).absoluteDayNumber())
+        assertEquals(214, MIDSUMMER.toDate(year = 1004).absoluteDayNumber())
+        assertEquals(275, HIGHHARVESTTIDE.toDate(year = 1004).absoluteDayNumber())
+        assertEquals(336, MOON_FEAST.toDate(year = 1004).absoluteDayNumber())
     }
 
     @Test
     fun `maxDaysInYear returns correct number of days`() {
         assertEquals(366, HarposDate.maxDaysInYear)
-    }
-
-    @Test(expected = InvalidDateException::class)
-    fun `midwinter throws error if year is not a leap year`() {
-        HarposDate.midwinter(1001)
-    }
-
-    @Test
-    fun `midwinter returns HarposDate for midwinter holiday when year is a leap year`() {
-        assertEquals(
-            HarposDate(day = 1, month = null, year = 1004, holiday = MIDWINTER),
-            HarposDate.midwinter(1004)
-        )
-    }
-
-    @Test
-    fun `shieldmeet returns HarposDate for shieldmeet holiday with the given year`() {
-        assertEquals(
-            HarposDate(day = 1, month = null, year = 1004, holiday = SHIELDMEET),
-            HarposDate.shieldmeet(1004)
-        )
-    }
-
-    @Test
-    fun `greengrass returns HarposDate for greengrass holiday with the given year`() {
-        assertEquals(
-            HarposDate(day = 1, month = null, year = 1004, holiday = GREENGRASS),
-            HarposDate.greengrass(1004)
-        )
-    }
-
-    @Test
-    fun `midsummer returns HarposDate for midsummer holiday with the given year`() {
-        assertEquals(
-            HarposDate(day = 1, month = null, year = 1004, holiday = MIDSUMMER),
-            HarposDate.midsummer(1004)
-        )
-    }
-
-    @Test
-    fun `highharvesttide returns HarposDate for highharvesttide holiday with the given year`() {
-        assertEquals(
-            HarposDate(day = 1, month = null, year = 1004, holiday = HIGHHARVESTTIDE),
-            HarposDate.highharvesttide(1004)
-        )
-    }
-
-    @Test
-    fun `moonFeast returns HarposDate for moonFeast holiday with the given year`() {
-        assertEquals(
-            HarposDate(day = 1, month = null, year = 1004, holiday = MOON_FEAST),
-            HarposDate.moonFeast(1004)
-        )
     }
 }

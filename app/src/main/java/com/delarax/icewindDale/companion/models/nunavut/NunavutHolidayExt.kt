@@ -58,6 +58,7 @@ fun NunavutHoliday.nextHoliday(year: Int) : NunavutHoliday =
 /**
  * The number of holidays that have occurred in the year so far, including this holiday
  */
+@Throws(InvalidDateException::class)
 fun NunavutHoliday.numHolidaysPassed(year: Int) : Int {
     if (this.isQuadrennial && !year.isLeapYear()) {
         throw InvalidDateException("$year was not a leap year but $this is quadrennial.")
@@ -68,10 +69,18 @@ fun NunavutHoliday.numHolidaysPassed(year: Int) : Int {
         .count()
 }
 
+@Throws(InvalidDateException::class)
 fun NunavutHoliday.absoluteDayNumber(year: Int) : Int {
     if (this.isQuadrennial && !year.isLeapYear()) {
         throw InvalidDateException("$year was not a leap year but $this is quadrennial.")
     }
     return this.priorSeason.numDaysInSeasons() + numHolidaysPassed(year)
+}
+
+@Throws(InvalidDateException::class)
+fun NunavutHoliday.toDate(year: Int) : NunavutDate {
+    val date = NunavutDate(day = 1, season = null, year = year, holiday = this)
+    if (!date.isValid) { throw(InvalidDateException(date)) }
+    return date
 }
 

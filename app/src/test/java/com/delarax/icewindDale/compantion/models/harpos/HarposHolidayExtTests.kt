@@ -1,11 +1,8 @@
 package com.delarax.icewindDale.compantion.models.harpos
 
 import com.delarax.icewindDale.companion.models.InvalidDateException
+import com.delarax.icewindDale.companion.models.harpos.*
 import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.*
-import com.delarax.icewindDale.companion.models.harpos.absoluteDayNumber
-import com.delarax.icewindDale.companion.models.harpos.nextHoliday
-import com.delarax.icewindDale.companion.models.harpos.numHolidaysPassed
-import com.delarax.icewindDale.companion.models.harpos.priorHoliday
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -136,5 +133,38 @@ class HarposHolidayExtTests {
         assertEquals(214, MIDSUMMER.absoluteDayNumber(year))
         assertEquals(275, HIGHHARVESTTIDE.absoluteDayNumber(year))
         assertEquals(336, MOON_FEAST.absoluteDayNumber(year))
+    }
+
+    @Test(expected = InvalidDateException::class)
+    fun `toDate throws error if date is not valid`() {
+        MIDWINTER.toDate(1001)
+    }
+
+    @Test
+    fun `toDate returns correct date in all cases`() {
+        assertEquals(
+            HarposDate(day = 1, month = null, year = 1004, holiday = MIDWINTER),
+            MIDWINTER.toDate(1004)
+        )
+        assertEquals(
+            HarposDate(day = 1, month = null, year = 1004, holiday = SHIELDMEET),
+            SHIELDMEET.toDate(1004)
+        )
+        assertEquals(
+            HarposDate(day = 1, month = null, year = 1004, holiday = GREENGRASS),
+            GREENGRASS.toDate(1004)
+        )
+        assertEquals(
+            HarposDate(day = 1, month = null, year = 1004, holiday = MIDSUMMER),
+            MIDSUMMER.toDate(1004)
+        )
+        assertEquals(
+            HarposDate(day = 1, month = null, year = 1004, holiday = HIGHHARVESTTIDE),
+            HIGHHARVESTTIDE.toDate(1004)
+        )
+        assertEquals(
+            HarposDate(day = 1, month = null, year = 1004, holiday = MOON_FEAST),
+            MOON_FEAST.toDate(1004)
+        )
     }
 }

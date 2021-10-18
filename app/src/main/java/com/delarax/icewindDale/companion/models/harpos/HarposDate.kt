@@ -2,6 +2,7 @@ package com.delarax.icewindDale.companion.models.harpos
 
 import com.delarax.icewindDale.companion.data.isLeapYear
 import com.delarax.icewindDale.companion.models.InvalidDateException
+import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.values
 
 data class HarposDate(
     val day: Int,
@@ -70,28 +71,7 @@ data class HarposDate(
     }
 
     companion object {
-        val maxDaysInYear: Int = HarposMonth.values().size * 30 + HarposHoliday.values().size
-
-        @Throws(InvalidDateException::class)
-        fun midwinter(year: Int) : HarposDate = getHoliday(HarposHoliday.MIDWINTER, year)
-        @Throws(InvalidDateException::class)
-        fun shieldmeet(year: Int) : HarposDate = getHoliday(HarposHoliday.SHIELDMEET, year)
-        @Throws(InvalidDateException::class)
-        fun greengrass(year: Int) : HarposDate = getHoliday(HarposHoliday.GREENGRASS, year)
-        @Throws(InvalidDateException::class)
-        fun midsummer(year: Int) : HarposDate = getHoliday(HarposHoliday.MIDSUMMER, year)
-        @Throws(InvalidDateException::class)
-        fun highharvesttide(year: Int) : HarposDate =
-            getHoliday(HarposHoliday.HIGHHARVESTTIDE, year)
-        @Throws(InvalidDateException::class)
-        fun moonFeast(year: Int) : HarposDate = getHoliday(HarposHoliday.MOON_FEAST, year)
-
-        @Throws(InvalidDateException::class)
-        private fun getHoliday(holiday: HarposHoliday, year: Int) : HarposDate {
-            val date = HarposDate(day = 1, month = null, year = year, holiday = holiday)
-            if (!date.isValid) { throw(InvalidDateException(date)) }
-            return date
-        }
+        val maxDaysInYear: Int = HarposMonth.values().size * 30 + values().size
     }
 }
 
