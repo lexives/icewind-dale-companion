@@ -15,6 +15,7 @@ fun NunavutSeason.nextSeason(): NunavutSeason = NunavutSeason.values().let { sea
 }
 
 fun NunavutSeason.lastHoliday(year: Int) : NunavutHoliday = NunavutHoliday.values()
+    .reversed()
     .find { holiday ->
         holiday.nextSeason == this && (year.isLeapYear() || !holiday.isQuadrennial)
     } ?: this.priorSeason().let { priorSeason ->

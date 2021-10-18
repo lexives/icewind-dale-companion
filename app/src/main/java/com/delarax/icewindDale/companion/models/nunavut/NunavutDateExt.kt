@@ -43,14 +43,7 @@ fun NunavutDate.lastHoliday() : NunavutHoliday {
 @Throws(InvalidDateException::class)
 fun NunavutDate.nextHoliday() : NunavutHoliday {
     if (!this.isValid()) { throw InvalidDateException(this) }
-
-    return this.season?.nextHoliday(this.year) ?: this.holiday!!.nextSeason.let { nextSeason ->
-        if (nextSeason.ordinal == 0) {
-            nextSeason.nextHoliday(this.year + 1)
-        } else {
-            nextSeason.nextHoliday(this.year)
-        }
-    }
+    return this.season?.nextHoliday(this.year) ?: this.holiday!!.nextHoliday(this.year)
 }
 
 /**
@@ -60,6 +53,7 @@ fun NunavutDate.nextHoliday() : NunavutHoliday {
 fun NunavutDate.numHolidaysPassed() : Int {
     if (!this.isValid()) { throw InvalidDateException(this) }
 
+    // find the last holiday that occurred within the SAME year (null if there are none)
     val lastHoliday = this.holiday ?: this.season!!.lastHoliday(this.year).takeIf { lastHoliday ->
         val finalHolidayOfTheYear = NunavutHoliday.values().last()
         lastHoliday.ordinal != finalHolidayOfTheYear.ordinal ||

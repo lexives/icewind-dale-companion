@@ -6,7 +6,7 @@ import com.delarax.icewindDale.companion.models.nunavut.NunavutSeason.*
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class NunavutSeasonExtTest {
+class NunavutSeasonExtTests {
 
     @Test
     fun `priorSeason returns correct season in all cases`() {
