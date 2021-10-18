@@ -65,3 +65,10 @@ fun HarposHoliday.numHolidaysPassed(year: Int) : Int {
         .filter { holiday -> year.isLeapYear() || !holiday.isQuadrennial }
         .count()
 }
+
+fun HarposHoliday.absoluteDayNumber(year: Int) : Int {
+    if (this.isQuadrennial && !year.isLeapYear()) {
+        throw InvalidDateException("$year was not a leap year but $this is quadrennial.")
+    }
+    return this.priorMonth.num() * 30 + numHolidaysPassed(year)
+}

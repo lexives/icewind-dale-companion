@@ -1,8 +1,11 @@
 package com.delarax.icewindDale.compantion.models.nunavut
 
 import com.delarax.icewindDale.companion.models.InvalidDateException
-import com.delarax.icewindDale.companion.models.nunavut.*
 import com.delarax.icewindDale.companion.models.nunavut.NunavutHoliday.*
+import com.delarax.icewindDale.companion.models.nunavut.absoluteDayNumber
+import com.delarax.icewindDale.companion.models.nunavut.nextHoliday
+import com.delarax.icewindDale.companion.models.nunavut.numHolidaysPassed
+import com.delarax.icewindDale.companion.models.nunavut.priorHoliday
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -89,7 +92,7 @@ class NunavutHolidayExtTests {
     }
 
     @Test
-    fun `numHolidaysPassed returns correct number on holiday when not leap year`() {
+    fun `numHolidaysPassed returns correct number for non-leap year`() {
         val year = 1001
         Assert.assertEquals(1, OMINGMAK.numHolidaysPassed(year))
         Assert.assertEquals(2, SUN_FESTIVAL.numHolidaysPassed(year))
@@ -99,7 +102,7 @@ class NunavutHolidayExtTests {
     }
 
     @Test
-    fun `numHolidaysPassed returns correct number on holiday when leap year`() {
+    fun `numHolidaysPassed returns correct number for leap year`() {
         val year = 1004
         Assert.assertEquals(1, MIDWINTER.numHolidaysPassed(year))
         Assert.assertEquals(2, OMINGMAK.numHolidaysPassed(year))
@@ -107,5 +110,31 @@ class NunavutHolidayExtTests {
         Assert.assertEquals(4, ALIANAT.numHolidaysPassed(year))
         Assert.assertEquals(5, TUNNIQAIJUK.numHolidaysPassed(year))
         Assert.assertEquals(6, MOON_FEAST.numHolidaysPassed(year))
+    }
+
+    @Test(expected = InvalidDateException::class)
+    fun `absoluteDayNumber throws an error if the holiday could not have occurred that year`() {
+        MIDWINTER.absoluteDayNumber(1001)
+    }
+
+    @Test
+    fun `absoluteDayNumber returns correct number for non-leap year`() {
+        val year = 1001
+        Assert.assertEquals(71, OMINGMAK.absoluteDayNumber(year))
+        Assert.assertEquals(162, SUN_FESTIVAL.absoluteDayNumber(year))
+        Assert.assertEquals(253, ALIANAT.absoluteDayNumber(year))
+        Assert.assertEquals(314, TUNNIQAIJUK.absoluteDayNumber(year))
+        Assert.assertEquals(345, MOON_FEAST.absoluteDayNumber(year))
+    }
+
+    @Test
+    fun `absoluteDayNumber for each holiday for leap year`() {
+        val year = 1004
+        Assert.assertEquals(31, MIDWINTER.absoluteDayNumber(year))
+        Assert.assertEquals(72, OMINGMAK.absoluteDayNumber(year))
+        Assert.assertEquals(163, SUN_FESTIVAL.absoluteDayNumber(year))
+        Assert.assertEquals(254, ALIANAT.absoluteDayNumber(year))
+        Assert.assertEquals(315, TUNNIQAIJUK.absoluteDayNumber(year))
+        Assert.assertEquals(346, MOON_FEAST.absoluteDayNumber(year))
     }
 }

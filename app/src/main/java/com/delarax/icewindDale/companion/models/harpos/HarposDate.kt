@@ -66,7 +66,7 @@ data class HarposDate(
         // every month has 30 days in the Harpos calendar
         return month?.let { month ->
             month.ordinal * 30 + day + numHolidaysPassed()
-        } ?: holiday!!.priorMonth.num() * 30 + numHolidaysPassed()
+        } ?: holiday!!.absoluteDayNumber(year)
     }
 
     companion object {

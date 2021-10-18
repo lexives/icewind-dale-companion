@@ -2,6 +2,7 @@ package com.delarax.icewindDale.compantion.models.harpos
 
 import com.delarax.icewindDale.companion.models.InvalidDateException
 import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.*
+import com.delarax.icewindDale.companion.models.harpos.absoluteDayNumber
 import com.delarax.icewindDale.companion.models.harpos.nextHoliday
 import com.delarax.icewindDale.companion.models.harpos.numHolidaysPassed
 import com.delarax.icewindDale.companion.models.harpos.priorHoliday
@@ -109,5 +110,31 @@ class HarposHolidayExtTests {
         assertEquals(4, MIDSUMMER.numHolidaysPassed(year))
         assertEquals(5, HIGHHARVESTTIDE.numHolidaysPassed(year))
         assertEquals(6, MOON_FEAST.numHolidaysPassed(year))
+    }
+
+    @Test(expected = InvalidDateException::class)
+    fun `absoluteDayNumber throws an error if the holiday could not have occurred that year`() {
+        MIDWINTER.absoluteDayNumber(1001)
+    }
+
+    @Test
+    fun `absoluteDayNumber returns correct number for non-leap year`() {
+        val year = 1001
+        assertEquals(31, SHIELDMEET.absoluteDayNumber(year))
+        assertEquals(122, GREENGRASS.absoluteDayNumber(year))
+        assertEquals(213, MIDSUMMER.absoluteDayNumber(year))
+        assertEquals(274, HIGHHARVESTTIDE.absoluteDayNumber(year))
+        assertEquals(335, MOON_FEAST.absoluteDayNumber(year))
+    }
+
+    @Test
+    fun `absoluteDayNumber returns correct number for leap year`() {
+        val year = 1004
+        assertEquals(31, MIDWINTER.absoluteDayNumber(year))
+        assertEquals(32, SHIELDMEET.absoluteDayNumber(year))
+        assertEquals(123, GREENGRASS.absoluteDayNumber(year))
+        assertEquals(214, MIDSUMMER.absoluteDayNumber(year))
+        assertEquals(275, HIGHHARVESTTIDE.absoluteDayNumber(year))
+        assertEquals(336, MOON_FEAST.absoluteDayNumber(year))
     }
 }

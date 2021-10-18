@@ -69,7 +69,7 @@ data class NunavutDate(
             } else {
                 season.priorSeason().numDaysInSeasons() + day + numHolidaysPassed()
             }
-        } ?: holiday!!.priorSeason.numDaysInSeasons() + numHolidaysPassed()
+        } ?: holiday!!.absoluteDayNumber(year)
     }
     
     companion object {

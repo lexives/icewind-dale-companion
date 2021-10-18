@@ -68,3 +68,10 @@ fun NunavutHoliday.numHolidaysPassed(year: Int) : Int {
         .count()
 }
 
+fun NunavutHoliday.absoluteDayNumber(year: Int) : Int {
+    if (this.isQuadrennial && !year.isLeapYear()) {
+        throw InvalidDateException("$year was not a leap year but $this is quadrennial.")
+    }
+    return this.priorSeason.numDaysInSeasons() + numHolidaysPassed(year)
+}
+
