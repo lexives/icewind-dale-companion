@@ -54,3 +54,17 @@ fun NunavutHoliday.nextHoliday(year: Int) : NunavutHoliday =
         // for leap years
         workingHolidayList.first()
     }
+
+/**
+ * The number of holidays that have occurred in the year so far, including this holiday
+ */
+fun NunavutHoliday.numHolidaysPassed(year: Int) : Int {
+    if (this.isQuadrennial && !year.isLeapYear()) {
+        throw InvalidDateException("$year was not a leap year but $this is quadrennial.")
+    }
+    return NunavutHoliday.values()
+        .slice(0..this.ordinal)
+        .filter { holiday -> year.isLeapYear() || !holiday.isQuadrennial }
+        .count()
+}
+

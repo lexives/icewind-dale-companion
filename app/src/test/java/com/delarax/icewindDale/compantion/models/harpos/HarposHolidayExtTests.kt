@@ -3,6 +3,7 @@ package com.delarax.icewindDale.compantion.models.harpos
 import com.delarax.icewindDale.companion.models.InvalidDateException
 import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.*
 import com.delarax.icewindDale.companion.models.harpos.nextHoliday
+import com.delarax.icewindDale.companion.models.harpos.numHolidaysPassed
 import com.delarax.icewindDale.companion.models.harpos.priorHoliday
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -82,5 +83,31 @@ class HarposHolidayExtTests {
         assertEquals(HIGHHARVESTTIDE, MIDSUMMER.nextHoliday(year))
         assertEquals(MOON_FEAST, HIGHHARVESTTIDE.nextHoliday(year))
         assertEquals(SHIELDMEET, MOON_FEAST.nextHoliday(year))
+    }
+
+    @Test(expected = InvalidDateException::class)
+    fun `numHolidaysPassed throws an error if the holiday could not have occurred that year`() {
+        MIDWINTER.numHolidaysPassed(1001)
+    }
+
+    @Test
+    fun `numHolidaysPassed returns correct number for non-leap year`() {
+        val year = 1001
+        assertEquals(1, SHIELDMEET.numHolidaysPassed(year))
+        assertEquals(2, GREENGRASS.numHolidaysPassed(year))
+        assertEquals(3, MIDSUMMER.numHolidaysPassed(year))
+        assertEquals(4, HIGHHARVESTTIDE.numHolidaysPassed(year))
+        assertEquals(5, MOON_FEAST.numHolidaysPassed(year))
+    }
+
+    @Test
+    fun `numHolidaysPassed returns correct number for leap year`() {
+        val year = 1004
+        assertEquals(1, MIDWINTER.numHolidaysPassed(year))
+        assertEquals(2, SHIELDMEET.numHolidaysPassed(year))
+        assertEquals(3, GREENGRASS.numHolidaysPassed(year))
+        assertEquals(4, MIDSUMMER.numHolidaysPassed(year))
+        assertEquals(5, HIGHHARVESTTIDE.numHolidaysPassed(year))
+        assertEquals(6, MOON_FEAST.numHolidaysPassed(year))
     }
 }

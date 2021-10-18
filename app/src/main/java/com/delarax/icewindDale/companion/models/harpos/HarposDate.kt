@@ -50,25 +50,13 @@ data class HarposDate(
     }
 
     /**
-     * The number of holidays that have occurred so far, including the current day if it's a holiday.
+     * The number of holidays that have occurred so far,
+     * including the current day if it's a holiday.
      */
     @Throws(InvalidDateException::class)
     fun numHolidaysPassed() : Int {
         if (!isValid) { throw InvalidDateException(this) }
-
-        // find the last holiday that occurred within the SAME year (null if there are none)
-        val lastHoliday = holiday ?: month!!.lastHoliday(year).takeIf { lastHoliday ->
-            val finalHolidayOfTheYear = HarposHoliday.values().last()
-            lastHoliday.ordinal != finalHolidayOfTheYear.ordinal ||
-                    month.ordinal >= finalHolidayOfTheYear.nextMonth.ordinal
-        }
-
-        return lastHoliday?.let {
-            HarposHoliday.values()
-                .slice(0..it.ordinal)
-                .filter { holiday -> isLeapYear || !holiday.isQuadrennial }
-                .count()
-        } ?: 0
+        return month?.numHolidaysPassed(year) ?: holiday!!.numHolidaysPassed(year)
     }
 
     @Throws(InvalidDateException::class)
@@ -93,7 +81,8 @@ data class HarposDate(
         @Throws(InvalidDateException::class)
         fun midsummer(year: Int) : HarposDate = getHoliday(HarposHoliday.MIDSUMMER, year)
         @Throws(InvalidDateException::class)
-        fun highharvesttide(year: Int) : HarposDate = getHoliday(HarposHoliday.HIGHHARVESTTIDE, year)
+        fun highharvesttide(year: Int) : HarposDate =
+            getHoliday(HarposHoliday.HIGHHARVESTTIDE, year)
         @Throws(InvalidDateException::class)
         fun moonFeast(year: Int) : HarposDate = getHoliday(HarposHoliday.MOON_FEAST, year)
 

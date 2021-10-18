@@ -36,3 +36,22 @@ fun HarposMonth.nextHoliday(year: Int) : HarposHoliday = HarposHoliday.values()
         nextMonth.nextHoliday(year)
     }
 }
+
+/**
+ * The number of holidays that have occurred before this month
+ */
+fun HarposMonth.numHolidaysPassed(year: Int) : Int {
+    // find the last holiday that occurred within the SAME year (null if there are none)
+    val lastHoliday = this.lastHoliday(year).takeIf { lastHoliday ->
+        val finalHolidayOfTheYear = HarposHoliday.values().last()
+        lastHoliday.ordinal != finalHolidayOfTheYear.ordinal ||
+                this.ordinal >= finalHolidayOfTheYear.nextMonth.ordinal
+    }
+
+    return lastHoliday?.let {
+        HarposHoliday.values()
+            .slice(0..it.ordinal)
+            .filter { holiday -> year.isLeapYear() || !holiday.isQuadrennial }
+            .count()
+    } ?: 0
+}

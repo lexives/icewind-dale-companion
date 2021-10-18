@@ -140,4 +140,38 @@ class NunavutSeasonExtTests {
         assertEquals(340, ELK_HUNT.numDaysInSeasons())
         assertEquals(360, DENNING_POLAR_BEAR.numDaysInSeasons())
     }
+
+    @Test
+    fun `numHolidaysPassed returns correct number for non-leap year`() {
+        val year = 1001
+        assertEquals(0, FALLING_STARS.numHolidaysPassed(year))
+        assertEquals(0, IGLOO.numHolidaysPassed(year))
+        assertEquals(1, SEAL_PUPS.numHolidaysPassed(year))
+        assertEquals(1, BEATING_ICE.numHolidaysPassed(year))
+        assertEquals(1, NESTING_GEESE.numHolidaysPassed(year))
+        assertEquals(2, SKIN_TENTS.numHolidaysPassed(year))
+        assertEquals(2, RUNNING_CHAR.numHolidaysPassed(year))
+        assertEquals(2, BERRIES.numHolidaysPassed(year))
+        assertEquals(3, BARE_MOUNTAIN.numHolidaysPassed(year))
+        assertEquals(3, JARLMOOT.numHolidaysPassed(year))
+        assertEquals(4, ELK_HUNT.numHolidaysPassed(year))
+        assertEquals(5, DENNING_POLAR_BEAR.numHolidaysPassed(year))
+    }
+
+    @Test
+    fun `numHolidaysPassed returns correct number for leap year`() {
+        val year = 1004
+        assertEquals(0, FALLING_STARS.numHolidaysPassed(year))
+        assertEquals(1, IGLOO.numHolidaysPassed(year))
+        assertEquals(2, SEAL_PUPS.numHolidaysPassed(year))
+        assertEquals(2, BEATING_ICE.numHolidaysPassed(year))
+        assertEquals(2, NESTING_GEESE.numHolidaysPassed(year))
+        assertEquals(3, SKIN_TENTS.numHolidaysPassed(year))
+        assertEquals(3, RUNNING_CHAR.numHolidaysPassed(year))
+        assertEquals(3, BERRIES.numHolidaysPassed(year))
+        assertEquals(4, BARE_MOUNTAIN.numHolidaysPassed(year))
+        assertEquals(4, JARLMOOT.numHolidaysPassed(year))
+        assertEquals(5, ELK_HUNT.numHolidaysPassed(year))
+        assertEquals(6, DENNING_POLAR_BEAR.numHolidaysPassed(year))
+    }
 }

@@ -50,25 +50,13 @@ data class NunavutDate(
     }
 
     /**
-     * The number of holidays that have occurred so far, including the current day if it's a holiday.
+     * The number of holidays that have occurred so far,
+     * including the current day if it's a holiday.
      */
     @Throws(InvalidDateException::class)
     fun numHolidaysPassed() : Int {
         if (!isValid) { throw InvalidDateException(this) }
-
-        // find the last holiday that occurred within the SAME year (null if there are none)
-        val lastHoliday = holiday ?: season!!.lastHoliday(year).takeIf { lastHoliday ->
-            val finalHolidayOfTheYear = NunavutHoliday.values().last()
-            lastHoliday.ordinal != finalHolidayOfTheYear.ordinal ||
-                    season.ordinal >= finalHolidayOfTheYear.nextSeason.ordinal
-        }
-
-        return lastHoliday?.let {
-            NunavutHoliday.values()
-                .slice(0..it.ordinal)
-                .filter { holiday -> isLeapYear || !holiday.isQuadrennial }
-                .count()
-        } ?: 0
+        return season?.numHolidaysPassed(year) ?: holiday!!.numHolidaysPassed(year)
     }
 
     @Throws(InvalidDateException::class)

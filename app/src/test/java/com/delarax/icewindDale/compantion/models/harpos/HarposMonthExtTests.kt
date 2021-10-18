@@ -1,11 +1,8 @@
 package com.delarax.icewindDale.compantion.models.harpos
 
+import com.delarax.icewindDale.companion.models.harpos.*
 import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.*
 import com.delarax.icewindDale.companion.models.harpos.HarposMonth.*
-import com.delarax.icewindDale.companion.models.harpos.lastHoliday
-import com.delarax.icewindDale.companion.models.harpos.nextHoliday
-import com.delarax.icewindDale.companion.models.harpos.nextMonth
-import com.delarax.icewindDale.companion.models.harpos.priorMonth
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -126,5 +123,39 @@ class HarposMonthExtTests {
         assertEquals(MOON_FEAST, MARPENOTH.nextHoliday(year))
         assertEquals(MOON_FEAST, UKTAR.nextHoliday(year))
         assertEquals(SHIELDMEET, NIGHTAL.nextHoliday(year))
+    }
+
+    @Test
+    fun `numHolidaysPassed returns correct number for non-leap year`() {
+        val year = 1001
+        assertEquals(0, HAMMER.numHolidaysPassed(year))
+        assertEquals(1, ALTURIAK.numHolidaysPassed(year))
+        assertEquals(1, CHES.numHolidaysPassed(year))
+        assertEquals(1, TARSAKH.numHolidaysPassed(year))
+        assertEquals(2, MIRTUL.numHolidaysPassed(year))
+        assertEquals(2, KYTHORN.numHolidaysPassed(year))
+        assertEquals(2, FLAMERULE.numHolidaysPassed(year))
+        assertEquals(3, ELEASIAS.numHolidaysPassed(year))
+        assertEquals(3, ELEINT.numHolidaysPassed(year))
+        assertEquals(4, MARPENOTH.numHolidaysPassed(year))
+        assertEquals(4, UKTAR.numHolidaysPassed(year))
+        assertEquals(5, NIGHTAL.numHolidaysPassed(year))
+    }
+
+    @Test
+    fun `numHolidaysPassed returns correct number for leap year`() {
+        val year = 1004
+        assertEquals(0, HAMMER.numHolidaysPassed(year))
+        assertEquals(2, ALTURIAK.numHolidaysPassed(year))
+        assertEquals(2, CHES.numHolidaysPassed(year))
+        assertEquals(2, TARSAKH.numHolidaysPassed(year))
+        assertEquals(3, MIRTUL.numHolidaysPassed(year))
+        assertEquals(3, KYTHORN.numHolidaysPassed(year))
+        assertEquals(3, FLAMERULE.numHolidaysPassed(year))
+        assertEquals(4, ELEASIAS.numHolidaysPassed(year))
+        assertEquals(4, ELEINT.numHolidaysPassed(year))
+        assertEquals(5, MARPENOTH.numHolidaysPassed(year))
+        assertEquals(5, UKTAR.numHolidaysPassed(year))
+        assertEquals(6, NIGHTAL.numHolidaysPassed(year))
     }
 }

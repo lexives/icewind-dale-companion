@@ -52,3 +52,16 @@ fun HarposHoliday.nextHoliday(year: Int) : HarposHoliday = HarposHoliday.values(
     // for leap years
     workingHolidayList.first()
 }
+
+/**
+ * The number of holidays that have occurred in the year so far, including this holiday
+ */
+fun HarposHoliday.numHolidaysPassed(year: Int) : Int {
+    if (this.isQuadrennial && !year.isLeapYear()) {
+        throw InvalidDateException("$year was not a leap year but $this is quadrennial.")
+    }
+    return HarposHoliday.values()
+        .slice(0..this.ordinal)
+        .filter { holiday -> year.isLeapYear() || !holiday.isQuadrennial }
+        .count()
+}

@@ -49,3 +49,22 @@ fun NunavutSeason.numDaysInSeasons(): Int = NunavutSeason.values()
     .slice(0..this.ordinal)
     .map { it.numDays }
     .sum()
+
+/**
+ * The number of holidays that have occurred before this season
+ */
+fun NunavutSeason.numHolidaysPassed(year: Int) : Int {
+    // find the last holiday that occurred within the SAME year (null if there are none)
+    val lastHoliday = this.lastHoliday(year).takeIf { lastHoliday ->
+        val finalHolidayOfTheYear = NunavutHoliday.values().last()
+        lastHoliday.ordinal != finalHolidayOfTheYear.ordinal ||
+                this.ordinal >= finalHolidayOfTheYear.nextSeason.ordinal
+    }
+
+    return lastHoliday?.let {
+        NunavutHoliday.values()
+            .slice(0..it.ordinal)
+            .filter { holiday -> year.isLeapYear() || !holiday.isQuadrennial }
+            .count()
+    } ?: 0
+}
