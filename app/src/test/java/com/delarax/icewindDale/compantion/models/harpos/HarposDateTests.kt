@@ -387,4 +387,367 @@ class HarposDateTests {
     fun `daysInNonLeapYear returns correct number of days`() {
         assertEquals(365, HarposDate.daysInNonLeapYear)
     }
+
+    @Test(expected = InvalidDateException::class)
+    fun `fromAbsoluteDayNumber throws error if day number is less than 1`() {
+        HarposDate.fromAbsoluteDayNumber(0, 1004)
+    }
+
+    @Test(expected = InvalidDateException::class)
+    fun `fromAbsoluteDayNumber throws error if day number is greater than max for leap year`() {
+        HarposDate.fromAbsoluteDayNumber(367, 1004)
+    }
+
+    @Test(expected = InvalidDateException::class)
+    fun `fromAbsoluteDayNumber throws error if day number is greater than max for non-leap year`() {
+        HarposDate.fromAbsoluteDayNumber(366, 1001)
+    }
+
+    @Test
+    fun `fromAbsoluteDayNumber converts all holidays correctly for non-leap year`() {
+        val year = 1001
+        assertEquals(SHIELDMEET.toDate(year), HarposDate.fromAbsoluteDayNumber(31, year))
+        assertEquals(GREENGRASS.toDate(year), HarposDate.fromAbsoluteDayNumber(122, year))
+        assertEquals(MIDSUMMER.toDate(year), HarposDate.fromAbsoluteDayNumber(213, year))
+        assertEquals(HIGHHARVESTTIDE.toDate(year), HarposDate.fromAbsoluteDayNumber(274, year))
+        assertEquals(MOON_FEAST.toDate(year), HarposDate.fromAbsoluteDayNumber(335, year))
+    }
+
+    @Test
+    fun `fromAbsoluteDayNumber converts all holidays correctly for leap year`() {
+        val year = 1004
+        assertEquals(MIDWINTER.toDate(year), HarposDate.fromAbsoluteDayNumber(31, year))
+        assertEquals(SHIELDMEET.toDate(year), HarposDate.fromAbsoluteDayNumber(32, year))
+        assertEquals(GREENGRASS.toDate(year), HarposDate.fromAbsoluteDayNumber(123, year))
+        assertEquals(MIDSUMMER.toDate(year), HarposDate.fromAbsoluteDayNumber(214, year))
+        assertEquals(HIGHHARVESTTIDE.toDate(year), HarposDate.fromAbsoluteDayNumber(275, year))
+        assertEquals(MOON_FEAST.toDate(year), HarposDate.fromAbsoluteDayNumber(336, year))
+    }
+
+    @Test
+    fun `fromAbsoluteDayNumber converts first, middle, and last days of Hammer`() {
+        val year = 1001
+        assertEquals(
+            HarposDate(day = 1, month = HAMMER, year = year),
+            HarposDate.fromAbsoluteDayNumber(1, year)
+        )
+        assertEquals(
+            HarposDate(day = 11, month = HAMMER, year = year),
+            HarposDate.fromAbsoluteDayNumber(11, year)
+        )
+        assertEquals(
+            HarposDate(day = 30, month = HAMMER, year = year),
+            HarposDate.fromAbsoluteDayNumber(30, year)
+        )
+    }
+
+    @Test
+    fun `fromAbsoluteDayNumber converts first, middle, and last days of Alturiak`() {
+        val nonLeapYear = 1001
+        assertEquals(
+            HarposDate(day = 1, month = ALTURIAK, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(32, nonLeapYear)
+        )
+        assertEquals(
+            HarposDate(day = 11, month = ALTURIAK, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(42, nonLeapYear)
+        )
+        assertEquals(
+            HarposDate(day = 30, month = ALTURIAK, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(61, nonLeapYear)
+        )
+
+        val leapYear = 1004
+        assertEquals(
+            HarposDate(day = 1, month = ALTURIAK, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(33, leapYear)
+        )
+        assertEquals(
+            HarposDate(day = 11, month = ALTURIAK, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(43, leapYear)
+        )
+        assertEquals(
+            HarposDate(day = 30, month = ALTURIAK, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(62, leapYear)
+        )
+    }
+
+    @Test
+    fun `fromAbsoluteDayNumber converts first, middle, and last days of Ches`() {
+        val nonLeapYear = 1001
+        assertEquals(
+            HarposDate(day = 1, month = CHES, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(62, nonLeapYear)
+        )
+        assertEquals(
+            HarposDate(day = 11, month = CHES, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(72, nonLeapYear)
+        )
+        assertEquals(
+            HarposDate(day = 30, month = CHES, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(91, nonLeapYear)
+        )
+
+        val leapYear = 1004
+        assertEquals(
+            HarposDate(day = 1, month = CHES, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(63, leapYear)
+        )
+        assertEquals(
+            HarposDate(day = 11, month = CHES, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(73, leapYear)
+        )
+        assertEquals(
+            HarposDate(day = 30, month = CHES, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(92, leapYear)
+        )
+    }
+
+    @Test
+    fun `fromAbsoluteDayNumber converts first, middle, and last days of Tarsakh`() {
+        val nonLeapYear = 1001
+        assertEquals(
+            HarposDate(day = 1, month = TARSAKH, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(92, nonLeapYear)
+        )
+        assertEquals(
+            HarposDate(day = 11, month = TARSAKH, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(102, nonLeapYear)
+        )
+        assertEquals(
+            HarposDate(day = 30, month = TARSAKH, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(121, nonLeapYear)
+        )
+
+        val leapYear = 1004
+        assertEquals(
+            HarposDate(day = 1, month = TARSAKH, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(93, leapYear)
+        )
+        assertEquals(
+            HarposDate(day = 11, month = TARSAKH, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(103, leapYear)
+        )
+        assertEquals(
+            HarposDate(day = 30, month = TARSAKH, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(122, leapYear)
+        )
+    }
+
+    @Test
+    fun `fromAbsoluteDayNumber converts first, middle, and last days of Mirtul`() {
+        val nonLeapYear = 1001
+        assertEquals(
+            HarposDate(day = 1, month = MIRTUL, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(123, nonLeapYear)
+        )
+        assertEquals(
+            HarposDate(day = 11, month = MIRTUL, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(133, nonLeapYear)
+        )
+        assertEquals(
+            HarposDate(day = 30, month = MIRTUL, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(152, nonLeapYear)
+        )
+
+        val leapYear = 1004
+        assertEquals(
+            HarposDate(day = 1, month = MIRTUL, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(124, leapYear)
+        )
+        assertEquals(
+            HarposDate(day = 11, month = MIRTUL, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(134, leapYear)
+        )
+        assertEquals(
+            HarposDate(day = 30, month = MIRTUL, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(153, leapYear)
+        )
+    }
+
+    @Test
+    fun `fromAbsoluteDayNumber converts first, middle, and last days of Kythorn`() {
+        val nonLeapYear = 1001
+        assertEquals(
+            HarposDate(day = 1, month = KYTHORN, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(153, nonLeapYear)
+        )
+        assertEquals(
+            HarposDate(day = 11, month = KYTHORN, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(163, nonLeapYear)
+        )
+        assertEquals(
+            HarposDate(day = 30, month = KYTHORN, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(182, nonLeapYear)
+        )
+
+        val leapYear = 1004
+        assertEquals(
+            HarposDate(day = 1, month = KYTHORN, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(154, leapYear)
+        )
+        assertEquals(
+            HarposDate(day = 11, month = KYTHORN, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(164, leapYear)
+        )
+        assertEquals(
+            HarposDate(day = 30, month = KYTHORN, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(183, leapYear)
+        )
+    }
+
+    @Test
+    fun `fromAbsoluteDayNumber converts first, middle, and last days of Flamerule`() {
+        val nonLeapYear = 1001
+        assertEquals(
+            HarposDate(day = 1, month = FLAMERULE, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(183, nonLeapYear)
+        )
+        assertEquals(
+            HarposDate(day = 11, month = FLAMERULE, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(193, nonLeapYear)
+        )
+        assertEquals(
+            HarposDate(day = 30, month = FLAMERULE, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(212, nonLeapYear)
+        )
+
+        val leapYear = 1004
+        assertEquals(
+            HarposDate(day = 1, month = FLAMERULE, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(184, leapYear)
+        )
+        assertEquals(
+            HarposDate(day = 11, month = FLAMERULE, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(194, leapYear)
+        )
+        assertEquals(
+            HarposDate(day = 30, month = FLAMERULE, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(213, leapYear)
+        )
+    }
+
+    @Test
+    fun `fromAbsoluteDayNumber converts first, middle, and last days of Eleint`() {
+        val nonLeapYear = 1001
+        assertEquals(
+            HarposDate(day = 1, month = ELEINT, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(244, nonLeapYear)
+        )
+        assertEquals(
+            HarposDate(day = 11, month = ELEINT, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(254, nonLeapYear)
+        )
+        assertEquals(
+            HarposDate(day = 30, month = ELEINT, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(273, nonLeapYear)
+        )
+
+        val leapYear = 1004
+        assertEquals(
+            HarposDate(day = 1, month = ELEINT, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(245, leapYear)
+        )
+        assertEquals(
+            HarposDate(day = 11, month = ELEINT, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(255, leapYear)
+        )
+        assertEquals(
+            HarposDate(day = 30, month = ELEINT, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(274, leapYear)
+        )
+    }
+
+    @Test
+    fun `fromAbsoluteDayNumber converts first, middle, and last days of Marpenoth`() {
+        val nonLeapYear = 1001
+        assertEquals(
+            HarposDate(day = 1, month = MARPENOTH, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(275, nonLeapYear)
+        )
+        assertEquals(
+            HarposDate(day = 11, month = MARPENOTH, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(285, nonLeapYear)
+        )
+        assertEquals(
+            HarposDate(day = 30, month = MARPENOTH, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(304, nonLeapYear)
+        )
+
+        val leapYear = 1004
+        assertEquals(
+            HarposDate(day = 1, month = MARPENOTH, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(276, leapYear)
+        )
+        assertEquals(
+            HarposDate(day = 11, month = MARPENOTH, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(286, leapYear)
+        )
+        assertEquals(
+            HarposDate(day = 30, month = MARPENOTH, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(305, leapYear)
+        )
+    }
+
+    @Test
+    fun `fromAbsoluteDayNumber converts first, middle, and last days of Uktar`() {
+        val nonLeapYear = 1001
+        assertEquals(
+            HarposDate(day = 1, month = UKTAR, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(305, nonLeapYear)
+        )
+        assertEquals(
+            HarposDate(day = 11, month = UKTAR, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(315, nonLeapYear)
+        )
+        assertEquals(
+            HarposDate(day = 30, month = UKTAR, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(334, nonLeapYear)
+        )
+
+        val leapYear = 1004
+        assertEquals(
+            HarposDate(day = 1, month = UKTAR, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(306, leapYear)
+        )
+        assertEquals(
+            HarposDate(day = 11, month = UKTAR, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(316, leapYear)
+        )
+        assertEquals(
+            HarposDate(day = 30, month = UKTAR, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(335, leapYear)
+        )
+    }
+
+    @Test
+    fun `fromAbsoluteDayNumber converts first, middle, and last days of Nightal`() {
+        val nonLeapYear = 1001
+        assertEquals(
+            HarposDate(day = 1, month = NIGHTAL, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(336, nonLeapYear)
+        )
+        assertEquals(
+            HarposDate(day = 11, month = NIGHTAL, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(346, nonLeapYear)
+        )
+        assertEquals(
+            HarposDate(day = 30, month = NIGHTAL, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(365, nonLeapYear)
+        )
+
+        val leapYear = 1004
+        assertEquals(
+            HarposDate(day = 1, month = NIGHTAL, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(337, leapYear)
+        )
+        assertEquals(
+            HarposDate(day = 11, month = NIGHTAL, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(347, leapYear)
+        )
+        assertEquals(
+            HarposDate(day = 30, month = NIGHTAL, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(366, leapYear)
+        )
+    }
 }

@@ -76,6 +76,32 @@ data class HarposDate(
         val daysInNonLeapYear: Int = daysInLeapYear - HarposHoliday.values().count {
             it.isQuadrennial
         }
+
+        @Throws(InvalidDateException::class)
+        fun fromAbsoluteDayNumber(dayNum: Int, year: Int) : HarposDate {
+            val maxDaysInYear = if (year.isLeapYear()) daysInLeapYear else daysInNonLeapYear
+            if (dayNum !in (1..maxDaysInYear)) {
+                throw InvalidDateException(
+                    "$dayNum is not a valid day number for year $year in the Calendar of Harpos"
+                )
+            }
+
+            val holiday = HarposHoliday.values().filter {
+                !it.isQuadrennial || year.isLeapYear()
+            }.find {
+                it.absoluteDayNumber(year) == dayNum
+            }
+
+            return holiday?.toDate(year) ?: run {
+                val month = HarposMonth.values().find {
+                    it.num() * 30 + it.numHolidaysPassed(year) >= dayNum
+                }
+                val day = ((dayNum - month!!.numHolidaysPassed(year)) % 30).takeIf {
+                    it > 0
+                } ?: 30
+                HarposDate(day, month, year)
+            }
+        }
     }
 }
 
