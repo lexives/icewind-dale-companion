@@ -962,4 +962,412 @@ class NunavutDateTests {
     fun `daysInNonLeapYear returns correct number of days`() {
         assertEquals(365, NunavutDate.daysInNonLeapYear)
     }
+
+    @Test(expected = InvalidDateException::class)
+    fun `fromAbsoluteDayNumber throws error if day number is less than 1`() {
+        NunavutDate.fromAbsoluteDayNumber(0, 1004)
+    }
+
+    @Test(expected = InvalidDateException::class)
+    fun `fromAbsoluteDayNumber throws error if day number is greater than max for leap year`() {
+        NunavutDate.fromAbsoluteDayNumber(367, 1004)
+    }
+
+    @Test(expected = InvalidDateException::class)
+    fun `fromAbsoluteDayNumber throws error if day number is greater than max for non-leap year`() {
+        NunavutDate.fromAbsoluteDayNumber(366, 1001)
+    }
+
+    @Test
+    fun `fromAbsoluteDayNumber converts all holidays correctly for non-leap year`() {
+        val year = 1001
+        assertEquals(OMINGMAK.toDate(year), NunavutDate.fromAbsoluteDayNumber(71, year))
+        assertEquals(SUN_FESTIVAL.toDate(year), NunavutDate.fromAbsoluteDayNumber(162, year))
+        assertEquals(ALIANAT.toDate(year), NunavutDate.fromAbsoluteDayNumber(253, year))
+        assertEquals(TUNNIQAIJUK.toDate(year), NunavutDate.fromAbsoluteDayNumber(314, year))
+        assertEquals(MOON_FEAST.toDate(year), NunavutDate.fromAbsoluteDayNumber(345, year))
+    }
+
+    @Test
+    fun `fromAbsoluteDayNumber converts all holidays correctly for leap year`() {
+        val year = 1004
+        assertEquals(MIDWINTER.toDate(year), NunavutDate.fromAbsoluteDayNumber(31, year))
+        assertEquals(OMINGMAK.toDate(year), NunavutDate.fromAbsoluteDayNumber(72, year))
+        assertEquals(SUN_FESTIVAL.toDate(year), NunavutDate.fromAbsoluteDayNumber(163, year))
+        assertEquals(ALIANAT.toDate(year), NunavutDate.fromAbsoluteDayNumber(254, year))
+        assertEquals(TUNNIQAIJUK.toDate(year), NunavutDate.fromAbsoluteDayNumber(315, year))
+        assertEquals(MOON_FEAST.toDate(year), NunavutDate.fromAbsoluteDayNumber(346, year))
+    }
+
+    @Test
+    fun `fromAbsoluteDayNumber converts first, middle, and last days of FS`() {
+        val nonLeapYear = 1001
+        assertEquals(
+            NunavutDate(day = 1, season = FALLING_STARS, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(1, nonLeapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 11, season = FALLING_STARS, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(11, nonLeapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 30, season = FALLING_STARS, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(30, nonLeapYear)
+        )
+
+        val leapYear = 1004
+        assertEquals(
+            NunavutDate(day = 1, season = FALLING_STARS, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(1, leapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 11, season = FALLING_STARS, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(11, leapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 30, season = FALLING_STARS, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(30, leapYear)
+        )
+    }
+
+    @Test
+    fun `fromAbsoluteDayNumber converts first, middle, and last days of I`() {
+        val nonLeapYear = 1001
+        assertEquals(
+            NunavutDate(day = 1, season = IGLOO, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(31, nonLeapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 11, season = IGLOO, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(41, nonLeapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 40, season = IGLOO, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(70, nonLeapYear)
+        )
+
+        val leapYear = 1004
+        assertEquals(
+            NunavutDate(day = 1, season = IGLOO, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(32, leapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 11, season = IGLOO, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(42, leapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 40, season = IGLOO, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(71, leapYear)
+        )
+    }
+
+    @Test
+    fun `fromAbsoluteDayNumber converts first, middle, and last days of SP`() {
+        val nonLeapYear = 1001
+        assertEquals(
+            NunavutDate(day = 1, season = SEAL_PUPS, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(72, nonLeapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 11, season = SEAL_PUPS, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(82, nonLeapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 40, season = SEAL_PUPS, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(111, nonLeapYear)
+        )
+
+        val leapYear = 1004
+        assertEquals(
+            NunavutDate(day = 1, season = SEAL_PUPS, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(73, leapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 11, season = SEAL_PUPS, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(83, leapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 40, season = SEAL_PUPS, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(112, leapYear)
+        )
+    }
+
+    @Test
+    fun `fromAbsoluteDayNumber converts first, middle, and last days of BI`() {
+        val nonLeapYear = 1001
+        assertEquals(
+            NunavutDate(day = 1, season = BEATING_ICE, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(112, nonLeapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 11, season = BEATING_ICE, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(122, nonLeapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 20, season = BEATING_ICE, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(131, nonLeapYear)
+        )
+
+        val leapYear = 1004
+        assertEquals(
+            NunavutDate(day = 1, season = BEATING_ICE, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(113, leapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 11, season = BEATING_ICE, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(123, leapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 20, season = BEATING_ICE, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(132, leapYear)
+        )
+    }
+
+    @Test
+    fun `fromAbsoluteDayNumber converts first, middle, and last days of NG`() {
+        val nonLeapYear = 1001
+        assertEquals(
+            NunavutDate(day = 1, season = NESTING_GEESE, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(132, nonLeapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 11, season = NESTING_GEESE, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(142, nonLeapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 30, season = NESTING_GEESE, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(161, nonLeapYear)
+        )
+
+        val leapYear = 1004
+        assertEquals(
+            NunavutDate(day = 1, season = NESTING_GEESE, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(133, leapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 11, season = NESTING_GEESE, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(143, leapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 30, season = NESTING_GEESE, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(162, leapYear)
+        )
+    }
+
+    @Test
+    fun `fromAbsoluteDayNumber converts first, middle, and last days of ST`() {
+        val nonLeapYear = 1001
+        assertEquals(
+            NunavutDate(day = 1, season = SKIN_TENTS, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(163, nonLeapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 11, season = SKIN_TENTS, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(173, nonLeapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 40, season = SKIN_TENTS, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(202, nonLeapYear)
+        )
+
+        val leapYear = 1004
+        assertEquals(
+            NunavutDate(day = 1, season = SKIN_TENTS, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(164, leapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 11, season = SKIN_TENTS, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(174, leapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 40, season = SKIN_TENTS, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(203, leapYear)
+        )
+    }
+
+    @Test
+    fun `fromAbsoluteDayNumber converts first, middle, and last days of RC`() {
+        val nonLeapYear = 1001
+        assertEquals(
+            NunavutDate(day = 1, season = RUNNING_CHAR, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(203, nonLeapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 11, season = RUNNING_CHAR, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(213, nonLeapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 30, season = RUNNING_CHAR, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(232, nonLeapYear)
+        )
+
+        val leapYear = 1004
+        assertEquals(
+            NunavutDate(day = 1, season = RUNNING_CHAR, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(204, leapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 11, season = RUNNING_CHAR, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(214, leapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 30, season = RUNNING_CHAR, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(233, leapYear)
+        )
+    }
+
+    @Test
+    fun `fromAbsoluteDayNumber converts first, middle, and last days of B`() {
+        val nonLeapYear = 1001
+        assertEquals(
+            NunavutDate(day = 1, season = BERRIES, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(233, nonLeapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 11, season = BERRIES, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(243, nonLeapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 20, season = BERRIES, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(252, nonLeapYear)
+        )
+
+        val leapYear = 1004
+        assertEquals(
+            NunavutDate(day = 1, season = BERRIES, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(234, leapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 11, season = BERRIES, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(244, leapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 20, season = BERRIES, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(253, leapYear)
+        )
+    }
+
+    @Test
+    fun `fromAbsoluteDayNumber converts first, middle, and last days of BM`() {
+        val nonLeapYear = 1001
+        assertEquals(
+            NunavutDate(day = 1, season = BARE_MOUNTAIN, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(254, nonLeapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 11, season = BARE_MOUNTAIN, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(264, nonLeapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 40, season = BARE_MOUNTAIN, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(293, nonLeapYear)
+        )
+
+        val leapYear = 1004
+        assertEquals(
+            NunavutDate(day = 1, season = BARE_MOUNTAIN, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(255, leapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 11, season = BARE_MOUNTAIN, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(265, leapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 40, season = BARE_MOUNTAIN, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(294, leapYear)
+        )
+    }
+
+    @Test
+    fun `fromAbsoluteDayNumber converts first, middle, and last days of J`() {
+        val nonLeapYear = 1001
+        assertEquals(
+            NunavutDate(day = 1, season = JARLMOOT, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(294, nonLeapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 11, season = JARLMOOT, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(304, nonLeapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 20, season = JARLMOOT, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(313, nonLeapYear)
+        )
+
+        val leapYear = 1004
+        assertEquals(
+            NunavutDate(day = 1, season = JARLMOOT, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(295, leapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 11, season = JARLMOOT, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(305, leapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 20, season = JARLMOOT, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(314, leapYear)
+        )
+    }
+
+    @Test
+    fun `fromAbsoluteDayNumber converts first, middle, and last days of EH`() {
+        val nonLeapYear = 1001
+        assertEquals(
+            NunavutDate(day = 1, season = ELK_HUNT, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(315, nonLeapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 11, season = ELK_HUNT, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(325, nonLeapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 30, season = ELK_HUNT, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(344, nonLeapYear)
+        )
+
+        val leapYear = 1004
+        assertEquals(
+            NunavutDate(day = 1, season = ELK_HUNT, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(316, leapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 11, season = ELK_HUNT, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(326, leapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 30, season = ELK_HUNT, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(345, leapYear)
+        )
+    }
+
+    @Test
+    fun `fromAbsoluteDayNumber converts first, middle, and last days of DP`() {
+        val nonLeapYear = 1001
+        assertEquals(
+            NunavutDate(day = 1, season = DENNING_POLAR_BEAR, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(346, nonLeapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 11, season = DENNING_POLAR_BEAR, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(356, nonLeapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 20, season = DENNING_POLAR_BEAR, year = nonLeapYear),
+            NunavutDate.fromAbsoluteDayNumber(365, nonLeapYear)
+        )
+
+        val leapYear = 1004
+        assertEquals(
+            NunavutDate(day = 1, season = DENNING_POLAR_BEAR, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(347, leapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 11, season = DENNING_POLAR_BEAR, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(357, leapYear)
+        )
+        assertEquals(
+            NunavutDate(day = 20, season = DENNING_POLAR_BEAR, year = leapYear),
+            NunavutDate.fromAbsoluteDayNumber(366, leapYear)
+        )
+    }
 }

@@ -79,5 +79,33 @@ data class NunavutDate(
         val daysInNonLeapYear: Int = daysInLeapYear - NunavutHoliday.values().count {
             it.isQuadrennial
         }
+
+        @Throws(InvalidDateException::class)
+        fun fromAbsoluteDayNumber(dayNum: Int, year: Int) : NunavutDate {
+            val maxDaysInYear = if (year.isLeapYear()) daysInLeapYear else daysInNonLeapYear
+            if (dayNum !in (1..maxDaysInYear)) {
+                throw InvalidDateException(
+                    "$dayNum is not a valid day number for year $year in the Nunavut Calendar"
+                )
+            }
+
+            val holiday = NunavutHoliday.values().filter {
+                !it.isQuadrennial || year.isLeapYear()
+            }.find {
+                it.absoluteDayNumber(year) == dayNum
+            }
+
+            return holiday?.toDate(year) ?: run {
+                val season = NunavutSeason.values().find {
+                    it.numDaysInSeasons() + it.numHolidaysPassed(year) >= dayNum
+                }
+                val priorSeason = season!!.priorSeason().takeIf {
+                    it.ordinal < season.ordinal
+                }
+                val day = dayNum - season.numHolidaysPassed(year) -
+                        (priorSeason?.numDaysInSeasons() ?: 0)
+                NunavutDate(day, season, year)
+            }
+        }
     }
 }
