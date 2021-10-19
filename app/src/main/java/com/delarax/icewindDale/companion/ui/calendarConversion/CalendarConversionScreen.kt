@@ -1,6 +1,5 @@
 package com.delarax.icewindDale.companion.ui.calendarConversion
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Switch
@@ -35,7 +34,7 @@ fun CalendarConversionScreenContent(
             )
         }
     ) {
-        Column() {
+        Column {
             Switch(
                 checked = viewState.convertFrom == Calendar.NUNAVUT,
                 onCheckedChange = onToggleConversionMode
