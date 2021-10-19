@@ -3,6 +3,7 @@ package com.delarax.icewindDale.compantion.data
 import com.delarax.icewindDale.companion.data.CalendarRepo
 import com.delarax.icewindDale.companion.exceptions.IllegalDateConversionException
 import com.delarax.icewindDale.companion.models.Calendar
+import com.delarax.icewindDale.companion.models.DateConversionMode
 import com.delarax.icewindDale.companion.models.harpos.HarposDate
 import com.delarax.icewindDale.companion.models.harpos.HarposHoliday
 import com.delarax.icewindDale.companion.models.harpos.HarposMonth.*
@@ -744,9 +745,8 @@ class CalendarRepoTests {
     @Test(expected = IllegalDateConversionException::class)
     fun `convertDate throws error if converting from harpos but cast fails`() {
         calendarRepo.convertDate(
-            date = NunavutDate.fromAbsoluteDayNumber(1, 1001),
-            from = Calendar.HARPOS,
-            to = Calendar.NUNAVUT
+            NunavutDate.fromAbsoluteDayNumber(1, 1001),
+            DateConversionMode(from = Calendar.HARPOS, to = Calendar.NUNAVUT)
         )
     }
 
@@ -755,7 +755,10 @@ class CalendarRepoTests {
         val date = HarposDate.fromAbsoluteDayNumber(1, 1001)
         assertEquals(
             date,
-            calendarRepo.convertDate(date, from = Calendar.HARPOS, to = Calendar.HARPOS)
+            calendarRepo.convertDate(
+                date,
+                DateConversionMode(from = Calendar.HARPOS, to = Calendar.HARPOS)
+            )
         )
     }
 
@@ -764,9 +767,8 @@ class CalendarRepoTests {
         assertEquals(
             NunavutDate.fromAbsoluteDayNumber(1, 1001),
             calendarRepo.convertDate(
-                date = HarposDate.fromAbsoluteDayNumber(1, 1001),
-                from = Calendar.HARPOS,
-                to = Calendar.NUNAVUT
+                HarposDate.fromAbsoluteDayNumber(1, 1001),
+                DateConversionMode(from = Calendar.HARPOS, to = Calendar.NUNAVUT)
             )
         )
     }
@@ -774,9 +776,8 @@ class CalendarRepoTests {
     @Test(expected = IllegalDateConversionException::class)
     fun `convertDate throws error if converting from nunavut but cast fails`() {
         calendarRepo.convertDate(
-            date = HarposDate.fromAbsoluteDayNumber(1, 1001),
-            from = Calendar.NUNAVUT,
-            to = Calendar.HARPOS
+            HarposDate.fromAbsoluteDayNumber(1, 1001),
+            DateConversionMode(from = Calendar.NUNAVUT, to = Calendar.HARPOS)
         )
     }
 
@@ -785,7 +786,10 @@ class CalendarRepoTests {
         val date = NunavutDate.fromAbsoluteDayNumber(1, 1001)
         assertEquals(
             date,
-            calendarRepo.convertDate(date, from = Calendar.NUNAVUT, to = Calendar.NUNAVUT)
+            calendarRepo.convertDate(
+                date,
+                DateConversionMode(from = Calendar.NUNAVUT, to = Calendar.NUNAVUT)
+            )
         )
     }
 
@@ -794,9 +798,8 @@ class CalendarRepoTests {
         assertEquals(
             HarposDate.fromAbsoluteDayNumber(1, 1001),
             calendarRepo.convertDate(
-                date = NunavutDate.fromAbsoluteDayNumber(1, 1001),
-                from = Calendar.NUNAVUT,
-                to = Calendar.HARPOS
+                NunavutDate.fromAbsoluteDayNumber(1, 1001),
+                DateConversionMode(from = Calendar.NUNAVUT, to = Calendar.HARPOS)
             )
         )
     }

@@ -1,18 +1,21 @@
 package com.delarax.icewindDale.companion.ui.calendarConversion
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.DropdownMenu
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.delarax.icewindDale.companion.R
 import com.delarax.icewindDale.companion.extensions.capitalize
 import com.delarax.icewindDale.companion.models.Calendar
 import com.delarax.icewindDale.companion.ui.components.IcewindDaleTopAppBar
+import com.delarax.icewindDale.companion.ui.components.SimpleExposedDropDownMenu
 import com.delarax.icewindDale.companion.ui.theme.IcewindDaleTheme
 
 @Composable
@@ -38,14 +41,18 @@ fun CalendarConversionScreenContent(
     ) {
         Column {
             Switch(
-                checked = viewState.convertFrom == Calendar.NUNAVUT,
+                checked = viewState.conversionMode.from == Calendar.NUNAVUT,
                 onCheckedChange = onToggleConversionMode
             )
-            DropdownMenu(expanded = false, onDismissRequest = { /*TODO*/ }) {
-
-            }
-            Text(text = "Calendar mode: ${viewState.convertFrom.name.capitalize()} " +
-                    "to ${viewState.convertTo.name.capitalize()}")
+            Text(text = "Calendar mode: ${viewState.conversionMode.from.name.capitalize()} " +
+                    "to ${viewState.conversionMode.to.name.capitalize()}")
+            SimpleExposedDropDownMenu(
+                values = viewState.dayList,
+                selectedIndex = 0,
+                onChange = { },
+                label = {},
+                modifier = Modifier.width(200.dp),
+            )
         }
     }
 }

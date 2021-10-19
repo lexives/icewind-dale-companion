@@ -5,10 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.delarax.icewindDale.companion.data.CalendarRepo
-import com.delarax.icewindDale.companion.models.Calendar
 import com.delarax.icewindDale.companion.models.Calendar.HARPOS
 import com.delarax.icewindDale.companion.models.Calendar.NUNAVUT
 import com.delarax.icewindDale.companion.models.Date
+import com.delarax.icewindDale.companion.models.DateConversionMode
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -21,17 +21,16 @@ class CalendarConversionVM @Inject constructor(
         private set
 
     data class ViewState(
-        val convertFrom: Calendar = HARPOS,
-        val convertTo: Calendar = NUNAVUT,
-        val dayList: List<Int> = listOf(),
+        val conversionMode: DateConversionMode = DateConversionMode(from = HARPOS, to = NUNAVUT),
+        val dayList: List<String> = listOf(),
         val monthOrSeasonList: List<String> = listOf(),
         val day: Int? = null,
         val monthOrSeason: String? = null,
         val year: Int? = null
     )
 
-    fun convertDate(date: Date, from: Calendar, to: Calendar) : Date =
-        calendarRepo.convertDate(date, from, to)
+    fun convertDate(date: Date) : Date =
+        calendarRepo.convertDate(date, viewState.conversionMode)
 
     fun toggleConversionMode(toggleValue: Boolean) {
         val convertFrom = when (toggleValue) {
@@ -42,6 +41,7 @@ class CalendarConversionVM @Inject constructor(
             HARPOS -> NUNAVUT
             NUNAVUT -> HARPOS
         }
-        viewState = viewState.copy(convertFrom = convertFrom, convertTo = convertTo)
+        viewState = viewState.copy(conversionMode = DateConversionMode(convertFrom, convertTo))
     }
+
 }

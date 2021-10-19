@@ -3,6 +3,7 @@ package com.delarax.icewindDale.companion.data
 import com.delarax.icewindDale.companion.exceptions.IllegalDateConversionException
 import com.delarax.icewindDale.companion.models.Calendar
 import com.delarax.icewindDale.companion.models.Date
+import com.delarax.icewindDale.companion.models.DateConversionMode
 import com.delarax.icewindDale.companion.models.harpos.HarposDate
 import com.delarax.icewindDale.companion.models.nunavut.NunavutDate
 import javax.inject.Inject
@@ -18,19 +19,20 @@ class CalendarRepo @Inject constructor() {
         HarposDate.fromAbsoluteDayNumber(nunavutDate.absoluteDayNumber(), nunavutDate.year)
 
     @Throws(IllegalDateConversionException::class)
-    fun convertDate(date: Date, from: Calendar, to: Calendar) : Date = when(from) {
-        Calendar.HARPOS -> {
-            (date as? HarposDate)?.let {
-                when (to) {
-                    Calendar.HARPOS -> date
-                    Calendar.NUNAVUT -> getNunavutFromHarpos(date)                    }
-            } ?: throw IllegalDateConversionException("Cannot convert $date to HarposDate")
-        }
-        Calendar.NUNAVUT -> (date as? NunavutDate)?.let {
-            when(to) {
-                Calendar.HARPOS -> getHarposFromNunavut(date)
-                Calendar.NUNAVUT -> date
+    fun convertDate(date: Date, conversionMode: DateConversionMode) : Date =
+        when(conversionMode.from) {
+            Calendar.HARPOS -> {
+                (date as? HarposDate)?.let {
+                    when (conversionMode.to) {
+                        Calendar.HARPOS -> date
+                        Calendar.NUNAVUT -> getNunavutFromHarpos(date)                    }
+                } ?: throw IllegalDateConversionException("Cannot convert $date to HarposDate")
             }
-        } ?: throw IllegalDateConversionException("Cannot convert $date to NunavutDate")
-    }
+            Calendar.NUNAVUT -> (date as? NunavutDate)?.let {
+                when(conversionMode.to) {
+                    Calendar.HARPOS -> getHarposFromNunavut(date)
+                    Calendar.NUNAVUT -> date
+                }
+            } ?: throw IllegalDateConversionException("Cannot convert $date to NunavutDate")
+        }
 }
