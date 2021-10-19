@@ -1,4 +1,4 @@
-package com.delarax.icewindDale.companion.ui
+package com.delarax.icewindDale.companion.ui.calendarConversion
 
 import android.content.res.Configuration
 import androidx.compose.material.Scaffold
@@ -11,12 +11,12 @@ import com.delarax.icewindDale.companion.ui.components.IcewindDaleTopAppBar
 import com.delarax.icewindDale.companion.ui.theme.IcewindDaleTheme
 
 @Composable
-fun CalendarScreen() {
-    CalendarScreenContent()
+fun CalendarConversionScreen() {
+    CalendarConversionScreenContent()
 }
 
 @Composable
-fun CalendarScreenContent() {
+fun CalendarConversionScreenContent() {
     Scaffold (
         topBar = {
             IcewindDaleTopAppBar(
@@ -34,16 +34,14 @@ fun CalendarScreenContent() {
 
 @Composable
 @Preview
-fun CalendarScreenPreview() {
+fun CalendarConversionScreenPreview() {
     IcewindDaleTheme {
-        CalendarScreen()
+        CalendarConversionScreen()
     }
 }
 
 @Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-fun CalendarScreenDarkPreview() {
-    IcewindDaleTheme {
-        CalendarScreen()
-    }
+fun CalendarConversionScreenDarkPreview() {
+    CalendarConversionScreenPreview()
 }
