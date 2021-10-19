@@ -1,6 +1,6 @@
 package com.delarax.icewindDale.companion.models.nunavut
 
-import com.delarax.icewindDale.companion.data.isLeapYear
+import com.delarax.icewindDale.companion.extensions.isLeapYear
 import com.delarax.icewindDale.companion.models.Date
 import com.delarax.icewindDale.companion.exceptions.InvalidDateException
 

@@ -1,6 +1,6 @@
 package com.delarax.icewindDale.companion.models.harpos
 
-import com.delarax.icewindDale.companion.data.isLeapYear
+import com.delarax.icewindDale.companion.extensions.isLeapYear
 
 fun HarposMonth.num() : Int = this.ordinal + 1
 

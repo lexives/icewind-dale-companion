@@ -1,6 +1,7 @@
 package com.delarax.icewindDale.companion.ui.calendarConversion
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material.DropdownMenu
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
@@ -9,6 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.delarax.icewindDale.companion.R
+import com.delarax.icewindDale.companion.extensions.capitalize
 import com.delarax.icewindDale.companion.models.Calendar
 import com.delarax.icewindDale.companion.ui.components.IcewindDaleTopAppBar
 import com.delarax.icewindDale.companion.ui.theme.IcewindDaleTheme
@@ -39,8 +41,11 @@ fun CalendarConversionScreenContent(
                 checked = viewState.convertFrom == Calendar.NUNAVUT,
                 onCheckedChange = onToggleConversionMode
             )
-            Text(text = "Calendar mode: ${viewState.convertFrom.fullName} " +
-                    "to ${viewState.convertTo.fullName}")
+            DropdownMenu(expanded = false, onDismissRequest = { /*TODO*/ }) {
+
+            }
+            Text(text = "Calendar mode: ${viewState.convertFrom.name.capitalize()} " +
+                    "to ${viewState.convertTo.name.capitalize()}")
         }
     }
 }

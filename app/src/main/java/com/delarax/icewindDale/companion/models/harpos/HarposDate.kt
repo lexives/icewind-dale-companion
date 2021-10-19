@@ -1,6 +1,6 @@
 package com.delarax.icewindDale.companion.models.harpos
 
-import com.delarax.icewindDale.companion.data.isLeapYear
+import com.delarax.icewindDale.companion.extensions.isLeapYear
 import com.delarax.icewindDale.companion.models.Date
 import com.delarax.icewindDale.companion.exceptions.InvalidDateException
 

@@ -1,6 +1,6 @@
 package com.delarax.icewindDale.companion.models.nunavut
 
-import com.delarax.icewindDale.companion.data.isLeapYear
+import com.delarax.icewindDale.companion.extensions.isLeapYear
 
 fun NunavutSeason.num() :Int = this.ordinal + 1
 
