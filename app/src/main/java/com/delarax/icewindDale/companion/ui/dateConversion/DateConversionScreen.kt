@@ -1,4 +1,4 @@
-package com.delarax.icewindDale.companion.ui.calendarConversion
+package com.delarax.icewindDale.companion.ui.dateConversion
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.width
@@ -19,17 +19,17 @@ import com.delarax.icewindDale.companion.ui.components.SimpleExposedDropDownMenu
 import com.delarax.icewindDale.companion.ui.theme.IcewindDaleTheme
 
 @Composable
-fun CalendarConversionScreen() {
-    val calendarConversionScreenVM: CalendarConversionVM = hiltViewModel()
-    CalendarConversionScreenContent(
-        calendarConversionScreenVM.viewState,
-        calendarConversionScreenVM::toggleConversionMode
+fun DateConversionScreen() {
+    val dateConversionScreenVM: DateConversionVM = hiltViewModel()
+    DateConversionScreenContent(
+        dateConversionScreenVM.viewState,
+        dateConversionScreenVM::toggleConversionMode
     )
 }
 
 @Composable
-fun CalendarConversionScreenContent(
-    viewState: CalendarConversionVM.ViewState,
+fun DateConversionScreenContent(
+    viewState: DateConversionVM.ViewState,
     onToggleConversionMode: (Boolean) -> Unit
 ) {
     Scaffold (
@@ -63,14 +63,14 @@ fun CalendarConversionScreenContent(
 
 @Composable
 @Preview
-fun CalendarConversionScreenPreview() {
+fun DateConversionScreenPreview() {
     IcewindDaleTheme {
-        CalendarConversionScreen()
+        DateConversionScreen()
     }
 }
 
 //@Composable
 //@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-//fun CalendarConversionScreenDarkPreview() {
-//    CalendarConversionScreenPreview()
+//fun DateConversionScreenDarkPreview() {
+//    DateConversionScreenPreview()
 //}

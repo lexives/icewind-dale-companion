@@ -1,4 +1,4 @@
-package com.delarax.icewindDale.companion.ui.calendarConversion
+package com.delarax.icewindDale.companion.ui.dateConversion
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -13,7 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class CalendarConversionVM @Inject constructor(
+class DateConversionVM @Inject constructor(
     private val calendarRepo: CalendarRepo
 ) : ViewModel() {
 

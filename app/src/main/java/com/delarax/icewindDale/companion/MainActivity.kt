@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
-import com.delarax.icewindDale.companion.ui.calendarConversion.CalendarConversionScreen
+import com.delarax.icewindDale.companion.ui.dateConversion.DateConversionScreen
 import com.delarax.icewindDale.companion.ui.theme.IcewindDaleTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -15,7 +15,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             IcewindDaleContent {
-                CalendarConversionScreen()
+                DateConversionScreen()
             }
         }
     }

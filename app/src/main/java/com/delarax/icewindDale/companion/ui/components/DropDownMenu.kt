@@ -148,7 +148,7 @@ private fun SimpleExposedDropDownMenuImpl(
                         label()
                     }
                     Text(
-                        text = values[selectedIndex],
+                        text = values.getOrNull(selectedIndex) ?: "",
                         modifier = Modifier.padding(top = 1.dp)
                     )
                 }
