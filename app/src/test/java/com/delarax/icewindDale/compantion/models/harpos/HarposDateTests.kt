@@ -426,18 +426,32 @@ class HarposDateTests {
 
     @Test
     fun `fromAbsoluteDayNumber converts first, middle, and last days of Hammer`() {
-        val year = 1001
+        val nonLeapYear = 1001
         assertEquals(
-            HarposDate(day = 1, month = HAMMER, year = year),
-            HarposDate.fromAbsoluteDayNumber(1, year)
+            HarposDate(day = 1, month = HAMMER, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(1, nonLeapYear)
         )
         assertEquals(
-            HarposDate(day = 11, month = HAMMER, year = year),
-            HarposDate.fromAbsoluteDayNumber(11, year)
+            HarposDate(day = 11, month = HAMMER, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(11, nonLeapYear)
         )
         assertEquals(
-            HarposDate(day = 30, month = HAMMER, year = year),
-            HarposDate.fromAbsoluteDayNumber(30, year)
+            HarposDate(day = 30, month = HAMMER, year = nonLeapYear),
+            HarposDate.fromAbsoluteDayNumber(30, nonLeapYear)
+        )
+
+        val leapYear = 1004
+        assertEquals(
+            HarposDate(day = 1, month = HAMMER, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(1, leapYear)
+        )
+        assertEquals(
+            HarposDate(day = 11, month = HAMMER, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(11, leapYear)
+        )
+        assertEquals(
+            HarposDate(day = 30, month = HAMMER, year = leapYear),
+            HarposDate.fromAbsoluteDayNumber(30, leapYear)
         )
     }
 
