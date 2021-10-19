@@ -1,5 +1,8 @@
 package com.delarax.icewindDale.companion.ui.calendarConversion
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.delarax.icewindDale.companion.data.CalendarRepo
 import com.delarax.icewindDale.companion.models.Calendar
@@ -14,6 +17,9 @@ class CalendarConversionVM @Inject constructor(
     private val calendarRepo: CalendarRepo
 ) : ViewModel() {
 
+    var viewState by mutableStateOf(ViewState())
+        private set
+
     data class ViewState(
         val convertFrom: Calendar = HARPOS,
         val convertTo: Calendar = NUNAVUT,
@@ -26,4 +32,16 @@ class CalendarConversionVM @Inject constructor(
 
     fun convertDate(date: Date, from: Calendar, to: Calendar) : Date =
         calendarRepo.convertDate(date, from, to)
+
+    fun toggleConversionMode(toggleValue: Boolean) {
+        val convertFrom = when (toggleValue) {
+            true -> NUNAVUT
+            false -> HARPOS
+        }
+        val convertTo = when (convertFrom) {
+            HARPOS -> NUNAVUT
+            NUNAVUT -> HARPOS
+        }
+        viewState = viewState.copy(convertFrom = convertFrom, convertTo = convertTo)
+    }
 }
