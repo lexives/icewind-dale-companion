@@ -1,16 +1,17 @@
 package com.delarax.icewindDale.companion.models.harpos
 
 import com.delarax.icewindDale.companion.data.isLeapYear
-import com.delarax.icewindDale.companion.models.InvalidDateException
+import com.delarax.icewindDale.companion.models.Date
+import com.delarax.icewindDale.companion.exceptions.InvalidDateException
 
 data class HarposDate(
     val day: Int,
     val month: HarposMonth?,
     val year: Int,
     val holiday: HarposHoliday? = null
-) {
-    val isLeapYear: Boolean = year.isLeapYear()
-    val isValid: Boolean = !(
+) : Date {
+    override val isLeapYear: Boolean = year.isLeapYear()
+    override val isValid:  Boolean = !(
         (month == null && holiday == null) ||
         (month != null && holiday != null) ||
         (year < 1) ||
@@ -60,7 +61,7 @@ data class HarposDate(
     }
 
     @Throws(InvalidDateException::class)
-    fun absoluteDayNumber(): Int {
+    override fun absoluteDayNumber(): Int {
         if (!isValid) { throw InvalidDateException(this) }
 
         // every month has 30 days in the Harpos calendar

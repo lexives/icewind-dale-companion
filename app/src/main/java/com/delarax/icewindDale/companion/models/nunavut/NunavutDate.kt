@@ -1,16 +1,17 @@
 package com.delarax.icewindDale.companion.models.nunavut
 
 import com.delarax.icewindDale.companion.data.isLeapYear
-import com.delarax.icewindDale.companion.models.InvalidDateException
+import com.delarax.icewindDale.companion.models.Date
+import com.delarax.icewindDale.companion.exceptions.InvalidDateException
 
 data class NunavutDate(
     val day: Int,
     val season: NunavutSeason?,
     val year: Int,
     val holiday: NunavutHoliday? = null
-) {
-    val isLeapYear: Boolean = year.isLeapYear()
-    val isValid: Boolean = !(
+): Date {
+    override val isLeapYear: Boolean = year.isLeapYear()
+    override val isValid: Boolean = !(
         (season == null && holiday == null) ||
         (season != null && holiday != null) ||
         (year < 1) ||
@@ -60,7 +61,7 @@ data class NunavutDate(
     }
 
     @Throws(InvalidDateException::class)
-    fun absoluteDayNumber(): Int {
+    override fun absoluteDayNumber(): Int {
         if (!isValid) { throw InvalidDateException(this) }
 
         return season?.let { season ->

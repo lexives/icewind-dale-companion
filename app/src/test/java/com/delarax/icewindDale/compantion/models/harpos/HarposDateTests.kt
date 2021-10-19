@@ -1,6 +1,6 @@
 package com.delarax.icewindDale.compantion.models.harpos
 
-import com.delarax.icewindDale.companion.models.InvalidDateException
+import com.delarax.icewindDale.companion.exceptions.InvalidDateException
 import com.delarax.icewindDale.companion.models.harpos.HarposDate
 import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.*
 import com.delarax.icewindDale.companion.models.harpos.HarposMonth.*

@@ -1,7 +1,7 @@
 package com.delarax.icewindDale.companion.models.nunavut
 
 import com.delarax.icewindDale.companion.data.isLeapYear
-import com.delarax.icewindDale.companion.models.InvalidDateException
+import com.delarax.icewindDale.companion.exceptions.InvalidDateException
 
 @Throws(InvalidDateException::class)
 fun NunavutHoliday.priorHoliday(year: Int) : NunavutHoliday =
