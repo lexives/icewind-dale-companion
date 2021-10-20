@@ -3,6 +3,7 @@ package com.delarax.icewindDale.companion.ui.dateConversion
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.KeyboardActions
@@ -134,21 +135,22 @@ fun DateInput(
         Column(
             modifier = Modifier.padding(5.dp)
         ) {
-            Text("Day")
-            SimpleExposedDropDownMenu(
-                values = dayList,
-                selectedIndex = dayIndex,
-                onChange = onSelectDay
-            )
-        }
-        Column(
-            modifier = Modifier.padding(5.dp)
-        ) {
             Text(monthOrSeasonLabel)
             SimpleExposedDropDownMenu(
                 values = monthOrSeasonList,
                 selectedIndex = monthOrSeasonIndex,
                 onChange = onSelectMonthOrSeason
+            )
+        }
+        Column(
+            modifier = Modifier.padding(5.dp)
+        ) {
+            Text("Day")
+            SimpleExposedDropDownMenu(
+                values = dayList,
+                selectedIndex = dayIndex,
+                onChange = onSelectDay,
+                modifier = Modifier.width(100.dp)
             )
         }
         YearTextField(yearText = yearText, onYearTextChange = onYearTextChange)

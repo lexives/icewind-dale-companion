@@ -44,9 +44,9 @@ class DateConversionVM @Inject constructor(
         val result: String = ""
     ) {
         val conversionMode: DateConversionMode = if (calendarModeSwitchChecked) {
-            DateConversionMode(from = HARPOS, to = NUNAVUT)
-        } else {
             DateConversionMode(from = NUNAVUT, to = HARPOS)
+        } else {
+            DateConversionMode(from = HARPOS, to = NUNAVUT)
         }
         val monthOrSeasonLabel = if (conversionMode.from == HARPOS) LABEL_MONTH else LABEL_SEASON
 
