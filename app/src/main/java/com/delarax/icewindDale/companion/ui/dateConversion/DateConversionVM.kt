@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.delarax.icewindDale.companion.data.CalendarRepo
 import com.delarax.icewindDale.companion.extensions.toStringOrEmpty
+import com.delarax.icewindDale.companion.extensions.toStringOrNull
 import com.delarax.icewindDale.companion.models.Calendar.HARPOS
 import com.delarax.icewindDale.companion.models.Calendar.NUNAVUT
 import com.delarax.icewindDale.companion.models.Date
@@ -32,8 +33,9 @@ class DateConversionVM @Inject constructor(
         val monthOrSeasonLabel: String = MONTH_LABEL,
         val dayIndex: Int = 0,
         val monthOrSeasonIndex: Int = 0,
-        val year: Int = 1,
-        val convertedDate: Date? = null
+        val year: Int? = null,
+        val convertedDate: Date? = null,
+        val result: String = ""
     ) {
         val day: Int = dayIndex + 1
         val month: HarposMonth? = if (conversionMode.from != HARPOS) null else {
@@ -70,14 +72,18 @@ class DateConversionVM @Inject constructor(
     fun convertDate() {
         val date: Date = when (viewState.conversionMode.from) {
             HARPOS -> {
-                HarposDate(day = viewState.day, month = viewState.month, year = viewState.year)
+                HarposDate(viewState.day, viewState.month, viewState.year ?: 0)
             }
             NUNAVUT -> {
-                NunavutDate(day = viewState.day, season = viewState.season, year = viewState.year)
+                NunavutDate(viewState.day, viewState.season, viewState.year ?: 0)
             }
         }
-        val convertedDate = calendarRepo.convertDate(date, viewState.conversionMode)
-        viewState = viewState.copy(convertedDate = convertedDate)
+        viewState = try {
+            val convertedDate = calendarRepo.convertDate(date, viewState.conversionMode)
+            viewState.copy(convertedDate = convertedDate, result = convertedDate.toStringOrEmpty())
+        } catch(error: Exception) {
+            viewState.copy(convertedDate = null, result = "Error converting date.")
+        }
     }
 
     fun toggleConversionMode(toggleValue: Boolean) {
@@ -99,12 +105,10 @@ class DateConversionVM @Inject constructor(
         getMonthOrSeasonList()
     }
 
-    // TODO: error handling
     fun updateDayIndex(index: Int) {
         viewState = viewState.copy(dayIndex = index)
     }
 
-    // TODO: error handling
     fun updateMonthOrSeasonIndex(index: Int) {
         viewState = viewState.copy(monthOrSeasonIndex = index)
         getDayList()
@@ -112,7 +116,7 @@ class DateConversionVM @Inject constructor(
 
     // TODO: error handling
     fun updateYear(yearText: String) {
-        viewState = viewState.copy(year = yearText.toInt())
+        viewState = viewState.copy(year = yearText.toIntOrNull())
     }
 
     companion object {

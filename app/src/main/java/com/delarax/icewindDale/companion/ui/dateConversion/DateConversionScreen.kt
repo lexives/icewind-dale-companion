@@ -3,10 +3,12 @@ package com.delarax.icewindDale.companion.ui.dateConversion
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -94,7 +96,8 @@ fun DateConversionScreenContent(
                     Text("Year")
                     TextField(
                         value = viewState.year.toStringOrEmpty(),
-                        onValueChange = onYearTextChange
+                        onValueChange = onYearTextChange,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                     )
                 }
             }
@@ -108,7 +111,7 @@ fun DateConversionScreenContent(
                         Text("Convert")
                     }
                     Text(
-                        text = viewState.convertedDate.toStringOrEmpty(),
+                        text = viewState.result,
                         modifier = Modifier.padding(vertical = 5.dp)
                     )
                 }
