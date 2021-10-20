@@ -40,8 +40,8 @@ fun SimpleExposedDropDownMenu(
     values: List<String>,
     selectedIndex: Int,
     onChange: (Int) -> Unit,
-    label: @Composable () -> Unit,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
+    label: @Composable () -> Unit = {},
     backgroundColor: Color = MaterialTheme.colors.onSurface.copy(alpha = TextFieldDefaults.BackgroundOpacity),
     shape: Shape = MaterialTheme.shapes.small.copy(bottomEnd = ZeroCornerSize, bottomStart = ZeroCornerSize)
 ) {
@@ -141,7 +141,7 @@ private fun SimpleExposedDropDownMenuImpl(
                         expanded = !expanded
                         focusManager.clearFocus()
                     }
-                    .padding(start = 16.dp, end = 12.dp, top = 7.dp, bottom = 10.dp)
+                    .padding(horizontal = 16.dp, vertical = 14.dp)
             ) {
                 Column(Modifier.padding(end = 32.dp)) {
                     ProvideTextStyle(value = MaterialTheme.typography.caption.copy(color = labelColor)) {
@@ -201,7 +201,7 @@ fun SimpleExposedDropDownMenuPreview() {
         SimpleExposedDropDownMenu(
             values = listOf("first item", "second item", "third item"),
             selectedIndex = selectedIndex,
-            onChange = { selectedIndex = it},
+            onChange = { selectedIndex = it },
             label = {},
             modifier = Modifier.width(200.dp),
         )

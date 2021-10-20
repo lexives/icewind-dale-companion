@@ -1,8 +1,11 @@
 package com.delarax.icewindDale.companion.models.harpos
 
+import com.delarax.icewindDale.companion.extensions.enumCaseToTitleCase
 import com.delarax.icewindDale.companion.extensions.isLeapYear
 
 fun HarposMonth.num() : Int = this.ordinal + 1
+
+fun HarposMonth.formattedName() : String = this.name.enumCaseToTitleCase()
 
 fun HarposMonth.priorMonth() : HarposMonth = HarposMonth.values().let { months ->
     val priorMonthIndex = (this.ordinal - 1).takeIf { it >= 0 } ?: months.lastIndex

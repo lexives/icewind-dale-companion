@@ -1,8 +1,11 @@
 package com.delarax.icewindDale.companion.models.nunavut
 
+import com.delarax.icewindDale.companion.extensions.enumCaseToTitleCase
 import com.delarax.icewindDale.companion.extensions.isLeapYear
 
 fun NunavutSeason.num() :Int = this.ordinal + 1
+
+fun NunavutSeason.formattedName() : String = this.name.enumCaseToTitleCase()
 
 fun NunavutSeason.priorSeason() : NunavutSeason = NunavutSeason.values().let { seasons ->
     val priorSeasonIndex = (this.ordinal - 1).takeIf { it >= 0 } ?: seasons.size - 1

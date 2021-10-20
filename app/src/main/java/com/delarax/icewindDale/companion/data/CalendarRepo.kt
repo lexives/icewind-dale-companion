@@ -1,16 +1,35 @@
 package com.delarax.icewindDale.companion.data
 
 import com.delarax.icewindDale.companion.exceptions.IllegalDateConversionException
+import com.delarax.icewindDale.companion.extensions.capitalize
 import com.delarax.icewindDale.companion.models.Calendar
 import com.delarax.icewindDale.companion.models.Date
 import com.delarax.icewindDale.companion.models.DateConversionMode
 import com.delarax.icewindDale.companion.models.harpos.HarposDate
+import com.delarax.icewindDale.companion.models.harpos.HarposMonth
+import com.delarax.icewindDale.companion.models.harpos.formattedName
 import com.delarax.icewindDale.companion.models.nunavut.NunavutDate
+import com.delarax.icewindDale.companion.models.nunavut.NunavutSeason
+import com.delarax.icewindDale.companion.models.nunavut.formattedName
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class CalendarRepo @Inject constructor() {
+
+    fun getHarposDayList() : List<Int> = (1..30).toList()
+
+    fun getNunavutDayList(season: NunavutSeason?) : List<Int> = season?.let {
+        (1..it.numDays).toList()
+    } ?: listOf()
+
+    fun getHarposMonthList() : List<String> = HarposMonth.values().toList().map {
+        it.formattedName()
+    }
+
+    fun getNunavutSeasonList() : List<String> = NunavutSeason.values().toList().map {
+        it.formattedName()
+    }
 
     fun getNunavutFromHarpos(harposDate: HarposDate) : NunavutDate =
         NunavutDate.fromAbsoluteDayNumber(harposDate.absoluteDayNumber(), harposDate.year)
