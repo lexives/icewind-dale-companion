@@ -5,17 +5,19 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.delarax.icewindDale.companion.R
-import com.delarax.icewindDale.companion.extensions.toStringOrEmpty
 import com.delarax.icewindDale.companion.ui.components.IcewindDaleTopAppBar
 import com.delarax.icewindDale.companion.ui.components.SimpleExposedDropDownMenu
 import com.delarax.icewindDale.companion.ui.theme.IcewindDaleTheme
@@ -74,7 +76,7 @@ fun DateConversionScreenContent(
                 HolidaySelector(
                     holidayList = viewState.holidayList,
                     onSelectHoliday = onSelectHoliday,
-                    yearString = viewState.year.toStringOrEmpty(),
+                    yearText = viewState.yearText,
                     onYearTextChange = onYearTextChange,
                     result = viewState.result
                 )
@@ -85,7 +87,7 @@ fun DateConversionScreenContent(
                     monthOrSeasonLabel = viewState.monthOrSeasonLabel,
                     monthOrSeasonList = viewState.monthOrSeasonList,
                     monthOrSeasonIndex = viewState.monthOrSeasonIndex,
-                    yearString = viewState.year.toStringOrEmpty(),
+                    yearText = viewState.yearText,
                     onSelectDay = onSelectDay,
                     onSelectMonthOrSeason = onSelectMonthOrSeason,
                     onYearTextChange = onYearTextChange
@@ -123,7 +125,7 @@ fun DateInput(
     monthOrSeasonLabel: String,
     monthOrSeasonList: List<String>,
     monthOrSeasonIndex: Int,
-    yearString: String,
+    yearText: String,
     onSelectDay: (Int) -> Unit,
     onSelectMonthOrSeason: (Int) -> Unit,
     onYearTextChange: (String) -> Unit
@@ -149,16 +151,7 @@ fun DateInput(
                 onChange = onSelectMonthOrSeason
             )
         }
-        Column(
-            modifier = Modifier.padding(5.dp)
-        ) {
-            Text("Year")
-            TextField(
-                value = yearString,
-                onValueChange = onYearTextChange,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-            )
-        }
+        YearTextField(yearText = yearText, onYearTextChange = onYearTextChange)
     }
 }
 
@@ -166,20 +159,11 @@ fun DateInput(
 fun HolidaySelector(
     holidayList: List<String>,
     onSelectHoliday: (Int) -> Unit,
-    yearString: String,
+    yearText: String,
     onYearTextChange: (String) -> Unit,
     result: String
 ) {
-    Column(
-        modifier = Modifier.padding(5.dp)
-    ) {
-        Text("Year")
-        TextField(
-            value = yearString,
-            onValueChange = onYearTextChange,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-        )
-    }
+    YearTextField(yearText = yearText, onYearTextChange = onYearTextChange)
     LazyColumn {
         itemsIndexed(holidayList) { i, item ->
             TextButton(onClick = { onSelectHoliday(i) }) {
@@ -191,6 +175,31 @@ fun HolidaySelector(
         text = result,
         modifier = Modifier.padding(vertical = 5.dp)
     )
+}
+
+@Composable
+fun YearTextField(
+    yearText: String,
+    onYearTextChange: (String) -> Unit
+) {
+    val focusManager = LocalFocusManager.current
+
+    Column(
+        modifier = Modifier.padding(5.dp)
+    ) {
+        Text("Year")
+        TextField(
+            value = yearText,
+            onValueChange = onYearTextChange,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = { focusManager.clearFocus() }
+            )
+        )
+    }
 }
 
 @Composable
