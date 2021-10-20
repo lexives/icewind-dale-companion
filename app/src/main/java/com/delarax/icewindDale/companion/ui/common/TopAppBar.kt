@@ -1,4 +1,4 @@
-package com.delarax.icewindDale.companion.ui.components
+package com.delarax.icewindDale.companion.ui.common
 
 import android.content.res.Configuration
 import androidx.compose.material.*

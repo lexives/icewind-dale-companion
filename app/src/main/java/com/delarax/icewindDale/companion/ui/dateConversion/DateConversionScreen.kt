@@ -19,8 +19,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.delarax.icewindDale.companion.R
-import com.delarax.icewindDale.companion.ui.components.IcewindDaleTopAppBar
-import com.delarax.icewindDale.companion.ui.components.SimpleExposedDropDownMenu
+import com.delarax.icewindDale.companion.ui.common.IcewindDaleTopAppBar
+import com.delarax.icewindDale.companion.ui.common.SimpleExposedDropDownMenu
 import com.delarax.icewindDale.companion.ui.theme.IcewindDaleTheme
 
 @Composable

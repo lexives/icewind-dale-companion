@@ -1,4 +1,4 @@
-package com.delarax.icewindDale.companion.ui.components
+package com.delarax.icewindDale.companion.ui.common
 
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons

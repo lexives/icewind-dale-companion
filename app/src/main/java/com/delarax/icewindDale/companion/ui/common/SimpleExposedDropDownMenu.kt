@@ -1,4 +1,4 @@
-package com.delarax.icewindDale.companion.ui.components
+package com.delarax.icewindDale.companion.ui.common
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
