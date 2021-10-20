@@ -2,13 +2,16 @@ package com.delarax.icewindDale.companion.data
 
 import com.delarax.icewindDale.companion.exceptions.IllegalDateConversionException
 import com.delarax.icewindDale.companion.extensions.capitalize
+import com.delarax.icewindDale.companion.extensions.isLeapYear
 import com.delarax.icewindDale.companion.models.Calendar
 import com.delarax.icewindDale.companion.models.Date
 import com.delarax.icewindDale.companion.models.DateConversionMode
 import com.delarax.icewindDale.companion.models.harpos.HarposDate
+import com.delarax.icewindDale.companion.models.harpos.HarposHoliday
 import com.delarax.icewindDale.companion.models.harpos.HarposMonth
 import com.delarax.icewindDale.companion.models.harpos.formattedName
 import com.delarax.icewindDale.companion.models.nunavut.NunavutDate
+import com.delarax.icewindDale.companion.models.nunavut.NunavutHoliday
 import com.delarax.icewindDale.companion.models.nunavut.NunavutSeason
 import com.delarax.icewindDale.companion.models.nunavut.formattedName
 import javax.inject.Inject
@@ -30,6 +33,21 @@ class CalendarRepo @Inject constructor() {
     fun getNunavutSeasonList() : List<String> = NunavutSeason.values().toList().map {
         it.formattedName()
     }
+
+    fun getHarposHolidayList(year: Int) : List<String> = HarposHoliday.values().toList()
+        .filter {
+            !it.isQuadrennial || year.isLeapYear()
+        }.map {
+            it.fullName
+        }
+
+    fun getNunavutHolidayList(year: Int) : List<String> = NunavutHoliday.values().toList()
+        .filter {
+            !it.isQuadrennial || year.isLeapYear()
+        }.map {
+            it.fullName
+        }
+
 
     fun getNunavutFromHarpos(harposDate: HarposDate) : NunavutDate =
         NunavutDate.fromAbsoluteDayNumber(harposDate.absoluteDayNumber(), harposDate.year)

@@ -3,6 +3,8 @@ package com.delarax.icewindDale.companion.ui.dateConversion
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -28,7 +30,8 @@ fun DateConversionScreen() {
         vm::updateDayIndex,
         vm::updateMonthOrSeasonIndex,
         vm::updateYear,
-        vm::convertDate
+        vm::onSelectHoliday,
+        vm::onConvertDate
     )
 }
 
@@ -40,7 +43,8 @@ fun DateConversionScreenContent(
     onSelectDay: (Int) -> Unit,
     onSelectMonthOrSeason: (Int) -> Unit,
     onYearTextChange: (String) -> Unit,
-    onConvertDate: () -> Unit
+    onSelectHoliday: (Int) -> Unit,
+    onConvertDate: () -> Unit,
 ) {
     Scaffold (
         topBar = {
@@ -66,22 +70,32 @@ fun DateConversionScreenContent(
             )
             Divider(modifier = Modifier.padding(vertical = 10.dp))
 
-            DateInput(
-                dayList = viewState.dayList,
-                dayIndex = viewState.dayIndex,
-                monthOrSeasonLabel = viewState.monthOrSeasonLabel,
-                monthOrSeasonList = viewState.monthOrSeasonList,
-                monthOrSeasonIndex = viewState.monthOrSeasonIndex,
-                yearString = viewState.year.toStringOrEmpty(),
-                onSelectDay = onSelectDay,
-                onSelectMonthOrSeason = onSelectMonthOrSeason,
-                onYearTextChange = onYearTextChange
-            )
+            if (viewState.holidayModeSwitchChecked) {
+                HolidaySelector(
+                    holidayList = viewState.holidayList,
+                    onSelectHoliday = onSelectHoliday,
+                    yearString = viewState.year.toStringOrEmpty(),
+                    onYearTextChange = onYearTextChange,
+                    result = viewState.result
+                )
+            } else {
+                DateInput(
+                    dayList = viewState.dayList,
+                    dayIndex = viewState.dayIndex,
+                    monthOrSeasonLabel = viewState.monthOrSeasonLabel,
+                    monthOrSeasonList = viewState.monthOrSeasonList,
+                    monthOrSeasonIndex = viewState.monthOrSeasonIndex,
+                    yearString = viewState.year.toStringOrEmpty(),
+                    onSelectDay = onSelectDay,
+                    onSelectMonthOrSeason = onSelectMonthOrSeason,
+                    onYearTextChange = onYearTextChange
+                )
 
-            ConversionResult(
-                onConvertDate = onConvertDate,
-                result = viewState.result
-            )
+                ConversionResult(
+                    onConvertDate = onConvertDate,
+                    result = viewState.result
+                )
+            }
         }
     }
 }
@@ -149,6 +163,37 @@ fun DateInput(
 }
 
 @Composable
+fun HolidaySelector(
+    holidayList: List<String>,
+    onSelectHoliday: (Int) -> Unit,
+    yearString: String,
+    onYearTextChange: (String) -> Unit,
+    result: String
+) {
+    Column(
+        modifier = Modifier.padding(5.dp)
+    ) {
+        Text("Year")
+        TextField(
+            value = yearString,
+            onValueChange = onYearTextChange,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        )
+    }
+    LazyColumn {
+        itemsIndexed(holidayList) { i, item ->
+            TextButton(onClick = { onSelectHoliday(i) }) {
+                Text(item)
+            }
+        }
+    }
+    Text(
+        text = result,
+        modifier = Modifier.padding(vertical = 5.dp)
+    )
+}
+
+@Composable
 fun ConversionResult(
     onConvertDate: () -> Unit,
     result: String
@@ -181,6 +226,7 @@ fun DateConversionScreenPreview() {
             onSelectDay = {},
             onSelectMonthOrSeason = {},
             onYearTextChange = {},
+            onSelectHoliday = {},
             onConvertDate = {}
         )
     }

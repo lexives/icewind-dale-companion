@@ -12,9 +12,13 @@ import com.delarax.icewindDale.companion.models.Calendar.NUNAVUT
 import com.delarax.icewindDale.companion.models.Date
 import com.delarax.icewindDale.companion.models.DateConversionMode
 import com.delarax.icewindDale.companion.models.harpos.HarposDate
+import com.delarax.icewindDale.companion.models.harpos.HarposHoliday
 import com.delarax.icewindDale.companion.models.harpos.HarposMonth
+import com.delarax.icewindDale.companion.models.harpos.toDate
 import com.delarax.icewindDale.companion.models.nunavut.NunavutDate
+import com.delarax.icewindDale.companion.models.nunavut.NunavutHoliday
 import com.delarax.icewindDale.companion.models.nunavut.NunavutSeason
+import com.delarax.icewindDale.companion.models.nunavut.toDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -31,6 +35,7 @@ class DateConversionVM @Inject constructor(
         val holidayModeSwitchChecked: Boolean = false,
         val dayList: List<String> = listOf(),
         val monthOrSeasonList: List<String> = listOf(),
+        val holidayList: List<String> = listOf(),
         val monthOrSeasonLabel: String = MONTH_LABEL,
         val dayIndex: Int = 0,
         val monthOrSeasonIndex: Int = 0,
@@ -60,6 +65,7 @@ class DateConversionVM @Inject constructor(
     init {
         getDayList()
         getMonthOrSeasonList()
+        getHolidayList()
     }
 
     private fun getDayList() {
@@ -80,7 +86,22 @@ class DateConversionVM @Inject constructor(
         viewState = viewState.copy(monthOrSeasonList = monthOrSeasonList)
     }
 
-    fun convertDate() {
+    private fun getHolidayList() {
+        viewState = viewState.year?.let {
+            val holidayList = when (viewState.conversionMode.from) {
+                HARPOS -> calendarRepo.getHarposHolidayList(it)
+                NUNAVUT -> calendarRepo.getNunavutHolidayList(it)
+            }
+            viewState.copy(holidayList = holidayList, result = "")
+        } ?: if (viewState.holidayModeSwitchChecked) {
+            viewState.copy(
+                holidayList = listOf(),
+                result = "Enter a year to see the list of holidays."
+            )
+        } else { viewState }
+    }
+
+    fun onConvertDate() {
         val date: Date = when (viewState.conversionMode.from) {
             HARPOS -> {
                 HarposDate(viewState.day, viewState.month, viewState.year ?: 0)
@@ -89,11 +110,18 @@ class DateConversionVM @Inject constructor(
                 NunavutDate(viewState.day, viewState.season, viewState.year ?: 0)
             }
         }
-        viewState = try {
-            val convertedDate = calendarRepo.convertDate(date, viewState.conversionMode)
-            viewState.copy(convertedDate = convertedDate, result = convertedDate.toStringOrEmpty())
+        convertDate(date)
+    }
+
+    fun onSelectHoliday(index: Int) {
+        try {
+            val date: Date = when (viewState.conversionMode.from) {
+                HARPOS -> HarposHoliday.values()[index].toDate(viewState.year ?: 0)
+                NUNAVUT -> NunavutHoliday.values()[index].toDate(viewState.year ?: 0)
+            }
+            convertDate(date)
         } catch(error: Exception) {
-            viewState.copy(convertedDate = null, result = "Error converting date.")
+            viewState = viewState.copy(convertedDate = null, result = "Error converting date.")
         }
     }
 
@@ -110,14 +138,21 @@ class DateConversionVM @Inject constructor(
             conversionMode = DateConversionMode(convertFrom, convertTo),
             monthOrSeasonLabel = if (convertFrom == HARPOS) MONTH_LABEL else SEASON_LABEL,
             dayIndex = 0,
-            monthOrSeasonIndex = 0
+            monthOrSeasonIndex = 0,
+            result = ""
         )
         getDayList()
         getMonthOrSeasonList()
+        getHolidayList()
     }
 
     fun toggleHolidayMode(toggleValue: Boolean) {
         viewState = viewState.copy(holidayModeSwitchChecked = toggleValue)
+        if (toggleValue) {
+            getHolidayList()
+        } else {
+            viewState = viewState.copy(result = "")
+        }
     }
 
     fun updateDayIndex(index: Int) {
@@ -129,9 +164,20 @@ class DateConversionVM @Inject constructor(
         getDayList()
     }
 
-    // TODO: error handling
     fun updateYear(yearText: String) {
         viewState = viewState.copy(year = yearText.toIntOrNull())
+        if (viewState.holidayModeSwitchChecked) {
+            getHolidayList()
+        }
+    }
+
+    private fun convertDate(date: Date) {
+        viewState = try {
+            val convertedDate = calendarRepo.convertDate(date, viewState.conversionMode)
+            viewState.copy(convertedDate = convertedDate, result = convertedDate.toStringOrEmpty())
+        } catch(error: Exception) {
+            viewState.copy(convertedDate = null, result = "Error converting date.")
+        }
     }
 
     companion object {
