@@ -4,10 +4,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -57,7 +57,9 @@ fun DateConversionScreenContent(
         }
     ) {
         Column(
-            modifier = Modifier.padding(10.dp)
+            modifier = Modifier
+                .padding(10.dp)
+                .verticalScroll(rememberScrollState())
         ) {
             SwitchWithLabel(
                 checked = viewState.calendarModeSwitchChecked,
@@ -166,8 +168,8 @@ fun HolidaySelector(
     result: String
 ) {
     YearTextField(yearText = yearText, onYearTextChange = onYearTextChange)
-    LazyColumn {
-        itemsIndexed(holidayList) { i, item ->
+    Column {
+        holidayList.forEachIndexed { i, item ->
             TextButton(onClick = { onSelectHoliday(i) }) {
                 Text(item)
             }
