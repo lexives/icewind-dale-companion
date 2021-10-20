@@ -3,6 +3,10 @@ package com.delarax.icewindDale.companion.models.nunavut
 import com.delarax.icewindDale.companion.extensions.isLeapYear
 import com.delarax.icewindDale.companion.models.Date
 import com.delarax.icewindDale.companion.exceptions.InvalidDateException
+import com.delarax.icewindDale.companion.extensions.leadingZeros
+import com.delarax.icewindDale.companion.extensions.toStringWithSuffix
+import com.delarax.icewindDale.companion.models.DateFormat
+import com.delarax.icewindDale.companion.models.NunavutDateFormat
 
 data class NunavutDate(
     val day: Int,
@@ -71,6 +75,46 @@ data class NunavutDate(
                 season.priorSeason().numDaysInSeasons() + day + numHolidaysPassed()
             }
         } ?: holiday!!.absoluteDayNumber(year)
+    }
+
+    // TODO: delegate formatting to some other class
+    override fun toString(format: DateFormat): String {
+        return if (isValid) {
+            (format as? NunavutDateFormat)?.let { harposFormat ->
+                season?.let { season ->
+                    when (harposFormat) {
+                        NunavutDateFormat.SHORT,
+                        NunavutDateFormat.STANDARD ->
+                            "$day.${season.num()}.$year"
+                        NunavutDateFormat.SHORT_ALTERNATE ->
+                            "$day.${season.abbreviation}.$year"
+                        NunavutDateFormat.SHORT_FULL_NUMBERS,
+                        NunavutDateFormat.STANDARD_FULL_NUMBERS ->
+                            "${day.leadingZeros(2)}.${season.num().leadingZeros(2)}.$year"
+                        NunavutDateFormat.SHORT_ALTERNATE_FULL_NUMBERS ->
+                            "${day.leadingZeros(2)}.${season.abbreviation}.$year"
+                        NunavutDateFormat.WRITTEN ->
+                            "The ${day.toStringWithSuffix()} Day of the ${season.fullName}, " +
+                                    "Year $year"
+                    }
+                } ?: holiday!!.let { holiday ->
+                    when (harposFormat) {
+                        NunavutDateFormat.SHORT,
+                        NunavutDateFormat.SHORT_ALTERNATE,
+                        NunavutDateFormat.SHORT_FULL_NUMBERS,
+                        NunavutDateFormat.SHORT_ALTERNATE_FULL_NUMBERS ->
+                            "${holiday.abbreviation}.$year"
+                        NunavutDateFormat.STANDARD,
+                        NunavutDateFormat.STANDARD_FULL_NUMBERS ->
+                            "${holiday.fullName}, $year"
+                        NunavutDateFormat.WRITTEN ->
+                            "${holiday.fullName}, Year $year"
+                    }
+                }
+            } ?: this.toString() // TODO : throw error?
+        } else {
+            this.toString()
+        }
     }
     
     companion object {

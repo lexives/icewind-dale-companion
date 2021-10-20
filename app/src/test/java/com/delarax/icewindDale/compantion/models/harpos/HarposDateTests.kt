@@ -1,6 +1,7 @@
 package com.delarax.icewindDale.compantion.models.harpos
 
 import com.delarax.icewindDale.companion.exceptions.InvalidDateException
+import com.delarax.icewindDale.companion.models.HarposDateFormat
 import com.delarax.icewindDale.companion.models.harpos.HarposDate
 import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.*
 import com.delarax.icewindDale.companion.models.harpos.HarposMonth.*
@@ -762,6 +763,56 @@ class HarposDateTests {
         assertEquals(
             HarposDate(day = 30, month = NIGHTAL, year = leapYear),
             HarposDate.fromAbsoluteDayNumber(366, leapYear)
+        )
+    }
+
+    @Test
+    fun `toString with STANDARD format `() {
+        assertEquals(
+            "6.2.1234 DR",
+            HarposDate(day = 2, month = KYTHORN, year = 1234).toString(HarposDateFormat.STANDARD)
+        )
+        assertEquals(
+            "Greengrass 1234 DR",
+            GREENGRASS.toDate(1234).toString(HarposDateFormat.STANDARD)
+        )
+    }
+
+    @Test
+    fun `toString with FULL_NUMBERS format `() {
+        assertEquals(
+            "06.02.1234 DR",
+            HarposDate(day = 2, month = KYTHORN, year = 1234)
+                .toString(HarposDateFormat.FULL_NUMBERS)
+        )
+        assertEquals(
+            "Greengrass 1234 DR",
+            GREENGRASS.toDate(1234).toString(HarposDateFormat.FULL_NUMBERS)
+        )
+    }
+
+    @Test
+    fun `toString with WRITTEN format `() {
+        assertEquals(
+            "Kythorn the 2nd, 1234 DR",
+            HarposDate(day = 2, month = KYTHORN, year = 1234).toString(HarposDateFormat.WRITTEN)
+        )
+        assertEquals(
+            "Greengrass, 1234 DR",
+            GREENGRASS.toDate(1234).toString(HarposDateFormat.WRITTEN)
+        )
+    }
+
+    @Test
+    fun `toString with WRITTEN_ALTERNATE format `() {
+        assertEquals(
+            "2 days into The Time of Flowers, 1234 DR",
+            HarposDate(day = 2, month = KYTHORN, year = 1234)
+                .toString(HarposDateFormat.WRITTEN_ALTERNATE)
+        )
+        assertEquals(
+            "Greengrass, 1234 DR",
+            GREENGRASS.toDate(1234).toString(HarposDateFormat.WRITTEN_ALTERNATE)
         )
     }
 }

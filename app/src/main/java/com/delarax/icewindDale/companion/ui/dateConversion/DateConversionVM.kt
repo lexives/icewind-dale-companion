@@ -15,6 +15,8 @@ import com.delarax.icewindDale.companion.models.Calendar.HARPOS
 import com.delarax.icewindDale.companion.models.Calendar.NUNAVUT
 import com.delarax.icewindDale.companion.models.Date
 import com.delarax.icewindDale.companion.models.DateConversionMode
+import com.delarax.icewindDale.companion.models.HarposDateFormat
+import com.delarax.icewindDale.companion.models.NunavutDateFormat
 import com.delarax.icewindDale.companion.models.harpos.HarposDate
 import com.delarax.icewindDale.companion.models.harpos.HarposHoliday
 import com.delarax.icewindDale.companion.models.harpos.HarposMonth
@@ -183,7 +185,31 @@ class DateConversionVM @Inject constructor(
     private fun convertDate(date: Date) {
         viewState = try {
             val convertedDate = calendarRepo.convertDate(date, viewState.conversionMode)
-            viewState.copy(convertedDate = convertedDate, result = convertedDate.toStringOrEmpty())
+
+            // TODO: do this better. probably separate these into different pieces of text.
+            val result: String = when (convertedDate) {
+                is HarposDate -> {
+                    if (convertedDate.month != null) {
+                        convertedDate.toString(HarposDateFormat.STANDARD) + "\n\n" +
+                                convertedDate.toString(HarposDateFormat.WRITTEN)
+                    } else { convertedDate.toString(HarposDateFormat.STANDARD) }
+                }
+                is NunavutDate -> {
+                    if (convertedDate.season != null) {
+                        convertedDate.toString(NunavutDateFormat.STANDARD) + "\n\n" +
+                                convertedDate.toString(NunavutDateFormat.WRITTEN)
+                    } else {
+                        convertedDate.toString(NunavutDateFormat.SHORT) + "\n\n" +
+                                convertedDate.toString(NunavutDateFormat.STANDARD)
+                    }
+                }
+                else -> {
+                    logError(DATE_CONVERSION_ERROR)
+                    DATE_CONVERSION_ERROR
+                }
+            }
+
+            viewState.copy(convertedDate = convertedDate, result = result)
         } catch(error: Throwable) {
             logError(DATE_CONVERSION_ERROR + " " + error.message)
             viewState.copy(convertedDate = null, result = DATE_CONVERSION_ERROR)

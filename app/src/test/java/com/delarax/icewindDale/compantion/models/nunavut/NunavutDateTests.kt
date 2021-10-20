@@ -1,6 +1,7 @@
 package com.delarax.icewindDale.compantion.models.nunavut
 
 import com.delarax.icewindDale.companion.exceptions.InvalidDateException
+import com.delarax.icewindDale.companion.models.NunavutDateFormat
 import com.delarax.icewindDale.companion.models.nunavut.NunavutDate
 import com.delarax.icewindDale.companion.models.nunavut.NunavutHoliday.*
 import com.delarax.icewindDale.companion.models.nunavut.NunavutSeason.*
@@ -1368,6 +1369,97 @@ class NunavutDateTests {
         assertEquals(
             NunavutDate(day = 20, season = DENNING_POLAR_BEAR, year = leapYear),
             NunavutDate.fromAbsoluteDayNumber(366, leapYear)
+        )
+    }
+
+    @Test
+    fun `toString with SHORT format `() {
+        assertEquals(
+            "2.6.1234",
+            NunavutDate(day = 2, season = SKIN_TENTS, year = 1234)
+                .toString(NunavutDateFormat.SHORT)
+        )
+        assertEquals(
+            "FS.1234",
+            SUN_FESTIVAL.toDate(1234).toString(NunavutDateFormat.SHORT)
+        )
+    }
+
+    @Test
+    fun `toString with SHORT_ALTERNATE format `() {
+        assertEquals(
+            "2.ST.1234",
+            NunavutDate(day = 2, season = SKIN_TENTS, year = 1234)
+                .toString(NunavutDateFormat.SHORT_ALTERNATE)
+        )
+        assertEquals(
+            "FS.1234",
+            SUN_FESTIVAL.toDate(1234).toString(NunavutDateFormat.SHORT_ALTERNATE)
+        )
+    }
+
+    @Test
+    fun `toString with SHORT_FULL_NUMBERS format `() {
+        assertEquals(
+            "02.06.1234",
+            NunavutDate(day = 2, season = SKIN_TENTS, year = 1234)
+                .toString(NunavutDateFormat.SHORT_FULL_NUMBERS)
+        )
+        assertEquals(
+            "FS.1234",
+            SUN_FESTIVAL.toDate(1234).toString(NunavutDateFormat.SHORT_FULL_NUMBERS)
+        )
+    }
+
+    @Test
+    fun `toString with SHORT_ALTERNATE_FULL_NUMBERS format `() {
+        assertEquals(
+            "02.ST.1234",
+            NunavutDate(day = 2, season = SKIN_TENTS, year = 1234)
+                .toString(NunavutDateFormat.SHORT_ALTERNATE_FULL_NUMBERS)
+        )
+        assertEquals(
+            "FS.1234",
+            SUN_FESTIVAL.toDate(1234).toString(NunavutDateFormat.SHORT_ALTERNATE_FULL_NUMBERS)
+        )
+    }
+
+    @Test
+    fun `toString with STANDARD format `() {
+        assertEquals(
+            "2.6.1234",
+            NunavutDate(day = 2, season = SKIN_TENTS, year = 1234)
+                .toString(NunavutDateFormat.STANDARD)
+        )
+        assertEquals(
+            "The Festival of the Sun, 1234",
+            SUN_FESTIVAL.toDate(1234).toString(NunavutDateFormat.STANDARD)
+        )
+    }
+
+    @Test
+    fun `toString with STANDARD_FULL_NUMBERS format `() {
+        assertEquals(
+            "02.06.1234",
+            NunavutDate(day = 2, season = SKIN_TENTS, year = 1234)
+                .toString(NunavutDateFormat.STANDARD_FULL_NUMBERS)
+        )
+        assertEquals(
+            "The Festival of the Sun, 1234",
+            SUN_FESTIVAL.toDate(1234).toString(NunavutDateFormat.STANDARD_FULL_NUMBERS)
+        )
+    }
+
+    @Test
+    fun `toString with WRITTEN format `() {
+        assertEquals(
+            "The 2nd Day of the Season of the Skin Tents, Year 1234",
+            NunavutDate(day = 2, season = SKIN_TENTS, year = 1234)
+                .toString(NunavutDateFormat.WRITTEN)
+        )
+        assertEquals(
+            "The Festival of the Sun, Year 1234",
+            SUN_FESTIVAL.toDate(1234).toString(NunavutDateFormat.WRITTEN)
         )
     }
 }

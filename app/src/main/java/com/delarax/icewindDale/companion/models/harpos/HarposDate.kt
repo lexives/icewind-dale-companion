@@ -3,6 +3,11 @@ package com.delarax.icewindDale.companion.models.harpos
 import com.delarax.icewindDale.companion.extensions.isLeapYear
 import com.delarax.icewindDale.companion.models.Date
 import com.delarax.icewindDale.companion.exceptions.InvalidDateException
+import com.delarax.icewindDale.companion.extensions.enumCaseToTitleCase
+import com.delarax.icewindDale.companion.extensions.leadingZeros
+import com.delarax.icewindDale.companion.extensions.toStringWithSuffix
+import com.delarax.icewindDale.companion.models.DateFormat
+import com.delarax.icewindDale.companion.models.HarposDateFormat
 
 data class HarposDate(
     val day: Int,
@@ -68,6 +73,38 @@ data class HarposDate(
         return month?.let { month ->
             month.ordinal * 30 + day + numHolidaysPassed()
         } ?: holiday!!.absoluteDayNumber(year)
+    }
+
+    // TODO: delegate formatting to some other class
+    override fun toString(format: DateFormat): String {
+        return if (isValid) {
+            (format as? HarposDateFormat)?.let { harposFormat ->
+                month?.let { month ->
+                    when (harposFormat) {
+                        HarposDateFormat.STANDARD ->
+                            "${month.num()}.$day.$year DR"
+                        HarposDateFormat.FULL_NUMBERS ->
+                            "${month.num().leadingZeros(2)}.${day.leadingZeros(2)}.$year DR"
+                        HarposDateFormat.WRITTEN ->
+                            "${month.name.enumCaseToTitleCase()} the ${day.toStringWithSuffix()}, " +
+                                    "$year DR"
+                        HarposDateFormat.WRITTEN_ALTERNATE ->
+                            "$day days into ${month.commonName}, $year DR"
+                    }
+                } ?: holiday!!.let { holiday ->
+                    when (harposFormat) {
+                        HarposDateFormat.STANDARD,
+                        HarposDateFormat.FULL_NUMBERS ->
+                            "${holiday.fullName} $year DR"
+                        HarposDateFormat.WRITTEN,
+                        HarposDateFormat.WRITTEN_ALTERNATE ->
+                            "${holiday.fullName}, $year DR"
+                    }
+                }
+            } ?: this.toString() // TODO : throw error?
+        } else {
+            this.toString()
+        }
     }
 
     companion object {
