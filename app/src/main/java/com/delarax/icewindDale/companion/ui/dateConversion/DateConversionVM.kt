@@ -1,11 +1,14 @@
 package com.delarax.icewindDale.companion.ui.dateConversion
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.delarax.icewindDale.companion.R
 import com.delarax.icewindDale.companion.data.CalendarRepo
 import com.delarax.icewindDale.companion.extensions.capitalize
+import com.delarax.icewindDale.companion.extensions.isLeapYear
 import com.delarax.icewindDale.companion.extensions.toIntOrZero
 import com.delarax.icewindDale.companion.extensions.toStringOrEmpty
 import com.delarax.icewindDale.companion.models.Calendar.HARPOS
@@ -48,7 +51,11 @@ class DateConversionVM @Inject constructor(
         } else {
             DateConversionMode(from = HARPOS, to = NUNAVUT)
         }
-        val monthOrSeasonLabel = if (conversionMode.from == HARPOS) LABEL_MONTH else LABEL_SEASON
+        val monthOrSeasonLabelRes = if (conversionMode.from == HARPOS) {
+            R.string.month_label
+        } else {
+            R.string.season_label
+        }
 
         val calendarModeLabel: String = "Calendar mode: ${conversionMode.from.name.capitalize()} " +
                 "to ${conversionMode.to.name.capitalize()}"
@@ -98,7 +105,7 @@ class DateConversionVM @Inject constructor(
             if (viewState.holidayModeSwitchChecked) {
                 viewState.copy(
                     holidayList = listOf(),
-                    result = MESSAGE_NEED_YEAR_FOR_HOLIDAY
+                    result = NEED_YEAR_FOR_HOLIDAY_MESSAGE
                 )
             } else { viewState }
         } else {
@@ -161,13 +168,15 @@ class DateConversionVM @Inject constructor(
 
     fun onSelectHoliday(index: Int) {
         try {
+            val adjustedIndex = if (viewState.year.isLeapYear()) { index } else { index + 1 }
             val date: Date = when (viewState.conversionMode.from) {
-                HARPOS -> HarposHoliday.values()[index].toDate(viewState.year)
-                NUNAVUT -> NunavutHoliday.values()[index].toDate(viewState.year)
+                HARPOS -> HarposHoliday.values()[adjustedIndex].toDate(viewState.year)
+                NUNAVUT -> NunavutHoliday.values()[adjustedIndex].toDate(viewState.year)
             }
             convertDate(date)
-        } catch(error: Exception) {
-            viewState = viewState.copy(convertedDate = null, result = ERROR_DATE_CONVERSION)
+        } catch(error: Throwable) {
+            logError(DATE_CONVERSION_ERROR + " " + error.message)
+            viewState = viewState.copy(convertedDate = null, result = DATE_CONVERSION_ERROR)
         }
     }
 
@@ -175,17 +184,19 @@ class DateConversionVM @Inject constructor(
         viewState = try {
             val convertedDate = calendarRepo.convertDate(date, viewState.conversionMode)
             viewState.copy(convertedDate = convertedDate, result = convertedDate.toStringOrEmpty())
-        } catch(error: Exception) {
-            viewState.copy(convertedDate = null, result = ERROR_DATE_CONVERSION)
+        } catch(error: Throwable) {
+            logError(DATE_CONVERSION_ERROR + " " + error.message)
+            viewState.copy(convertedDate = null, result = DATE_CONVERSION_ERROR)
         }
     }
 
+    private fun logError(message: String) {
+        Log.e(TAG, message)
+    }
+
     companion object {
-        const val LABEL_MONTH = "Month"
-        const val LABEL_SEASON = "Season"
-
-        const val ERROR_DATE_CONVERSION = "Error converting date."
-
-        const val MESSAGE_NEED_YEAR_FOR_HOLIDAY = "Enter a year to see the list of holidays."
+        const val TAG = "DATE_CONVERSION"
+        const val DATE_CONVERSION_ERROR = "Error converting date."
+        const val NEED_YEAR_FOR_HOLIDAY_MESSAGE = "Enter a year to see the list of holidays."
     }
 }

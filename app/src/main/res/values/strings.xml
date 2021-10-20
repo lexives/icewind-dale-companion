@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Icewind Dale Companion</string>
     <string name="string_template">%s</string>
+
+    <!-- Date Conversion Screen -->
+    <string name="month_label">Month</string>
+    <string name="season_label">Season</string>
 </resources>

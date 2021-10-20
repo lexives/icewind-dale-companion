@@ -1,9 +1,7 @@
 package com.delarax.icewindDale.companion.ui.dateConversion
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import android.content.res.Configuration
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -87,7 +85,7 @@ fun DateConversionScreenContent(
                 DateInput(
                     dayList = viewState.dayList,
                     dayIndex = viewState.dayIndex,
-                    monthOrSeasonLabel = viewState.monthOrSeasonLabel,
+                    monthOrSeasonLabel = stringResource(viewState.monthOrSeasonLabelRes),
                     monthOrSeasonList = viewState.monthOrSeasonList,
                     monthOrSeasonIndex = viewState.monthOrSeasonIndex,
                     yearText = viewState.yearText,
@@ -95,6 +93,8 @@ fun DateConversionScreenContent(
                     onSelectMonthOrSeason = onSelectMonthOrSeason,
                     onYearTextChange = onYearTextChange
                 )
+
+                Spacer(modifier = Modifier.height(10.dp))
 
                 ConversionResult(
                     onConvertDate = onConvertDate,
@@ -167,18 +167,24 @@ fun HolidaySelector(
     onYearTextChange: (String) -> Unit,
     result: String
 ) {
-    YearTextField(yearText = yearText, onYearTextChange = onYearTextChange)
     Column {
-        holidayList.forEachIndexed { i, item ->
-            TextButton(onClick = { onSelectHoliday(i) }) {
-                Text(item)
+        YearTextField(yearText = yearText, onYearTextChange = onYearTextChange)
+        Spacer(modifier = Modifier.height(5.dp))
+        Column {
+            holidayList.forEachIndexed { i, item ->
+                Button(
+                    onClick = { onSelectHoliday(i) },
+                    modifier = Modifier.padding(bottom = 5.dp)
+                ) {
+                    Text(item)
+                }
             }
         }
+        Text(
+            text = result,
+            modifier = Modifier.padding(vertical = 5.dp)
+        )
     }
-    Text(
-        text = result,
-        modifier = Modifier.padding(vertical = 5.dp)
-    )
 }
 
 @Composable
@@ -213,7 +219,12 @@ fun ConversionResult(
 ) {
     Row {
         Column {
-            Button(onClick = onConvertDate) {
+            Button(onClick = onConvertDate, contentPadding = PaddingValues(
+                start = 20.dp,
+                top = 12.dp,
+                end = 20.dp,
+                bottom = 12.dp
+            )) {
                 Text("Convert")
             }
             Text(
@@ -245,8 +256,8 @@ fun DateConversionScreenPreview() {
     }
 }
 
-//@Composable
-//@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-//fun DateConversionScreenDarkPreview() {
-//    DateConversionScreenPreview()
-//}
+@Composable
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+fun DateConversionScreenDarkPreview() {
+    DateConversionScreenPreview()
+}
