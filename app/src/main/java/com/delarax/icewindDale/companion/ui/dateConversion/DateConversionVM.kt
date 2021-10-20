@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.delarax.icewindDale.companion.data.CalendarRepo
+import com.delarax.icewindDale.companion.extensions.capitalize
 import com.delarax.icewindDale.companion.extensions.toStringOrEmpty
-import com.delarax.icewindDale.companion.extensions.toStringOrNull
 import com.delarax.icewindDale.companion.models.Calendar.HARPOS
 import com.delarax.icewindDale.companion.models.Calendar.NUNAVUT
 import com.delarax.icewindDale.companion.models.Date
@@ -28,6 +28,7 @@ class DateConversionVM @Inject constructor(
 
     data class ViewState(
         val conversionMode: DateConversionMode = DateConversionMode(from = HARPOS, to = NUNAVUT),
+        val holidayModeSwitchChecked: Boolean = false,
         val dayList: List<String> = listOf(),
         val monthOrSeasonList: List<String> = listOf(),
         val monthOrSeasonLabel: String = MONTH_LABEL,
@@ -43,6 +44,16 @@ class DateConversionVM @Inject constructor(
         }
         val season: NunavutSeason? = if (conversionMode.from != NUNAVUT) null else {
             NunavutSeason.values()[monthOrSeasonIndex]
+        }
+
+        val calendarModeSwitchChecked: Boolean = conversionMode.from == NUNAVUT
+        val calendarModeLabel: String = "Calendar mode: ${conversionMode.from.name.capitalize()} " +
+                "to ${conversionMode.to.name.capitalize()}"
+
+        val holidayModeLabel: String = if (holidayModeSwitchChecked) {
+            "Holiday mode: ON"
+        } else {
+            "Holiday mode: OFF"
         }
     }
 
@@ -103,6 +114,10 @@ class DateConversionVM @Inject constructor(
         )
         getDayList()
         getMonthOrSeasonList()
+    }
+
+    fun toggleHolidayMode(toggleValue: Boolean) {
+        viewState = viewState.copy(holidayModeSwitchChecked = toggleValue)
     }
 
     fun updateDayIndex(index: Int) {
