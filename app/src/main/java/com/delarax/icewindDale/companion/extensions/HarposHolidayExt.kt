@@ -1,7 +1,7 @@
 package com.delarax.icewindDale.companion.models.harpos
 
 import com.delarax.icewindDale.companion.extensions.isLeapYear
-import com.delarax.icewindDale.companion.exceptions.InvalidDateException
+import com.delarax.icewindDale.companion.models.exceptions.InvalidDateException
 
 @Throws(InvalidDateException::class)
 fun HarposHoliday.priorHoliday(year: Int) : HarposHoliday = HarposHoliday.values().let { holidays ->

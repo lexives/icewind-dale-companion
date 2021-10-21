@@ -1,7 +1,6 @@
 package com.delarax.icewindDale.companion.data
 
-import com.delarax.icewindDale.companion.exceptions.IllegalDateConversionException
-import com.delarax.icewindDale.companion.extensions.capitalize
+import com.delarax.icewindDale.companion.models.exceptions.IllegalDateConversionException
 import com.delarax.icewindDale.companion.extensions.isLeapYear
 import com.delarax.icewindDale.companion.models.Calendar
 import com.delarax.icewindDale.companion.models.Date

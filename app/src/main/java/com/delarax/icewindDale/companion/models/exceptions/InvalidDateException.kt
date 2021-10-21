@@ -1,4 +1,4 @@
-package com.delarax.icewindDale.companion.exceptions
+package com.delarax.icewindDale.companion.models.exceptions
 
 import com.delarax.icewindDale.companion.models.harpos.HarposDate
 import com.delarax.icewindDale.companion.models.nunavut.NunavutDate

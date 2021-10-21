@@ -1,20 +1,17 @@
 package com.delarax.icewindDale.companion.models.harpos
 
+import com.delarax.icewindDale.companion.data.DateFormatter
 import com.delarax.icewindDale.companion.extensions.isLeapYear
 import com.delarax.icewindDale.companion.models.Date
-import com.delarax.icewindDale.companion.exceptions.InvalidDateException
-import com.delarax.icewindDale.companion.extensions.enumCaseToTitleCase
-import com.delarax.icewindDale.companion.extensions.leadingZeros
-import com.delarax.icewindDale.companion.extensions.toStringWithSuffix
-import com.delarax.icewindDale.companion.models.DateFormat
-import com.delarax.icewindDale.companion.models.HarposDateFormat
+import com.delarax.icewindDale.companion.models.exceptions.InvalidDateException
 
 data class HarposDate(
-    val day: Int,
+    override val day: Int,
     val month: HarposMonth?,
-    val year: Int,
+    override val year: Int,
     val holiday: HarposHoliday? = null
 ) : Date {
+    val reckoning: String = "DR"
     override val isLeapYear: Boolean = year.isLeapYear()
     override val isValid:  Boolean = !(
         (month == null && holiday == null) ||
@@ -75,36 +72,9 @@ data class HarposDate(
         } ?: holiday!!.absoluteDayNumber(year)
     }
 
-    // TODO: delegate formatting to some other class
-    override fun toString(format: DateFormat): String {
-        return if (isValid) {
-            (format as? HarposDateFormat)?.let { harposFormat ->
-                month?.let { month ->
-                    when (harposFormat) {
-                        HarposDateFormat.STANDARD ->
-                            "${month.num()}.$day.$year DR"
-                        HarposDateFormat.FULL_NUMBERS ->
-                            "${month.num().leadingZeros(2)}.${day.leadingZeros(2)}.$year DR"
-                        HarposDateFormat.WRITTEN ->
-                            "${month.name.enumCaseToTitleCase()} the ${day.toStringWithSuffix()}, " +
-                                    "$year DR"
-                        HarposDateFormat.WRITTEN_ALTERNATE ->
-                            "$day days into ${month.commonName}, $year DR"
-                    }
-                } ?: holiday!!.let { holiday ->
-                    when (harposFormat) {
-                        HarposDateFormat.STANDARD,
-                        HarposDateFormat.FULL_NUMBERS ->
-                            "${holiday.fullName} $year DR"
-                        HarposDateFormat.WRITTEN,
-                        HarposDateFormat.WRITTEN_ALTERNATE ->
-                            "${holiday.fullName}, $year DR"
-                    }
-                }
-            } ?: this.toString() // TODO : throw error?
-        } else {
-            this.toString()
-        }
+    fun toString(format: HarposDateFormat): String {
+        val isHoliday = this.holiday != null
+        return DateFormatter.formatDate(format, this, isHoliday)
     }
 
     companion object {

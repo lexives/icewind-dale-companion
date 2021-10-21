@@ -15,8 +15,8 @@ import com.delarax.icewindDale.companion.models.Calendar.HARPOS
 import com.delarax.icewindDale.companion.models.Calendar.NUNAVUT
 import com.delarax.icewindDale.companion.models.Date
 import com.delarax.icewindDale.companion.models.DateConversionMode
-import com.delarax.icewindDale.companion.models.HarposDateFormat
-import com.delarax.icewindDale.companion.models.NunavutDateFormat
+import com.delarax.icewindDale.companion.models.harpos.HarposDateFormat
+import com.delarax.icewindDale.companion.models.nunavut.NunavutDateFormat
 import com.delarax.icewindDale.companion.models.harpos.HarposDate
 import com.delarax.icewindDale.companion.models.harpos.HarposHoliday
 import com.delarax.icewindDale.companion.models.harpos.HarposMonth
