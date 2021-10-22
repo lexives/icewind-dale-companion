@@ -17,6 +17,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.delarax.icewindDale.companion.R
+import com.delarax.icewindDale.companion.data.PreferencesRepo
+import com.delarax.icewindDale.companion.extensions.enumCaseToTitleCase
+import com.delarax.icewindDale.companion.ui.ThemeVM
 import com.delarax.icewindDale.companion.ui.common.IcewindDaleTopAppBar
 import com.delarax.icewindDale.companion.ui.common.SimpleExposedDropDownMenu
 import com.delarax.icewindDale.companion.ui.common.SwitchWithLabel
@@ -25,7 +28,10 @@ import com.delarax.icewindDale.companion.ui.theme.IcewindDaleTheme
 @Composable
 fun DateConversionScreen() {
     val vm: DateConversionVM = hiltViewModel()
+    val themeVM: ThemeVM = hiltViewModel()
     DateConversionScreenContent(
+        themeVM.viewState,
+        themeVM::setNightModePreference,
         vm.viewState,
         vm::toggleConversionMode,
         vm::toggleHolidayMode,
@@ -39,6 +45,8 @@ fun DateConversionScreen() {
 
 @Composable
 fun DateConversionScreenContent(
+    themeViewState: ThemeVM.ViewState,
+    onSelectNightModeOption: (PreferencesRepo.DarkThemePreference) -> Unit,
     viewState: DateConversionVM.ViewState,
     onToggleConversionMode: (Boolean) -> Unit,
     onToggleHolidayMode: (Boolean) -> Unit,
@@ -60,6 +68,22 @@ fun DateConversionScreenContent(
                 .padding(10.dp)
                 .verticalScroll(rememberScrollState())
         ) {
+            // TODO: make the radio buttons their own component
+            Text("Night Mode")
+            Row(modifier = Modifier.padding(vertical = 5.dp)) {
+                themeViewState.darkThemePreferences.forEach {
+                    RadioButton(
+                        selected = (it == themeViewState.currentDarkThemePreference),
+                        onClick = { onSelectNightModeOption(it) }
+                    )
+                    Text(
+                        text = it.name.enumCaseToTitleCase(),
+                        modifier = Modifier.padding(end = 10.dp)
+                    )
+                }
+            }
+            Divider(modifier = Modifier.padding(vertical = 10.dp))
+
             SwitchWithLabel(
                 checked = viewState.calendarModeSwitchChecked,
                 onCheckedChange = onToggleConversionMode,
@@ -246,6 +270,8 @@ fun DateConversionScreenPreview() {
     IcewindDaleTheme {
         DateConversionScreenContent(
             viewState = DateConversionVM.ViewState(),
+            themeViewState = ThemeVM.ViewState(),
+            onSelectNightModeOption = {},
             onToggleConversionMode = {},
             onToggleHolidayMode = {},
             onSelectDay = {},
