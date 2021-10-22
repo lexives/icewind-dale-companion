@@ -19,6 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.delarax.icewindDale.companion.R
 import com.delarax.icewindDale.companion.ui.common.IcewindDaleTopAppBar
 import com.delarax.icewindDale.companion.ui.common.SimpleExposedDropDownMenu
+import com.delarax.icewindDale.companion.ui.common.SwitchWithLabel
 import com.delarax.icewindDale.companion.ui.theme.IcewindDaleTheme
 
 @Composable
@@ -78,11 +79,7 @@ fun DateConversionScreenContent(
                     holidayList = viewState.holidayList,
                     onSelectHoliday = onSelectHoliday,
                     yearText = viewState.yearText,
-                    onYearTextChange = onYearTextChange,
-                    errorMessage = viewState.errorMessage,
-                    dateStringShort = viewState.standardDateString,
-                    dateStringLong = viewState.spokenDateString,
-                    dateStringLongAlternate = viewState.alternateSpokenDateString,
+                    onYearTextChange = onYearTextChange
                 )
             } else {
                 DateInput(
@@ -108,30 +105,14 @@ fun DateConversionScreenContent(
                 ) {
                     Text("Convert")
                 }
-                ConversionResult(
-                    errorMessage = viewState.errorMessage,
-                    dateStringShort = viewState.standardDateString,
-                    dateStringLong = viewState.spokenDateString,
-                    dateStringLongAlternate = viewState.alternateSpokenDateString,
-                )
             }
+            ConversionResult(
+                errorMessage = viewState.errorMessage,
+                dateStringShort = viewState.standardDateString,
+                dateStringLong = viewState.spokenDateString,
+                dateStringLongAlternate = viewState.alternateSpokenDateString,
+            )
         }
-    }
-}
-
-@Composable
-fun SwitchWithLabel(
-    modifier: Modifier = Modifier,
-    checked: Boolean = false,
-    onCheckedChange: (Boolean) -> Unit = {},
-    labelText: String = ""
-) {
-    Column(modifier = modifier) {
-        Switch(
-            checked = checked,
-            onCheckedChange = onCheckedChange
-        )
-        Text(text = labelText)
     }
 }
 
@@ -178,11 +159,7 @@ fun HolidaySelector(
     holidayList: List<String>,
     onSelectHoliday: (Int) -> Unit,
     yearText: String,
-    onYearTextChange: (String) -> Unit,
-    errorMessage: String?,
-    dateStringShort: String,
-    dateStringLong: String,
-    dateStringLongAlternate: String
+    onYearTextChange: (String) -> Unit
 ) {
     Column {
         YearTextField(yearText = yearText, onYearTextChange = onYearTextChange)
@@ -197,12 +174,6 @@ fun HolidaySelector(
                 }
             }
         }
-        ConversionResult(
-            errorMessage = errorMessage,
-            dateStringShort = dateStringShort,
-            dateStringLong = dateStringLong,
-            dateStringLongAlternate = dateStringLongAlternate
-        )
     }
 }
 
@@ -269,8 +240,8 @@ fun ConversionResult(
  * Previews
  */
 
-@Composable
 @Preview
+@Composable
 fun DateConversionScreenPreview() {
     IcewindDaleTheme {
         DateConversionScreenContent(
@@ -286,8 +257,8 @@ fun DateConversionScreenPreview() {
     }
 }
 
-@Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
 fun DateConversionScreenDarkPreview() {
     DateConversionScreenPreview()
 }

@@ -1,5 +1,6 @@
 package com.delarax.icewindDale.companion.ui.common
 
+import android.content.res.Configuration
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -195,7 +196,7 @@ private fun SimpleExposedDropDownMenuImpl(
 @Preview
 @Composable
 fun SimpleExposedDropDownMenuPreview() {
-    IcewindDaleTheme {
+    PreviewSurface(modifier = Modifier.height(200.dp)) {
         var selectedIndex by remember {mutableStateOf(0)}
 
         SimpleExposedDropDownMenu(
@@ -206,4 +207,10 @@ fun SimpleExposedDropDownMenuPreview() {
             modifier = Modifier.width(200.dp),
         )
     }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun SimpleExposedDropDownMenuDarkPreview() {
+    SimpleExposedDropDownMenuPreview()
 }

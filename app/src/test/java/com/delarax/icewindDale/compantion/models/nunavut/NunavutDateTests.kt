@@ -1,8 +1,8 @@
 package com.delarax.icewindDale.compantion.models.nunavut
 
 import com.delarax.icewindDale.companion.models.exceptions.InvalidDateException
-import com.delarax.icewindDale.companion.models.nunavut.NunavutDateFormat
 import com.delarax.icewindDale.companion.models.nunavut.NunavutDate
+import com.delarax.icewindDale.companion.models.nunavut.NunavutDateFormat
 import com.delarax.icewindDale.companion.models.nunavut.NunavutHoliday.*
 import com.delarax.icewindDale.companion.models.nunavut.NunavutSeason.*
 import com.delarax.icewindDale.companion.models.nunavut.toDate
