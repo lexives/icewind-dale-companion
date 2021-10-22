@@ -79,7 +79,10 @@ fun DateConversionScreenContent(
                     onSelectHoliday = onSelectHoliday,
                     yearText = viewState.yearText,
                     onYearTextChange = onYearTextChange,
-                    result = viewState.result
+                    errorMessage = viewState.errorMessage,
+                    dateStringShort = viewState.standardDateString,
+                    dateStringLong = viewState.spokenDateString,
+                    dateStringLongAlternate = viewState.alternateSpokenDateString,
                 )
             } else {
                 DateInput(
@@ -93,12 +96,23 @@ fun DateConversionScreenContent(
                     onSelectMonthOrSeason = onSelectMonthOrSeason,
                     onYearTextChange = onYearTextChange
                 )
-
-                Spacer(modifier = Modifier.height(10.dp))
-
+                Button(
+                    onClick = onConvertDate,
+                    contentPadding = PaddingValues(
+                        start = 20.dp,
+                        top = 12.dp,
+                        end = 20.dp,
+                        bottom = 12.dp
+                    ),
+                    modifier = Modifier.padding(vertical = 10.dp)
+                ) {
+                    Text("Convert")
+                }
                 ConversionResult(
-                    onConvertDate = onConvertDate,
-                    result = viewState.result
+                    errorMessage = viewState.errorMessage,
+                    dateStringShort = viewState.standardDateString,
+                    dateStringLong = viewState.spokenDateString,
+                    dateStringLongAlternate = viewState.alternateSpokenDateString,
                 )
             }
         }
@@ -165,7 +179,10 @@ fun HolidaySelector(
     onSelectHoliday: (Int) -> Unit,
     yearText: String,
     onYearTextChange: (String) -> Unit,
-    result: String
+    errorMessage: String?,
+    dateStringShort: String,
+    dateStringLong: String,
+    dateStringLongAlternate: String
 ) {
     Column {
         YearTextField(yearText = yearText, onYearTextChange = onYearTextChange)
@@ -180,9 +197,11 @@ fun HolidaySelector(
                 }
             }
         }
-        Text(
-            text = result,
-            modifier = Modifier.padding(vertical = 5.dp)
+        ConversionResult(
+            errorMessage = errorMessage,
+            dateStringShort = dateStringShort,
+            dateStringLong = dateStringLong,
+            dateStringLongAlternate = dateStringLongAlternate
         )
     }
 }
@@ -214,23 +233,34 @@ fun YearTextField(
 
 @Composable
 fun ConversionResult(
-    onConvertDate: () -> Unit,
-    result: String
+    errorMessage: String?,
+    dateStringShort: String,
+    dateStringLong: String,
+    dateStringLongAlternate: String,
 ) {
     Row {
         Column {
-            Button(onClick = onConvertDate, contentPadding = PaddingValues(
-                start = 20.dp,
-                top = 12.dp,
-                end = 20.dp,
-                bottom = 12.dp
-            )) {
-                Text("Convert")
+            errorMessage?.let {
+                Text(
+                    text = errorMessage,
+                    modifier = Modifier.padding(vertical = 5.dp)
+                )
+            } ?: run {
+                Text(
+                    text = dateStringShort,
+                    modifier = Modifier.padding(vertical = 5.dp)
+                )
+                Spacer(modifier = Modifier.height(5.dp))
+                Text(
+                    text = dateStringLong,
+                    modifier = Modifier.padding(vertical = 5.dp)
+                )
+                Spacer(modifier = Modifier.height(5.dp))
+                Text(
+                    text = dateStringLongAlternate,
+                    modifier = Modifier.padding(vertical = 5.dp)
+                )
             }
-            Text(
-                text = result,
-                modifier = Modifier.padding(vertical = 5.dp)
-            )
         }
     }
 }

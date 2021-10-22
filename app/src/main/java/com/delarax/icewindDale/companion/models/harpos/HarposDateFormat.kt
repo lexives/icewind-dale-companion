@@ -21,11 +21,11 @@ enum class HarposDateFormat(
     override val pattern: String,
     override val holidayPattern: String
 ) : DateFormat {
-    // 6.2.1234 DR / Greengrass 1234 DR
-    STANDARD("m.d.y R", "H y R"),
+    // 6.2.1234 DR / Greengrass, 1234 DR
+    STANDARD("m.d.y R", "H, y R"),
 
-    // 06.02.1234 DR / Greengrass 1234 DR
-    FULL_NUMBERS("mm.dd.y R", "H y R"),
+    // 06.02.1234 DR / Greengrass, 1234 DR
+    FULL_NUMBERS("mm.dd.y R", "H, y R"),
 
     // Kythorn the 2nd, 1234 DR / Greengrass, 1234 DR
     WRITTEN("MS the D, y R", "H, y R"),

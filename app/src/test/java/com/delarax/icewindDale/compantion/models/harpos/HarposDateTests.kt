@@ -773,7 +773,7 @@ class HarposDateTests {
             HarposDate(day = 2, month = KYTHORN, year = 1234).toString(HarposDateFormat.STANDARD)
         )
         assertEquals(
-            "Greengrass 1234 DR",
+            "Greengrass, 1234 DR",
             GREENGRASS.toDate(1234).toString(HarposDateFormat.STANDARD)
         )
     }
@@ -786,7 +786,7 @@ class HarposDateTests {
                 .toString(HarposDateFormat.FULL_NUMBERS)
         )
         assertEquals(
-            "Greengrass 1234 DR",
+            "Greengrass, 1234 DR",
             GREENGRASS.toDate(1234).toString(HarposDateFormat.FULL_NUMBERS)
         )
     }

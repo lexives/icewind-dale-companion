@@ -15,16 +15,8 @@ import com.delarax.icewindDale.companion.models.Calendar.HARPOS
 import com.delarax.icewindDale.companion.models.Calendar.NUNAVUT
 import com.delarax.icewindDale.companion.models.Date
 import com.delarax.icewindDale.companion.models.DateConversionMode
-import com.delarax.icewindDale.companion.models.harpos.HarposDateFormat
-import com.delarax.icewindDale.companion.models.nunavut.NunavutDateFormat
-import com.delarax.icewindDale.companion.models.harpos.HarposDate
-import com.delarax.icewindDale.companion.models.harpos.HarposHoliday
-import com.delarax.icewindDale.companion.models.harpos.HarposMonth
-import com.delarax.icewindDale.companion.models.harpos.toDate
-import com.delarax.icewindDale.companion.models.nunavut.NunavutDate
-import com.delarax.icewindDale.companion.models.nunavut.NunavutHoliday
-import com.delarax.icewindDale.companion.models.nunavut.NunavutSeason
-import com.delarax.icewindDale.companion.models.nunavut.toDate
+import com.delarax.icewindDale.companion.models.harpos.*
+import com.delarax.icewindDale.companion.models.nunavut.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -46,7 +38,7 @@ class DateConversionVM @Inject constructor(
         val monthOrSeasonIndex: Int = 0,
         val yearText: String = "",
         val convertedDate: Date? = null,
-        val result: String = ""
+        val errorMessage: String? = null
     ) {
         val conversionMode: DateConversionMode = if (calendarModeSwitchChecked) {
             DateConversionMode(from = NUNAVUT, to = HARPOS)
@@ -76,6 +68,31 @@ class DateConversionVM @Inject constructor(
             NunavutSeason.values()[monthOrSeasonIndex]
         }
         val year: Int = yearText.toIntOrZero()
+
+        val standardDateString: String = when (convertedDate) {
+            is HarposDate -> convertedDate.toString(HarposDateFormat.STANDARD)
+            is NunavutDate -> convertedDate.toString(NunavutDateFormat.SHORT)
+            else -> ""
+        }
+
+        val spokenDateString: String = when (convertedDate) {
+            is HarposDate -> {
+                if (!convertedDate.isHoliday) {
+                    convertedDate.toString(HarposDateFormat.WRITTEN)
+                } else ""
+            }
+            is NunavutDate -> convertedDate.toString(NunavutDateFormat.WRITTEN)
+            else -> ""
+        }
+
+        val alternateSpokenDateString = when (convertedDate) {
+            is HarposDate -> {
+                if (!convertedDate.isHoliday) {
+                    convertedDate.toString(HarposDateFormat.WRITTEN_ALTERNATE)
+                } else ""
+            }
+            else -> ""
+        }
     }
 
     init {
@@ -107,7 +124,7 @@ class DateConversionVM @Inject constructor(
             if (viewState.holidayModeSwitchChecked) {
                 viewState.copy(
                     holidayList = listOf(),
-                    result = NEED_YEAR_FOR_HOLIDAY_MESSAGE
+                    errorMessage = NEED_YEAR_FOR_HOLIDAY_MESSAGE
                 )
             } else { viewState }
         } else {
@@ -115,7 +132,7 @@ class DateConversionVM @Inject constructor(
                 HARPOS -> calendarRepo.getHarposHolidayList(viewState.year)
                 NUNAVUT -> calendarRepo.getNunavutHolidayList(viewState.year)
             }
-            viewState.copy(holidayList = holidayList, result = "")
+            viewState.copy(holidayList = holidayList, errorMessage = null)
         }
     }
 
@@ -124,7 +141,7 @@ class DateConversionVM @Inject constructor(
             calendarModeSwitchChecked = toggleValue,
             dayIndex = 0,
             monthOrSeasonIndex = 0,
-            result = ""
+            errorMessage = null
         )
         getDayList()
         getMonthOrSeasonList()
@@ -136,7 +153,7 @@ class DateConversionVM @Inject constructor(
         if (toggleValue) {
             getHolidayList()
         } else {
-            viewState = viewState.copy(result = "")
+            viewState = viewState.copy(errorMessage = null)
         }
     }
 
@@ -178,7 +195,7 @@ class DateConversionVM @Inject constructor(
             convertDate(date)
         } catch(error: Throwable) {
             logError(DATE_CONVERSION_ERROR + " " + error.message)
-            viewState = viewState.copy(convertedDate = null, result = DATE_CONVERSION_ERROR)
+            viewState = viewState.copy(convertedDate = null, errorMessage = DATE_CONVERSION_ERROR)
         }
     }
 
@@ -186,33 +203,10 @@ class DateConversionVM @Inject constructor(
         viewState = try {
             val convertedDate = calendarRepo.convertDate(date, viewState.conversionMode)
 
-            // TODO: do this better. probably separate these into different pieces of text.
-            val result: String = when (convertedDate) {
-                is HarposDate -> {
-                    if (convertedDate.month != null) {
-                        convertedDate.toString(HarposDateFormat.STANDARD) + "\n\n" +
-                                convertedDate.toString(HarposDateFormat.WRITTEN)
-                    } else { convertedDate.toString(HarposDateFormat.STANDARD) }
-                }
-                is NunavutDate -> {
-                    if (convertedDate.season != null) {
-                        convertedDate.toString(NunavutDateFormat.STANDARD) + "\n\n" +
-                                convertedDate.toString(NunavutDateFormat.WRITTEN)
-                    } else {
-                        convertedDate.toString(NunavutDateFormat.SHORT) + "\n\n" +
-                                convertedDate.toString(NunavutDateFormat.STANDARD)
-                    }
-                }
-                else -> {
-                    logError(DATE_CONVERSION_ERROR)
-                    DATE_CONVERSION_ERROR
-                }
-            }
-
-            viewState.copy(convertedDate = convertedDate, result = result)
+            viewState.copy(convertedDate = convertedDate, errorMessage = null)
         } catch(error: Throwable) {
             logError(DATE_CONVERSION_ERROR + " " + error.message)
-            viewState.copy(convertedDate = null, result = DATE_CONVERSION_ERROR)
+            viewState.copy(convertedDate = null, errorMessage = DATE_CONVERSION_ERROR)
         }
     }
 

@@ -32,7 +32,7 @@ class DateFormatterTests {
     @Test
     fun `formatDate formats a valid harpos holiday`() {
         assertEquals(
-            "The Feast of the Moon 1234 DR",
+            "The Feast of the Moon, 1234 DR",
             DateFormatter.formatDate(HarposDateFormat.STANDARD, harposHoliday)
         )
     }
