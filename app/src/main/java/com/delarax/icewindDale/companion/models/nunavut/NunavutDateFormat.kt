@@ -31,7 +31,7 @@ enum class NunavutDateFormat(
     SHORT_FULL_NUMBERS("dd.ss.y", "HA.y"),
 
     // 02.ST.1234 / FS.1234
-    SHORT_ALTERNATE_FULL_NUMBERS("dd.ss.y", "HA.y"),
+    SHORT_ALTERNATE_FULL_NUMBERS("dd.SA.y", "HA.y"),
 
     // 2.6.1234 / The Festival of the Sun, 1234
     STANDARD("d.s.y", "HF, y"),
@@ -39,6 +39,6 @@ enum class NunavutDateFormat(
     // 02.06.1234 / The Festival of the Sun, 1234
     STANDARD_FULL_NUMBERS("dd.ss.y", "HF, y"),
 
-    // The 2nd Day of the Season of the Skin Tents, Year 1234 /The Festival of the Sun, Year 1234
-    WRITTEN("The D Day of the SF Year y", "HF year y")
+    // The 2nd Day of the Season of the Skin Tents, Year 1234 / The Festival of the Sun, Year 1234
+    WRITTEN("The D \\Da\\y of the SF, Year y", "HF, Year y")
 }

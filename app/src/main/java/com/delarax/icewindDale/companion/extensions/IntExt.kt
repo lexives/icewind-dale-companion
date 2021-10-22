@@ -15,7 +15,7 @@ fun Int?.toStringOrEmpty() : String = this.toString().let {
 fun Int.leadingZeros(places: Int) : String = this.toStringOrEmpty().padStart(places, '0')
 
 fun Int.toStringWithSuffix() : String = this.let {
-    if (it !in (11..13)) {
+    if (abs(it) % 100 !in (11..13)) {
         when (abs(it) % 10) {
             1 -> "${it}st"
             2 -> "${it}nd"

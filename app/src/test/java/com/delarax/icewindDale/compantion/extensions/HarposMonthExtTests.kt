@@ -1,4 +1,4 @@
-package com.delarax.icewindDale.compantion.models.harpos
+package com.delarax.icewindDale.compantion.extensions
 
 import com.delarax.icewindDale.companion.models.harpos.*
 import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.*

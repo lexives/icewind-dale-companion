@@ -31,5 +31,5 @@ enum class HarposDateFormat(
     WRITTEN("MS the D, y R", "H, y R"),
 
     // 2 days into The Time of Flowers, 1234 DR / Greengrass, 1234 DR
-    WRITTEN_ALTERNATE("d days into MF, y R", "H, y R"),
+    WRITTEN_ALTERNATE("d \\da\\y\\s into MF, y R", "H, y R"),
 }

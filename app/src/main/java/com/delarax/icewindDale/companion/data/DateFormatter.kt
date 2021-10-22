@@ -1,6 +1,5 @@
 package com.delarax.icewindDale.companion.data
 
-import android.util.Log
 import com.delarax.icewindDale.companion.data.DateFormatter.Symbol.*
 import com.delarax.icewindDale.companion.extensions.*
 import com.delarax.icewindDale.companion.models.Date
@@ -14,63 +13,55 @@ import com.delarax.icewindDale.companion.models.nunavut.num
 class DateFormatter {
 
     companion object {
-        fun formatDate(format: DateFormat, date: Date, isHoliday: Boolean): String = when {
+        fun formatDate(format: DateFormat, date: Date): String = when {
             !date.isValid -> date.toString()
-            isHoliday -> DateFormatter().formatDateFromPattern(format.holidayPattern, date)
+            date.isHoliday -> DateFormatter().formatDateFromPattern(format.holidayPattern, date)
             else -> DateFormatter().formatDateFromPattern(format.pattern, date)
         }
     }
 
-    // TODO: allow escaping characters
     fun formatDateFromPattern(pattern: String, date: Date) : String {
         val listOfChars = pattern.toList()
 
-        // find the first instance of a valid symbol and how many characters long it is
-        var indexAndLength: Pair<Int, Int> = -1 to 0
-
-        for (i in 0..listOfChars.lastIndex) {
+        // find the first instance of a valid symbol and how many characters long it is.
+        // skips over a symbol if it's preceded by a '\'
+        var indexAndLength: Pair<Int, Int>? = null
+        var i = 0
+        while (i < listOfChars.size && indexAndLength == null){
             val charAsString = listOfChars[i].toString()
             val nextChar = listOfChars.getOrNull(i + 1) ?: ""
             val bothChars = charAsString + nextChar.toString()
+            val isEscaped = listOfChars.getOrNull(i - 1) == '\\'
 
             if (isDoubleCharSymbol(bothChars)) {
-                indexAndLength = i to 2
-                break
+                if (isEscaped) {
+                    i += 2
+                } else {
+                    indexAndLength = i to 2
+                }
+
             } else if (isSingleCharSymbol(charAsString)) {
-                indexAndLength = i to 1
-                break
+                if (isEscaped) {
+                    i += 1
+                } else {
+                    indexAndLength = i to 1
+                }
+            } else {
+                i += 1
             }
         }
 
         // if it didn't find a symbol, return formatString
-        if (indexAndLength.first == -1) {
-            return pattern
-        }
+        return indexAndLength?.let { (i, len) ->
+            // split the string into [pre-symbol, symbol, post-symbol]
+            val splitString = pattern.toTriple(i, len)
 
-        // split the string into [pre-symbol, symbol, post-symbol]
-        val splitString = pattern.toTriple(indexAndLength.first, indexAndLength.second)
-        
-        // combine the three sections by parsing the middle section and calling
-        // formatDate on the remaining string
-//        return try {
-//            splitString.first +
-//                    parseSymbol(splitString.second, date) +
-//                    formatDateFromPattern(splitString.third, date)
-//        } catch (e: Throwable) {
-//            Log.e(
-//                "DATE_FORMATTER",
-//                e.message ?: "Unknown error while formatting date from pattern '$pattern'"
-//            )
-//            pattern
-//        }
-        /** TODO( log didn't work. also, the error message was
-        * "'s' is not a valid symbol for formatting a NunavutDate"
-        * When it should have been
-        * "Tried to format symbol 's' but date did not have a season")
-        **/
-        return splitString.first +
-                parseSymbol(splitString.second, date) +
-                formatDateFromPattern(splitString.third, date)
+            // combine the three sections by parsing the middle section and calling
+            // formatDate on the remaining string
+            return splitString.first.replace("\\", "") +
+                    parseSymbol(splitString.second, date) +
+                    formatDateFromPattern(splitString.third, date)
+        } ?: pattern.replace("\\", "")
     }
 
     private fun isSingleCharSymbol(string: String) : Boolean = when (string) {
@@ -86,7 +77,7 @@ class DateFormatter {
 
     private fun isDoubleCharSymbol(string: String) : Boolean = when (string) {
         MONTH_SHORT.value,
-        MONTH_LONG.value,
+        MONTH_FULL.value,
         MONTH_NUM_FULL.value,
         SEASON_ABBREVIATION.value,
         SEASON_FULL.value,
@@ -100,90 +91,51 @@ class DateFormatter {
     @Throws(InvalidDateFormatException::class)
     private fun parseSymbol(symbol: String, date: Date) : String = when (symbol) {
         YEAR.value -> { date.year.toString() }
-        RECKONING.value -> { harpos(date, symbol).reckoning }
+        RECKONING.value -> { (date as? HarposDate)?.reckoning ?: symbol }
         MONTH_SHORT.value -> {
-            harpos(date, symbol).month?.name?.enumCaseToTitleCase()
-                ?: throw harposMonthError(symbol)
+            (date as? HarposDate)?.month?.name?.enumCaseToTitleCase() ?: symbol
         }
-        MONTH_LONG.value -> {
-            harpos(date, symbol).month?.commonName
-                ?: throw harposMonthError(symbol)
+        MONTH_FULL.value -> {
+            (date as? HarposDate)?.month?.commonName ?: symbol
         }
         MONTH_NUM.value -> {
-            harpos(date, symbol).month?.num().toStringOrNull()
-                ?: throw harposMonthError(symbol)
+            (date as? HarposDate)?.month?.num().toStringOrNull() ?: symbol
         }
         MONTH_NUM_FULL.value -> {
-            harpos(date, symbol).month?.num()?.leadingZeros(2)
-                ?: throw harposMonthError(symbol)
+            (date as? HarposDate)?.month?.num()?.leadingZeros(2) ?: symbol
         }
         SEASON_ABBREVIATION.value -> {
-            nunavut(date, symbol).season?.abbreviation?.name
-                ?: throw nunavutSeasonError(symbol)
+            (date as? NunavutDate)?.season?.abbreviation?.name ?: symbol
         }
         SEASON_FULL.value -> {
-            nunavut(date, symbol).season?.fullName
-                ?: throw nunavutSeasonError(symbol)
+            (date as? NunavutDate)?.season?.fullName ?: symbol
         }
         SEASON_NUM.value -> {
-            nunavut(date, symbol).season?.num().toStringOrNull()
-                ?: throw nunavutSeasonError(symbol)
+            (date as? NunavutDate)?.season?.num().toStringOrNull() ?: symbol
         }
         SEASON_NUM_FULL.value -> {
-            nunavut(date, symbol).season?.num()?.leadingZeros(2)
-                ?: throw nunavutSeasonError(symbol)
+            (date as? NunavutDate)?.season?.num()?.leadingZeros(2) ?: symbol
         }
         DAY_NUM.value -> { date.day.toString() }
         DAY_NUM_FULL.value -> { date.day.leadingZeros(2) }
         DAY_WRITTEN.value -> { date.day.toStringWithSuffix() }
         HOLIDAY_NAME.value -> {
-            harpos(date, symbol).holiday?.fullName
-                ?: throw holidayError(symbol)
+            (date as? HarposDate)?.holiday?.fullName ?: symbol
         }
         HOLIDAY_ABBREVIATION.value -> {
-            nunavut(date, symbol).holiday?.abbreviation?.name
-                ?: throw holidayError(symbol)
+            (date as? NunavutDate)?.holiday?.abbreviation?.name ?: symbol
         }
         HOLIDAY_FULL.value -> {
-            nunavut(date, symbol).holiday?.fullName
-                ?: throw holidayError(symbol)
+            (date as? NunavutDate)?.holiday?.fullName ?: symbol
         }
-        else -> throw InvalidDateFormatException("Invalid symbol: '$symbol'")
+        else -> symbol
     }
 
-    @Throws(InvalidDateFormatException::class)
-    private fun harpos(date: Date, symbol: String) : HarposDate = when (date) {
-        is HarposDate -> date
-        else -> throw InvalidDateFormatException(
-            "'$symbol' is not a valid symbol for formatting a NunavutDate"
-        )
-    }
-
-    @Throws(InvalidDateFormatException::class)
-    private fun nunavut(date: Date, symbol: String) : NunavutDate = when (date) {
-        is NunavutDate -> date
-        else -> throw InvalidDateFormatException(
-            "'$symbol' is not a valid symbol for formatting a NunavutDate"
-        )
-    }
-
-    private fun harposMonthError(symbol: String) = InvalidDateFormatException(
-            "Tried to format symbol '$symbol' but date did not have a month"
-    )
-
-    private fun nunavutSeasonError(symbol: String) = InvalidDateFormatException(
-        "Tried to format symbol '$symbol' but date did not have a season"
-    )
-
-    private fun holidayError(symbol: String) = InvalidDateFormatException(
-        "Tried to format symbol '$symbol' but date did not have a holiday"
-    )
-
-    enum class Symbol(val value: String){
+    private enum class Symbol(val value: String){
         YEAR("y"),
         RECKONING("R"),
         MONTH_SHORT("MS"),
-        MONTH_LONG("ML"),
+        MONTH_FULL("MF"),
         MONTH_NUM("m"),
         MONTH_NUM_FULL("mm"),
         SEASON_ABBREVIATION("SA"),

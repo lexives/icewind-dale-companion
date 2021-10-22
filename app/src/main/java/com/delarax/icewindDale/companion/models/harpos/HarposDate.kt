@@ -21,6 +21,7 @@ data class HarposDate(
         (holiday != null && day != 1) ||
         (holiday?.isQuadrennial == true && !isLeapYear)
     )
+    override val isHoliday: Boolean = isValid && holiday != null
 
     @Throws(InvalidDateException::class)
     fun priorMonth() : HarposMonth {
@@ -72,10 +73,7 @@ data class HarposDate(
         } ?: holiday!!.absoluteDayNumber(year)
     }
 
-    fun toString(format: HarposDateFormat): String {
-        val isHoliday = this.holiday != null
-        return DateFormatter.formatDate(format, this, isHoliday)
-    }
+    fun toString(format: HarposDateFormat): String = DateFormatter.formatDate(format, this)
 
     companion object {
         val daysInLeapYear: Int = HarposMonth.values().size * 30 +

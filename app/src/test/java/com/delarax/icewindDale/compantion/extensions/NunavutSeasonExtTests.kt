@@ -1,4 +1,4 @@
-package com.delarax.icewindDale.compantion.models.nunavut
+package com.delarax.icewindDale.compantion.extensions
 
 import com.delarax.icewindDale.companion.models.nunavut.*
 import com.delarax.icewindDale.companion.models.nunavut.NunavutHoliday.*

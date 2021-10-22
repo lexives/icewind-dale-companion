@@ -5,5 +5,6 @@ interface Date {
     val year: Int
     val isLeapYear: Boolean
     val isValid: Boolean
+    val isHoliday: Boolean
     fun absoluteDayNumber(): Int
 }

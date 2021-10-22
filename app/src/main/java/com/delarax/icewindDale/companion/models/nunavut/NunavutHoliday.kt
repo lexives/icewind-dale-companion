@@ -20,6 +20,6 @@ enum class NunavutHoliday(
     TUNNIQAIJUK(NunavutSeason.JARLMOOT, NunavutSeason.ELK_HUNT, false, T, "Tunniqaijuk", "Mammoth"),
     MOON_FEAST(
         NunavutSeason.ELK_HUNT,
-        NunavutSeason.DENNING_POLAR_BEAR, false, FM, "Feast of the Moon", "Hippogryf"
+        NunavutSeason.DENNING_POLAR_BEAR, false, FM, "The Feast of the Moon", "Hippogryf"
     )
 }

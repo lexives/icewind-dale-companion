@@ -20,6 +20,7 @@ data class NunavutDate(
         (holiday != null && day != 1) ||
         (holiday?.isQuadrennial == true && !isLeapYear)
     )
+    override val isHoliday: Boolean = isValid && holiday != null
 
     @Throws(InvalidDateException::class)
     fun priorSeason() : NunavutSeason {
@@ -74,10 +75,7 @@ data class NunavutDate(
         } ?: holiday!!.absoluteDayNumber(year)
     }
 
-    fun toString(format: NunavutDateFormat): String {
-        val isHoliday = this.holiday != null
-        return DateFormatter.formatDate(format, this, isHoliday)
-    }
+    fun toString(format: NunavutDateFormat): String = DateFormatter.formatDate(format, this)
 
     companion object {
         val daysInLeapYear: Int = NunavutSeason.values().last().numDaysInSeasons() +
