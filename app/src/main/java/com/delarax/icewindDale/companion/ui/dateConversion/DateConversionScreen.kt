@@ -19,7 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.delarax.icewindDale.companion.R
 import com.delarax.icewindDale.companion.data.PreferencesRepo
 import com.delarax.icewindDale.companion.extensions.enumCaseToTitleCase
-import com.delarax.icewindDale.companion.ui.ThemeVM
+import com.delarax.icewindDale.companion.ui.theme.ThemeVM
 import com.delarax.icewindDale.companion.ui.common.IcewindDaleTopAppBar
 import com.delarax.icewindDale.companion.ui.common.SimpleExposedDropDownMenu
 import com.delarax.icewindDale.companion.ui.common.SwitchWithLabel

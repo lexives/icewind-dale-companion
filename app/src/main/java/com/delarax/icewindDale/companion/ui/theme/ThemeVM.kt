@@ -1,4 +1,4 @@
-package com.delarax.icewindDale.companion.ui
+package com.delarax.icewindDale.companion.ui.theme
 
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.getValue

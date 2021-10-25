@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.delarax.icewindDale.companion.data.PreferencesRepo.DarkThemePreference.OFF
 import com.delarax.icewindDale.companion.data.PreferencesRepo.DarkThemePreference.ON
-import com.delarax.icewindDale.companion.ui.ThemeVM
+import com.delarax.icewindDale.companion.ui.theme.ThemeVM
 import com.delarax.icewindDale.companion.ui.dateConversion.DateConversionScreen
 import com.delarax.icewindDale.companion.ui.theme.IcewindDaleTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             IcewindDaleContent {
-                DateConversionScreen()
+                IcewindDaleNavigation()
             }
         }
     }
