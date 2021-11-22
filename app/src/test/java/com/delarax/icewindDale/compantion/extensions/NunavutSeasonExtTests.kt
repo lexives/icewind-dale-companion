@@ -1,8 +1,29 @@
 package com.delarax.icewindDale.compantion.extensions
 
-import com.delarax.icewindDale.companion.models.nunavut.*
-import com.delarax.icewindDale.companion.models.nunavut.NunavutHoliday.*
-import com.delarax.icewindDale.companion.models.nunavut.NunavutSeason.*
+import com.delarax.icewindDale.companion.models.nunavut.NunavutHoliday.ALIANAT
+import com.delarax.icewindDale.companion.models.nunavut.NunavutHoliday.MIDWINTER
+import com.delarax.icewindDale.companion.models.nunavut.NunavutHoliday.MOON_FEAST
+import com.delarax.icewindDale.companion.models.nunavut.NunavutHoliday.OMINGMAK
+import com.delarax.icewindDale.companion.models.nunavut.NunavutHoliday.SUN_FESTIVAL
+import com.delarax.icewindDale.companion.models.nunavut.NunavutHoliday.TUNNIQAIJUK
+import com.delarax.icewindDale.companion.models.nunavut.NunavutSeason.BARE_MOUNTAIN
+import com.delarax.icewindDale.companion.models.nunavut.NunavutSeason.BEATING_ICE
+import com.delarax.icewindDale.companion.models.nunavut.NunavutSeason.BERRIES
+import com.delarax.icewindDale.companion.models.nunavut.NunavutSeason.DENNING_POLAR_BEAR
+import com.delarax.icewindDale.companion.models.nunavut.NunavutSeason.ELK_HUNT
+import com.delarax.icewindDale.companion.models.nunavut.NunavutSeason.FALLING_STARS
+import com.delarax.icewindDale.companion.models.nunavut.NunavutSeason.IGLOO
+import com.delarax.icewindDale.companion.models.nunavut.NunavutSeason.JARLMOOT
+import com.delarax.icewindDale.companion.models.nunavut.NunavutSeason.NESTING_GEESE
+import com.delarax.icewindDale.companion.models.nunavut.NunavutSeason.RUNNING_CHAR
+import com.delarax.icewindDale.companion.models.nunavut.NunavutSeason.SEAL_PUPS
+import com.delarax.icewindDale.companion.models.nunavut.NunavutSeason.SKIN_TENTS
+import com.delarax.icewindDale.companion.models.nunavut.lastHoliday
+import com.delarax.icewindDale.companion.models.nunavut.nextHoliday
+import com.delarax.icewindDale.companion.models.nunavut.nextSeason
+import com.delarax.icewindDale.companion.models.nunavut.numDaysInSeasons
+import com.delarax.icewindDale.companion.models.nunavut.numHolidaysPassed
+import com.delarax.icewindDale.companion.models.nunavut.priorSeason
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

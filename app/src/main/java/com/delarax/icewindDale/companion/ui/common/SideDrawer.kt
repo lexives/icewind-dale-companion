@@ -2,14 +2,22 @@ package com.delarax.icewindDale.companion.ui.common
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Divider
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.delarax.icewindDale.companion.R
 import com.delarax.icewindDale.companion.ui.navigation.Screen
 import com.delarax.icewindDale.companion.ui.theme.IcewindDaleTheme
@@ -29,23 +37,23 @@ fun IcewindDaleSideDrawerContent(
             text = stringResource(R.string.app_name),
             style = MaterialTheme.typography.h6,
             modifier = Modifier.padding(
-                top = 24.dp,
-                bottom = 0.dp,
-                start = 24.dp,
-                end = 24.dp
+                top = Dimens.Spacing.lg,
+                bottom = Dimens.Spacing.none,
+                start = Dimens.Spacing.lg,
+                end = Dimens.Spacing.lg
             )
         )
         Divider(
-            modifier = Modifier.padding(vertical = 10.dp)
+            modifier = Modifier.padding(vertical = Dimens.Spacing.md)
         )
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
-                    top = 0.dp,
-                    bottom = 24.dp,
-                    start = 24.dp,
-                    end = 24.dp
+                    top = Dimens.Spacing.none,
+                    bottom = Dimens.Spacing.lg,
+                    start = Dimens.Spacing.lg,
+                    end = Dimens.Spacing.lg
                 )
         ) {
             menuItems.forEach {
@@ -53,14 +61,14 @@ fun IcewindDaleSideDrawerContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable { it.onClick() }
-                        .padding(vertical = 6.dp),
+                        .padding(vertical = Dimens.Spacing.sm),
                 ) {
                     it.icon?.let { icon ->
                         Icon(
                             imageVector = icon,
                             contentDescription = stringResource(id = it.nameRes)
                         )
-                        Spacer(modifier = Modifier.padding(end = 12.dp))
+                        Spacer(modifier = Modifier.padding(end = Dimens.Spacing.md))
                     }
                     Text(
                         text = stringResource(id = it.nameRes)

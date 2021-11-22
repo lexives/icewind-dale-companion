@@ -1,8 +1,18 @@
 package com.delarax.icewindDale.compantion.extensions
 
 import com.delarax.icewindDale.companion.models.exceptions.InvalidDateException
-import com.delarax.icewindDale.companion.models.nunavut.*
-import com.delarax.icewindDale.companion.models.nunavut.NunavutHoliday.*
+import com.delarax.icewindDale.companion.models.nunavut.NunavutDate
+import com.delarax.icewindDale.companion.models.nunavut.NunavutHoliday.ALIANAT
+import com.delarax.icewindDale.companion.models.nunavut.NunavutHoliday.MIDWINTER
+import com.delarax.icewindDale.companion.models.nunavut.NunavutHoliday.MOON_FEAST
+import com.delarax.icewindDale.companion.models.nunavut.NunavutHoliday.OMINGMAK
+import com.delarax.icewindDale.companion.models.nunavut.NunavutHoliday.SUN_FESTIVAL
+import com.delarax.icewindDale.companion.models.nunavut.NunavutHoliday.TUNNIQAIJUK
+import com.delarax.icewindDale.companion.models.nunavut.absoluteDayNumber
+import com.delarax.icewindDale.companion.models.nunavut.nextHoliday
+import com.delarax.icewindDale.companion.models.nunavut.numHolidaysPassed
+import com.delarax.icewindDale.companion.models.nunavut.priorHoliday
+import com.delarax.icewindDale.companion.models.nunavut.toDate
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith

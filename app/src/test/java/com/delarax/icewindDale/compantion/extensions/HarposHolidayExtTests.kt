@@ -1,8 +1,18 @@
 package com.delarax.icewindDale.compantion.extensions
 
 import com.delarax.icewindDale.companion.models.exceptions.InvalidDateException
-import com.delarax.icewindDale.companion.models.harpos.*
-import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.*
+import com.delarax.icewindDale.companion.models.harpos.HarposDate
+import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.GREENGRASS
+import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.HIGHHARVESTTIDE
+import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.MIDSUMMER
+import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.MIDWINTER
+import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.MOON_FEAST
+import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.SHIELDMEET
+import com.delarax.icewindDale.companion.models.harpos.absoluteDayNumber
+import com.delarax.icewindDale.companion.models.harpos.nextHoliday
+import com.delarax.icewindDale.companion.models.harpos.numHolidaysPassed
+import com.delarax.icewindDale.companion.models.harpos.priorHoliday
+import com.delarax.icewindDale.companion.models.harpos.toDate
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith

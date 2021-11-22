@@ -1,6 +1,11 @@
 package com.delarax.icewindDale.companion.models.nunavut
 
-import com.delarax.icewindDale.companion.models.nunavut.NunavutAbbreviation.*
+import com.delarax.icewindDale.companion.models.nunavut.NunavutAbbreviation.A
+import com.delarax.icewindDale.companion.models.nunavut.NunavutAbbreviation.FM
+import com.delarax.icewindDale.companion.models.nunavut.NunavutAbbreviation.FS
+import com.delarax.icewindDale.companion.models.nunavut.NunavutAbbreviation.M
+import com.delarax.icewindDale.companion.models.nunavut.NunavutAbbreviation.O
+import com.delarax.icewindDale.companion.models.nunavut.NunavutAbbreviation.T
 
 enum class NunavutHoliday(
     val priorSeason: NunavutSeason,

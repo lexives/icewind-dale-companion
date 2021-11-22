@@ -1,6 +1,17 @@
 package com.delarax.icewindDale.companion.models.nunavut
 
-import com.delarax.icewindDale.companion.models.nunavut.NunavutAbbreviation.*
+import com.delarax.icewindDale.companion.models.nunavut.NunavutAbbreviation.B
+import com.delarax.icewindDale.companion.models.nunavut.NunavutAbbreviation.BI
+import com.delarax.icewindDale.companion.models.nunavut.NunavutAbbreviation.BM
+import com.delarax.icewindDale.companion.models.nunavut.NunavutAbbreviation.DP
+import com.delarax.icewindDale.companion.models.nunavut.NunavutAbbreviation.EH
+import com.delarax.icewindDale.companion.models.nunavut.NunavutAbbreviation.FS
+import com.delarax.icewindDale.companion.models.nunavut.NunavutAbbreviation.I
+import com.delarax.icewindDale.companion.models.nunavut.NunavutAbbreviation.J
+import com.delarax.icewindDale.companion.models.nunavut.NunavutAbbreviation.NG
+import com.delarax.icewindDale.companion.models.nunavut.NunavutAbbreviation.RC
+import com.delarax.icewindDale.companion.models.nunavut.NunavutAbbreviation.SP
+import com.delarax.icewindDale.companion.models.nunavut.NunavutAbbreviation.ST
 
 enum class NunavutSeason(
     val numDays: Int,

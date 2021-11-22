@@ -1,12 +1,23 @@
 package com.delarax.icewindDale.companion.ui.dateConversion
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.Divider
+import androidx.compose.material.RadioButton
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
@@ -16,14 +27,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.delarax.icewindDale.companion.R
 import com.delarax.icewindDale.companion.data.PreferencesRepo
 import com.delarax.icewindDale.companion.extensions.enumCaseToTitleCase
-import com.delarax.icewindDale.companion.ui.theme.ThemeVM
-import com.delarax.icewindDale.companion.ui.common.IcewindDaleTopAppBar
+import com.delarax.icewindDale.companion.ui.common.Dimens
+import com.delarax.icewindDale.companion.ui.common.PreviewSurface
 import com.delarax.icewindDale.companion.ui.common.SimpleExposedDropDownMenu
 import com.delarax.icewindDale.companion.ui.common.SwitchWithLabel
-import com.delarax.icewindDale.companion.ui.theme.IcewindDaleTheme
+import com.delarax.icewindDale.companion.ui.theme.ThemeVM
 
 @Composable
 fun DateConversionScreen() {
@@ -58,12 +68,12 @@ fun DateConversionScreenContent(
 ) {
     Column(
         modifier = Modifier
-            .padding(10.dp)
+            .padding(Dimens.Spacing.md)
             .verticalScroll(rememberScrollState())
     ) {
         // TODO: make the radio buttons their own component
         Text("Night Mode")
-        Row(modifier = Modifier.padding(vertical = 5.dp)) {
+        Row(modifier = Modifier.padding(vertical = Dimens.Spacing.xs)) {
             themeViewState.darkThemePreferences.forEach {
                 RadioButton(
                     selected = (it == themeViewState.currentDarkThemePreference),
@@ -71,25 +81,25 @@ fun DateConversionScreenContent(
                 )
                 Text(
                     text = it.name.enumCaseToTitleCase(),
-                    modifier = Modifier.padding(end = 10.dp)
+                    modifier = Modifier.padding(end = Dimens.Spacing.md)
                 )
             }
         }
-        Divider(modifier = Modifier.padding(vertical = 10.dp))
+        Divider(modifier = Modifier.padding(vertical = Dimens.Spacing.md))
 
         SwitchWithLabel(
             checked = viewState.calendarModeSwitchChecked,
             onCheckedChange = onToggleConversionMode,
             labelText = viewState.calendarModeLabel
         )
-        Divider(modifier = Modifier.padding(vertical = 10.dp))
+        Divider(modifier = Modifier.padding(vertical = Dimens.Spacing.md))
 
         SwitchWithLabel(
             checked = viewState.holidayModeSwitchChecked,
             onCheckedChange = onToggleHolidayMode,
             labelText = viewState.holidayModeLabel
         )
-        Divider(modifier = Modifier.padding(vertical = 10.dp))
+        Divider(modifier = Modifier.padding(vertical = Dimens.Spacing.md))
 
         if (viewState.holidayModeSwitchChecked) {
             HolidaySelector(
@@ -113,12 +123,12 @@ fun DateConversionScreenContent(
             Button(
                 onClick = onConvertDate,
                 contentPadding = PaddingValues(
-                    start = 20.dp,
-                    top = 12.dp,
-                    end = 20.dp,
-                    bottom = 12.dp
+                    top = Dimens.Spacing.md,
+                    bottom = Dimens.Spacing.md,
+                    start = Dimens.Spacing.lg,
+                    end = Dimens.Spacing.lg
                 ),
-                modifier = Modifier.padding(vertical = 10.dp)
+                modifier = Modifier.padding(vertical = Dimens.Spacing.md)
             ) {
                 Text("Convert")
             }
@@ -146,7 +156,7 @@ fun DateInput(
 ) {
     Row {
         Column(
-            modifier = Modifier.padding(5.dp)
+            modifier = Modifier.padding(Dimens.Spacing.xs)
         ) {
             Text(monthOrSeasonLabel)
             SimpleExposedDropDownMenu(
@@ -156,7 +166,7 @@ fun DateInput(
             )
         }
         Column(
-            modifier = Modifier.padding(5.dp)
+            modifier = Modifier.padding(Dimens.Spacing.xs)
         ) {
             Text("Day")
             SimpleExposedDropDownMenu(
@@ -179,12 +189,12 @@ fun HolidaySelector(
 ) {
     Column {
         YearTextField(yearText = yearText, onYearTextChange = onYearTextChange)
-        Spacer(modifier = Modifier.height(5.dp))
+        Spacer(modifier = Modifier.height(Dimens.Spacing.xs))
         Column {
             holidayList.forEachIndexed { i, item ->
                 Button(
                     onClick = { onSelectHoliday(i) },
-                    modifier = Modifier.padding(bottom = 5.dp)
+                    modifier = Modifier.padding(bottom = Dimens.Spacing.xs)
                 ) {
                     Text(item)
                 }
@@ -201,7 +211,7 @@ fun YearTextField(
     val focusManager = LocalFocusManager.current
 
     Column(
-        modifier = Modifier.padding(5.dp)
+        modifier = Modifier.padding(Dimens.Spacing.xs)
     ) {
         Text("Year")
         TextField(
@@ -230,22 +240,22 @@ fun ConversionResult(
             errorMessage?.let {
                 Text(
                     text = errorMessage,
-                    modifier = Modifier.padding(vertical = 5.dp)
+                    modifier = Modifier.padding(vertical = Dimens.Spacing.xs)
                 )
             } ?: run {
                 Text(
                     text = dateStringShort,
-                    modifier = Modifier.padding(vertical = 5.dp)
+                    modifier = Modifier.padding(vertical = Dimens.Spacing.xs)
                 )
-                Spacer(modifier = Modifier.height(5.dp))
+                Spacer(modifier = Modifier.height(Dimens.Spacing.xs))
                 Text(
                     text = dateStringLong,
-                    modifier = Modifier.padding(vertical = 5.dp)
+                    modifier = Modifier.padding(vertical = Dimens.Spacing.xs)
                 )
-                Spacer(modifier = Modifier.height(5.dp))
+                Spacer(modifier = Modifier.height(Dimens.Spacing.xs))
                 Text(
                     text = dateStringLongAlternate,
-                    modifier = Modifier.padding(vertical = 5.dp)
+                    modifier = Modifier.padding(vertical = Dimens.Spacing.xs)
                 )
             }
         }
@@ -259,7 +269,9 @@ fun ConversionResult(
 @Preview
 @Composable
 fun DateConversionScreenPreview() {
-    IcewindDaleTheme {
+    PreviewSurface(
+        modifier = Modifier.fillMaxSize()
+    ) {
         DateConversionScreenContent(
             viewState = DateConversionVM.ViewState(),
             themeViewState = ThemeVM.ViewState(),

@@ -1,8 +1,28 @@
 package com.delarax.icewindDale.compantion.extensions
 
-import com.delarax.icewindDale.companion.models.harpos.*
-import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.*
-import com.delarax.icewindDale.companion.models.harpos.HarposMonth.*
+import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.GREENGRASS
+import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.HIGHHARVESTTIDE
+import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.MIDSUMMER
+import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.MIDWINTER
+import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.MOON_FEAST
+import com.delarax.icewindDale.companion.models.harpos.HarposHoliday.SHIELDMEET
+import com.delarax.icewindDale.companion.models.harpos.HarposMonth.ALTURIAK
+import com.delarax.icewindDale.companion.models.harpos.HarposMonth.CHES
+import com.delarax.icewindDale.companion.models.harpos.HarposMonth.ELEASIAS
+import com.delarax.icewindDale.companion.models.harpos.HarposMonth.ELEINT
+import com.delarax.icewindDale.companion.models.harpos.HarposMonth.FLAMERULE
+import com.delarax.icewindDale.companion.models.harpos.HarposMonth.HAMMER
+import com.delarax.icewindDale.companion.models.harpos.HarposMonth.KYTHORN
+import com.delarax.icewindDale.companion.models.harpos.HarposMonth.MARPENOTH
+import com.delarax.icewindDale.companion.models.harpos.HarposMonth.MIRTUL
+import com.delarax.icewindDale.companion.models.harpos.HarposMonth.NIGHTAL
+import com.delarax.icewindDale.companion.models.harpos.HarposMonth.TARSAKH
+import com.delarax.icewindDale.companion.models.harpos.HarposMonth.UKTAR
+import com.delarax.icewindDale.companion.models.harpos.lastHoliday
+import com.delarax.icewindDale.companion.models.harpos.nextHoliday
+import com.delarax.icewindDale.companion.models.harpos.nextMonth
+import com.delarax.icewindDale.companion.models.harpos.numHolidaysPassed
+import com.delarax.icewindDale.companion.models.harpos.priorMonth
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
