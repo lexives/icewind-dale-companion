@@ -2,7 +2,21 @@
     <string name="app_name">Icewind Dale Companion</string>
     <string name="string_template">%s</string>
 
+    <!-- Screens -->
+    <string name="screen_does_not_exist">This page does not yet exist.</string>
+    <string name="date_conversion_screen_title">Date Conversion</string>
+    <string name="settings_screen_title">Settings</string>
+
+    <!-- Action Items -->
+    <string name="open_left_drawer_menu">Open Side Menu</string>
+    <string name="close_left_drawer_menu">Close Side Menu</string>
+
     <!-- Date Conversion Screen -->
     <string name="month_label">Month</string>
     <string name="season_label">Season</string>
+
+    <!-- For Testing -->
+    <string name="test_string_one">Test String One</string>
+    <string name="test_string_two">Test String Two</string>
+    <string name="test_string_three">Test String Three</string>
 </resources>

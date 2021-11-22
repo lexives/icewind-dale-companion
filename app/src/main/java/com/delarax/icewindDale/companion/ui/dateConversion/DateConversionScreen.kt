@@ -56,87 +56,79 @@ fun DateConversionScreenContent(
     onSelectHoliday: (Int) -> Unit,
     onConvertDate: () -> Unit,
 ) {
-    Scaffold (
-        topBar = {
-            IcewindDaleTopAppBar(
-                title = stringResource(id = R.string.app_name)
-            )
-        }
+    Column(
+        modifier = Modifier
+            .padding(10.dp)
+            .verticalScroll(rememberScrollState())
     ) {
-        Column(
-            modifier = Modifier
-                .padding(10.dp)
-                .verticalScroll(rememberScrollState())
-        ) {
-            // TODO: make the radio buttons their own component
-            Text("Night Mode")
-            Row(modifier = Modifier.padding(vertical = 5.dp)) {
-                themeViewState.darkThemePreferences.forEach {
-                    RadioButton(
-                        selected = (it == themeViewState.currentDarkThemePreference),
-                        onClick = { onSelectNightModeOption(it) }
-                    )
-                    Text(
-                        text = it.name.enumCaseToTitleCase(),
-                        modifier = Modifier.padding(end = 10.dp)
-                    )
-                }
-            }
-            Divider(modifier = Modifier.padding(vertical = 10.dp))
-
-            SwitchWithLabel(
-                checked = viewState.calendarModeSwitchChecked,
-                onCheckedChange = onToggleConversionMode,
-                labelText = viewState.calendarModeLabel
-            )
-            Divider(modifier = Modifier.padding(vertical = 10.dp))
-
-            SwitchWithLabel(
-                checked = viewState.holidayModeSwitchChecked,
-                onCheckedChange = onToggleHolidayMode,
-                labelText = viewState.holidayModeLabel
-            )
-            Divider(modifier = Modifier.padding(vertical = 10.dp))
-
-            if (viewState.holidayModeSwitchChecked) {
-                HolidaySelector(
-                    holidayList = viewState.holidayList,
-                    onSelectHoliday = onSelectHoliday,
-                    yearText = viewState.yearText,
-                    onYearTextChange = onYearTextChange
+        // TODO: make the radio buttons their own component
+        Text("Night Mode")
+        Row(modifier = Modifier.padding(vertical = 5.dp)) {
+            themeViewState.darkThemePreferences.forEach {
+                RadioButton(
+                    selected = (it == themeViewState.currentDarkThemePreference),
+                    onClick = { onSelectNightModeOption(it) }
                 )
-            } else {
-                DateInput(
-                    dayList = viewState.dayList,
-                    dayIndex = viewState.dayIndex,
-                    monthOrSeasonLabel = stringResource(viewState.monthOrSeasonLabelRes),
-                    monthOrSeasonList = viewState.monthOrSeasonList,
-                    monthOrSeasonIndex = viewState.monthOrSeasonIndex,
-                    yearText = viewState.yearText,
-                    onSelectDay = onSelectDay,
-                    onSelectMonthOrSeason = onSelectMonthOrSeason,
-                    onYearTextChange = onYearTextChange
+                Text(
+                    text = it.name.enumCaseToTitleCase(),
+                    modifier = Modifier.padding(end = 10.dp)
                 )
-                Button(
-                    onClick = onConvertDate,
-                    contentPadding = PaddingValues(
-                        start = 20.dp,
-                        top = 12.dp,
-                        end = 20.dp,
-                        bottom = 12.dp
-                    ),
-                    modifier = Modifier.padding(vertical = 10.dp)
-                ) {
-                    Text("Convert")
-                }
             }
-            ConversionResult(
-                errorMessage = viewState.errorMessage,
-                dateStringShort = viewState.standardDateString,
-                dateStringLong = viewState.spokenDateString,
-                dateStringLongAlternate = viewState.alternateSpokenDateString,
-            )
         }
+        Divider(modifier = Modifier.padding(vertical = 10.dp))
+
+        SwitchWithLabel(
+            checked = viewState.calendarModeSwitchChecked,
+            onCheckedChange = onToggleConversionMode,
+            labelText = viewState.calendarModeLabel
+        )
+        Divider(modifier = Modifier.padding(vertical = 10.dp))
+
+        SwitchWithLabel(
+            checked = viewState.holidayModeSwitchChecked,
+            onCheckedChange = onToggleHolidayMode,
+            labelText = viewState.holidayModeLabel
+        )
+        Divider(modifier = Modifier.padding(vertical = 10.dp))
+
+        if (viewState.holidayModeSwitchChecked) {
+            HolidaySelector(
+                holidayList = viewState.holidayList,
+                onSelectHoliday = onSelectHoliday,
+                yearText = viewState.yearText,
+                onYearTextChange = onYearTextChange
+            )
+        } else {
+            DateInput(
+                dayList = viewState.dayList,
+                dayIndex = viewState.dayIndex,
+                monthOrSeasonLabel = stringResource(viewState.monthOrSeasonLabelRes),
+                monthOrSeasonList = viewState.monthOrSeasonList,
+                monthOrSeasonIndex = viewState.monthOrSeasonIndex,
+                yearText = viewState.yearText,
+                onSelectDay = onSelectDay,
+                onSelectMonthOrSeason = onSelectMonthOrSeason,
+                onYearTextChange = onYearTextChange
+            )
+            Button(
+                onClick = onConvertDate,
+                contentPadding = PaddingValues(
+                    start = 20.dp,
+                    top = 12.dp,
+                    end = 20.dp,
+                    bottom = 12.dp
+                ),
+                modifier = Modifier.padding(vertical = 10.dp)
+            ) {
+                Text("Convert")
+            }
+        }
+        ConversionResult(
+            errorMessage = viewState.errorMessage,
+            dateStringShort = viewState.standardDateString,
+            dateStringLong = viewState.spokenDateString,
+            dateStringLongAlternate = viewState.alternateSpokenDateString,
+        )
     }
 }
 
