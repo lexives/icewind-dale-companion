@@ -28,17 +28,12 @@ fun SwitchWithLabel(
 }
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun SwitchWithLabelPreview() {
+private fun SwitchWithLabelPreview() {
     PreviewSurface(modifier = Modifier.height(50.dp).width(100.dp)) {
         SwitchWithLabel(
             labelText = "Label"
         )
     }
-}
-
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun SwitchWithLabelDarkPreview() {
-    SwitchWithLabelPreview()
 }

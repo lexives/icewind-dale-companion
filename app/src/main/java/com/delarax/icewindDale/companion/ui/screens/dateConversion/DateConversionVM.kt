@@ -1,4 +1,4 @@
-package com.delarax.icewindDale.companion.ui.dateConversion
+package com.delarax.icewindDale.companion.ui.screens.dateConversion
 
 import android.util.Log
 import androidx.compose.runtime.getValue

@@ -210,8 +210,9 @@ private fun SimpleExposedDropDownMenuImpl(
  * Previews
  */
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun SimpleExposedDropDownMenuPreview() {
+private fun SimpleExposedDropDownMenuPreview() {
     PreviewSurface(modifier = Modifier.height(200.dp)) {
         var selectedIndex by remember {mutableStateOf(0)}
 
@@ -223,10 +224,4 @@ fun SimpleExposedDropDownMenuPreview() {
             modifier = Modifier.width(200.dp),
         )
     }
-}
-
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun SimpleExposedDropDownMenuDarkPreview() {
-    SimpleExposedDropDownMenuPreview()
 }

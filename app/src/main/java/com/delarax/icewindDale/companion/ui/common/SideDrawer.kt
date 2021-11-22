@@ -1,5 +1,6 @@
 package com.delarax.icewindDale.companion.ui.common
 
+import android.content.res.Configuration
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -80,8 +81,9 @@ fun IcewindDaleSideDrawerContent(
 }
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun IcewindDaleSideDrawerPreview() {
+private fun IcewindDaleSideDrawerPreview() {
     IcewindDaleTheme {
         Surface {
             IcewindDaleSideDrawerContent(Screen.values().map { screen ->

@@ -1,4 +1,4 @@
-package com.delarax.icewindDale.companion.ui.dateConversion
+package com.delarax.icewindDale.companion.ui.screens.dateConversion
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
@@ -267,8 +267,9 @@ fun ConversionResult(
  */
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun DateConversionScreenPreview() {
+private fun DateConversionScreenPreview() {
     PreviewSurface(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -285,10 +286,4 @@ fun DateConversionScreenPreview() {
             onConvertDate = {}
         )
     }
-}
-
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun DateConversionScreenDarkPreview() {
-    DateConversionScreenPreview()
 }

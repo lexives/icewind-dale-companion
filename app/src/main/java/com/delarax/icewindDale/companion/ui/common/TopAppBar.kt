@@ -46,9 +46,10 @@ fun IcewindDaleTopAppBar(
     )
 }
 
-@Composable
 @Preview
-fun IcewindDaleTopAppBarPreview() {
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun IcewindDaleTopAppBarPreview() {
     IcewindDaleTheme {
         IcewindDaleTopAppBar(
             title = stringResource(id = R.string.app_name),
@@ -65,10 +66,4 @@ fun IcewindDaleTopAppBarPreview() {
             )
         )
     }
-}
-
-@Composable
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-fun Dd5cvTopAppBarDarkPreview() {
-    IcewindDaleTopAppBarPreview()
 }

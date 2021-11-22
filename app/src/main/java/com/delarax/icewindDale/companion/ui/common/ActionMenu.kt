@@ -1,5 +1,6 @@
 package com.delarax.icewindDale.companion.ui.common
 
+import android.content.res.Configuration
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
@@ -111,8 +112,9 @@ private fun separateIntoActionAndOverflow(
 }
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun PreviewActionMenu() {
+private fun PreviewActionMenu() {
     IcewindDaleTheme {
         val items = listOf(
             ActionItem(
