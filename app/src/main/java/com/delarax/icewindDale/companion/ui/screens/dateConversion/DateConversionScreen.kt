@@ -15,7 +15,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Divider
-import androidx.compose.material.RadioButton
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -27,21 +26,15 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.delarax.icewindDale.companion.data.PreferencesRepo
-import com.delarax.icewindDale.companion.extensions.enumCaseToTitleCase
 import com.delarax.icewindDale.companion.ui.common.Dimens
 import com.delarax.icewindDale.companion.ui.common.PreviewSurface
 import com.delarax.icewindDale.companion.ui.common.SimpleExposedDropDownMenu
 import com.delarax.icewindDale.companion.ui.common.SwitchWithLabel
-import com.delarax.icewindDale.companion.ui.theme.ThemeVM
 
 @Composable
 fun DateConversionScreen() {
     val vm: DateConversionVM = hiltViewModel()
-    val themeVM: ThemeVM = hiltViewModel()
     DateConversionScreenContent(
-        themeVM.viewState,
-        themeVM::setNightModePreference,
         vm.viewState,
         vm::toggleConversionMode,
         vm::toggleHolidayMode,
@@ -55,8 +48,6 @@ fun DateConversionScreen() {
 
 @Composable
 fun DateConversionScreenContent(
-    themeViewState: ThemeVM.ViewState,
-    onSelectNightModeOption: (PreferencesRepo.DarkThemePreference) -> Unit,
     viewState: DateConversionVM.ViewState,
     onToggleConversionMode: (Boolean) -> Unit,
     onToggleHolidayMode: (Boolean) -> Unit,
@@ -71,22 +62,6 @@ fun DateConversionScreenContent(
             .padding(Dimens.Spacing.md)
             .verticalScroll(rememberScrollState())
     ) {
-        // TODO: make the radio buttons their own component
-        Text("Night Mode")
-        Row(modifier = Modifier.padding(vertical = Dimens.Spacing.xs)) {
-            themeViewState.darkThemePreferences.forEach {
-                RadioButton(
-                    selected = (it == themeViewState.currentDarkThemePreference),
-                    onClick = { onSelectNightModeOption(it) }
-                )
-                Text(
-                    text = it.name.enumCaseToTitleCase(),
-                    modifier = Modifier.padding(end = Dimens.Spacing.md)
-                )
-            }
-        }
-        Divider(modifier = Modifier.padding(vertical = Dimens.Spacing.md))
-
         SwitchWithLabel(
             checked = viewState.calendarModeSwitchChecked,
             onCheckedChange = onToggleConversionMode,
@@ -275,8 +250,6 @@ private fun DateConversionScreenPreview() {
     ) {
         DateConversionScreenContent(
             viewState = DateConversionVM.ViewState(),
-            themeViewState = ThemeVM.ViewState(),
-            onSelectNightModeOption = {},
             onToggleConversionMode = {},
             onToggleHolidayMode = {},
             onSelectDay = {},

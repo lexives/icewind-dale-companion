@@ -22,6 +22,7 @@ import com.delarax.icewindDale.companion.ui.common.DrawerMenuItem
 import com.delarax.icewindDale.companion.ui.common.IcewindDaleSideDrawerContent
 import com.delarax.icewindDale.companion.ui.common.IcewindDaleTopAppBar
 import com.delarax.icewindDale.companion.ui.screens.dateConversion.DateConversionScreen
+import com.delarax.icewindDale.companion.ui.screens.settings.SettingsScreen
 import kotlinx.coroutines.launch
 
 @Composable
@@ -94,6 +95,9 @@ fun IcewindDaleScaffold() {
         ) {
             composable(Screen.DATE_CONVERSION.route) {
                 DateConversionScreen()
+            }
+            composable(Screen.SETTINGS.route) {
+                SettingsScreen()
             }
         }
     }
