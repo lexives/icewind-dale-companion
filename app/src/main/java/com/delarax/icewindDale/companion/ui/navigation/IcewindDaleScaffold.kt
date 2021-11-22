@@ -12,8 +12,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.delarax.icewindDale.companion.R
@@ -21,8 +19,6 @@ import com.delarax.icewindDale.companion.ui.common.ActionItem
 import com.delarax.icewindDale.companion.ui.common.DrawerMenuItem
 import com.delarax.icewindDale.companion.ui.common.IcewindDaleSideDrawerContent
 import com.delarax.icewindDale.companion.ui.common.IcewindDaleTopAppBar
-import com.delarax.icewindDale.companion.ui.screens.dateConversion.DateConversionScreen
-import com.delarax.icewindDale.companion.ui.screens.settings.SettingsScreen
 import kotlinx.coroutines.launch
 
 @Composable
@@ -89,16 +85,6 @@ fun IcewindDaleScaffold() {
         },
         drawerBackgroundColor = MaterialTheme.colors.surface
     ) {
-        NavHost(
-            navController = navController,
-            startDestination = Screen.DATE_CONVERSION.route
-        ) {
-            composable(Screen.DATE_CONVERSION.route) {
-                DateConversionScreen()
-            }
-            composable(Screen.SETTINGS.route) {
-                SettingsScreen()
-            }
-        }
+        MainNavHost(navHostController = navController)
     }
 }
